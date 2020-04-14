@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-SRCS	= $(addprefix $(FOLDER), main.c parsing.c window.c)
+SRCS	= $(addprefix $(FOLDER), main.c parsing.c window.c vector.c ray.c intersection.c plane.c sphere.c)
 
 OBJS	= $(SRCS:.c=.o)
 
