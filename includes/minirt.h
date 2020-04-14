@@ -53,6 +53,7 @@ typedef struct	s_shape
 {
 	int			id;
 	float		diameter;
+	t_vector	*center;
 	t_vector	*position;
 	t_vector	*normal;
 }				t_shape;
@@ -82,5 +83,8 @@ int			intersected(t_intersec *intersec);
 t_vector	*intersection(t_intersec *intersec);
 /* PLANE */
 int		plane_intersection(t_intersec *intersec, t_shape *plane);
+/* sPHERE */
+int		sphere_intersection(t_intersec *intersec, t_shape *sphere);
+int		sphere_points(t_intersec *intersec, float a, float b, float discriminant);
 
 #endif
