@@ -24,7 +24,7 @@ float		length_square(t_vector *u)
 
 float		length(t_vector *u)
 {
-	return (sqrtf(length_square(u)));
+	return (sqrt(length_square(u)));
 }
 
 float		normalize(t_vector *u)
@@ -45,9 +45,9 @@ float		dot_product(t_vector *u, t_vector *v)
 
 t_vector	*cross_product(t_vector *u, t_vector *v)
 {
-	return (init_vector((u->y * v->z - u->z * v->y),
-		(u->z * v->x - u->x * v->z),
-		(u->x * v->y - u->y * v->x)));
+	return (init_vector(((u->y * v->z) - (u->z * v->y)),
+		((u->z * v->x) - (u->x * v->z)),
+		((u->x * v->y) - (u->y * v->x))));
 }
 
 t_vector	*vector_diff(t_vector *u, t_vector *v)

@@ -101,6 +101,7 @@ t_vector	*vector_diff(t_vector *u, t_vector *v);
 t_ray		*init_ray(t_vector *u, t_vector *v, float t);
 t_vector	*point_on_ray(t_ray ray, float t);
 /* INTERSECTIONS */
+t_intersec	*init_intersection(t_ray *ray);
 int			intersected(t_intersec *intersec);
 t_vector	*intersection(t_intersec *intersec);
 

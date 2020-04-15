@@ -21,18 +21,28 @@ t_data	*init_window(void)
 
 void	color_window(t_data data, t_camera camera, t_shape sphere)
 {
-	int	i;
-	int	j;
+	int			i;
+	int			j;
+	float		u;
+	float		v;
+	t_ray		*ray;
+	t_intersec	*intersec;
 
-	ft_putnbr((int)camera.w);
-	ft_putnbr((int)sphere.diameter);
-	j = 100;
-	while (j < 380)
+	j = 0;
+	while (j < 480)
 	{
-		i = 100;
-		while (i < 540)
+		i = 0;
+		while (i < 640)
 		{
-			mlx_pixel_put(data.mlx_ptr, data.mlx_win, i, j, 160230000);
+			u = (2.0f * i) / camera.w - 1.0f;
+			v = (-2.0f * j) / camera.h + 1.0f;
+			ray = make_ray(&camera, u, v);
+			intersec = init_intersection(ray);
+			sphere_intersection(intersec, &sphere);
+			if (intersected(intersec))
+				mlx_pixel_put(data.mlx_ptr, data.mlx_win, i, j, 160230000);
+			else
+				mlx_pixel_put(data.mlx_ptr, data.mlx_win, i, j, 50);
 			i++;
 		}
 		j++;

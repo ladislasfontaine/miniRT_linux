@@ -1,5 +1,17 @@
 #include "minirt.h"
 
+t_intersec	*init_intersection(t_ray *ray)
+{
+	t_intersec	*new;
+
+	if (!(new = (t_intersec *)malloc(sizeof(t_intersec))))
+		return (NULL);
+	new->ray = ray;
+	new->shape = NULL;
+	new->t = ray->max_t;
+	return (new);
+}
+
 int			intersected(t_intersec *intersec)
 {
 	if (!intersec->shape)
