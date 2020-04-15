@@ -27,6 +27,12 @@
 # define RAY_MIN 0.0001f
 # define RAY_MAX 1.0e30f
 
+typedef struct    s_data
+{
+    void          *mlx_ptr;
+    void          *mlx_win;
+}                 t_data;
+
 typedef struct	s_vector
 {
 	float	x;
@@ -56,6 +62,9 @@ typedef struct	s_shape
 	t_vector	*center;
 	t_vector	*position;
 	t_vector	*normal;
+	int			color_r;
+	int			color_g;
+	int			color_b;
 }				t_shape;
 
 typedef struct	s_intersec
@@ -66,6 +75,19 @@ typedef struct	s_intersec
 	// add details about surface, materials, etc
 }				t_intersec;
 
+typedef struct	s_camera
+{
+	t_vector	*origin;
+	t_vector	*direction;
+	t_vector	*up;
+	t_vector	*right;
+	float		h;
+	float		w;
+}				t_camera;
+
+/* WINDOW */
+t_data	*init_window(void);
+void	color_window(t_data data, t_camera camera, t_shape sphere);
 /* VECTORS */
 t_vector	*init_vector(float x, float y, float z);
 float		square(float x);
@@ -81,10 +103,16 @@ t_vector	*point_on_ray(t_ray ray, float t);
 /* INTERSECTIONS */
 int			intersected(t_intersec *intersec);
 t_vector	*intersection(t_intersec *intersec);
+
+t_shape		*init_shape(void);
 /* PLANE */
 int		plane_intersection(t_intersec *intersec, t_shape *plane);
-/* sPHERE */
+/* SPHERE */
+t_shape	*init_sphere(t_shape *sphere);
 int		sphere_intersection(t_intersec *intersec, t_shape *sphere);
 int		sphere_points(t_intersec *intersec, float a, float b, float discriminant);
+/* CAMERA */
+t_camera	*init_camera(t_vector *origin, t_vector *orientation, float h, float w);//, float fov)
+t_ray		*make_ray(t_camera *camera, float u, float v);
 
 #endif

@@ -1,5 +1,15 @@
 #include "minirt.h"
 
+t_shape	*init_sphere(t_shape *sphere)
+{
+	sphere->diameter = 12.6;
+	sphere->center = init_vector(0.0, 0.0, 20.6);
+	sphere->color_r = 160;
+	sphere->color_g = 230;
+	sphere->color_b = 0;
+	return (sphere);
+}
+
 int		sphere_intersection(t_intersec *intersec, t_shape *sphere)
 {
 	float	a;
