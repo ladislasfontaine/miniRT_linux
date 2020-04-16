@@ -1,6 +1,6 @@
 #include "minirt.h"
 
-t_camera	*init_camera(t_vector *origin, t_vector *orientation, float h, float w)//, float fov)
+t_camera	*init_camera(t_vector *origin, t_vector *orientation, float aspect_ratio, float fov)
 {
 	t_vector	*upguide;
 	t_camera	*new;
@@ -12,8 +12,9 @@ t_camera	*init_camera(t_vector *origin, t_vector *orientation, float h, float w)
 		return (NULL);
 	new->origin = origin;
 	new->direction = orientation;
-	new->h = h / 2.0;
-	new->w = w / 2.0;
+	normalize(new->direction);
+	new->h = tan(fov / 180.0);
+	new->w = new->h * aspect_ratio;
 	new->right = cross_product(new->direction, upguide);
 	normalize(new->right);
 	new->up = cross_product(new->right, new->direction);

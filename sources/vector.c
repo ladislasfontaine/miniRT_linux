@@ -29,12 +29,12 @@ float		length(t_vector *u)
 
 float		normalize(t_vector *u)
 {
-	float	len;
+	double	len;
 
 	len = length(u);
-	u->x /= len;
-	u->y /= len;
-	u->z /= len;
+	u->x = u->x / len;
+	u->y = u->y / len;
+	u->z = u->z / len;
 	return (len);
 }
 

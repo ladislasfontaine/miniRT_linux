@@ -26,6 +26,7 @@
 
 # define RAY_MIN 0.0001f
 # define RAY_MAX 1.0e30f
+# define PI 3.1415926f
 
 typedef struct    s_data
 {
@@ -70,8 +71,8 @@ typedef struct	s_shape
 typedef struct	s_intersec
 {
 	t_ray	*ray;
-	float	t;		// initialize to RAY_MAX
-	t_shape	*shape;	// initialize to NULL
+	float	t;
+	t_shape	*shape;
 	// add details about surface, materials, etc
 }				t_intersec;
 
@@ -113,7 +114,7 @@ t_shape	*init_sphere(t_shape *sphere);
 int		sphere_intersection(t_intersec *intersec, t_shape *sphere);
 int		sphere_points(t_intersec *intersec, float a, float b, float discriminant);
 /* CAMERA */
-t_camera	*init_camera(t_vector *origin, t_vector *orientation, float h, float w);//, float fov)
+t_camera	*init_camera(t_vector *origin, t_vector *orientation, float aspect_ratio, float fov);
 t_ray		*make_ray(t_camera *camera, float u, float v);
 
 #endif

@@ -34,8 +34,8 @@ void	color_window(t_data data, t_camera camera, t_shape sphere)
 		i = 0;
 		while (i < 640)
 		{
-			u = (2.0f * i) / camera.w - 1.0f;
-			v = (-2.0f * j) / camera.h + 1.0f;
+			u = (2.0f * i) / 640.0 - 1.0f;
+			v = (-2.0f * j) / 480.0 + 1.0f;
 			ray = make_ray(&camera, u, v);
 			intersec = init_intersection(ray);
 			sphere_intersection(intersec, &sphere);
