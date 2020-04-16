@@ -1,5 +1,12 @@
 #include "minirt.h"
 
+t_shape	*init_plane(t_shape *plane)
+{
+	plane->position = init_vector(0.0, 0.0, 0.0);
+	plane->normal = init_vector(0.0, 1.0, 0.0);
+	return (plane);
+}
+
 int		plane_intersection(t_intersec *intersec, t_shape *plane)
 {
 	float d_dot_n;

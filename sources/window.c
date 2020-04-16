@@ -19,7 +19,7 @@ t_data	*init_window(void)
     return (data);
 }
 
-void	color_window(t_data data, t_camera camera, t_shape sphere)
+void	color_window(t_data data, t_camera camera, t_shape sphere, t_shape plane)
 {
 	int			i;
 	int			j;
@@ -39,8 +39,11 @@ void	color_window(t_data data, t_camera camera, t_shape sphere)
 			ray = make_ray(&camera, u, v);
 			intersec = init_intersection(ray);
 			sphere_intersection(intersec, &sphere);
-			if (intersected(intersec))
+			plane_intersection(intersec, &plane);
+			if (intersected(intersec) && intersec->shape->id == SPHERE)
 				mlx_pixel_put(data.mlx_ptr, data.mlx_win, i, j, 160230000);
+			else if (intersected(intersec) && intersec->shape->id == PLANE)
+				mlx_pixel_put(data.mlx_ptr, data.mlx_win, i, j, 255);
 			else
 				mlx_pixel_put(data.mlx_ptr, data.mlx_win, i, j, 50);
 			i++;

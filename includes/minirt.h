@@ -26,7 +26,8 @@
 
 # define RAY_MIN 0.0001f
 # define RAY_MAX 1.0e30f
-# define PI 3.1415926f
+# define PLANE 1
+# define SPHERE 2
 
 typedef struct    s_data
 {
@@ -88,7 +89,7 @@ typedef struct	s_camera
 
 /* WINDOW */
 t_data	*init_window(void);
-void	color_window(t_data data, t_camera camera, t_shape sphere);
+void	color_window(t_data data, t_camera camera, t_shape sphere, t_shape plane);
 /* VECTORS */
 t_vector	*init_vector(float x, float y, float z);
 float		square(float x);
@@ -108,6 +109,7 @@ t_vector	*intersection(t_intersec *intersec);
 
 t_shape		*init_shape(void);
 /* PLANE */
+t_shape	*init_plane(t_shape *plane);
 int		plane_intersection(t_intersec *intersec, t_shape *plane);
 /* SPHERE */
 t_shape	*init_sphere(t_shape *sphere);
