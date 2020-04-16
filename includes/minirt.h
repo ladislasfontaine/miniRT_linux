@@ -82,6 +82,11 @@ typedef struct	s_camera
 	float		w;
 }				t_camera;
 
+/* ERRORS */
+int		arguments_error(int ac, char **av);
+/* PARSING */
+int		parse_file(char *file);
+int		parse_line(char *line);
 /* WINDOW */
 t_data	*init_window(void);
 void	color_window(t_data data, t_camera camera, t_list *scene);

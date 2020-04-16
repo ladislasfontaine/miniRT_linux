@@ -17,6 +17,10 @@
 # include <stdlib.h>
 # include <string.h>
 
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 32
+# endif
+
 typedef struct		s_list
 {
 	void			*content;
@@ -92,5 +96,6 @@ void	ft_memdel(void **ap);
 char	*ft_strnew(size_t size);
 void	ft_strdel(char **as);
 void	ft_strclr(char *s);
+int		get_next_line(int fd, char **line);
 
 #endif
