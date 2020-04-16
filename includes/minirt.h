@@ -26,8 +26,11 @@
 
 # define RAY_MIN 0.0001f
 # define RAY_MAX 1.0e30f
-# define PLANE 1
-# define SPHERE 2
+# define PLANE		1
+# define SPHERE		2
+# define CYLINDER	3
+# define SQUARE		4
+# define TRIANGLE	5
 
 typedef struct    s_data
 {
@@ -48,14 +51,6 @@ typedef struct	s_ray
 	t_vector	*direction;
 	float		max_t;
 }				t_ray;
-
-/*
-** 1: plane
-** 2: sphere
-** 3: cylinder
-** 4: square
-** 5: triangle
-*/
 
 typedef struct	s_shape
 {
@@ -89,7 +84,8 @@ typedef struct	s_camera
 
 /* WINDOW */
 t_data	*init_window(void);
-void	color_window(t_data data, t_camera camera, t_shape sphere, t_shape plane);
+void	color_window(t_data data, t_camera camera, t_list *scene);
+void	check_all_shapes(t_list *scene, t_intersec *intersec);
 /* VECTORS */
 t_vector	*init_vector(float x, float y, float z);
 float		square(float x);
@@ -109,7 +105,7 @@ t_vector	*intersection(t_intersec *intersec);
 
 t_shape		*init_shape(void);
 /* PLANE */
-t_shape	*init_plane(t_shape *plane);
+t_shape	*init_plane(t_shape *plane, t_vector *position, t_vector *normal);
 int		plane_intersection(t_intersec *intersec, t_shape *plane);
 /* SPHERE */
 t_shape	*init_sphere(t_shape *sphere);

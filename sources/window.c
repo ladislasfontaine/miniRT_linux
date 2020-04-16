@@ -19,13 +19,12 @@ t_data	*init_window(void)
     return (data);
 }
 
-void	color_window(t_data data, t_camera camera, t_shape sphere, t_shape plane)
+void	color_window(t_data data, t_camera camera, t_list *scene)
 {
 	int			i;
 	int			j;
 	float		u;
 	float		v;
-	t_ray		*ray;
 	t_intersec	*intersec;
 
 	j = 0;
@@ -36,10 +35,9 @@ void	color_window(t_data data, t_camera camera, t_shape sphere, t_shape plane)
 		{
 			u = (2.0f * i) / 640.0 - 1.0f;
 			v = (-2.0f * j) / 480.0 + 1.0f;
-			ray = make_ray(&camera, u, v);
-			intersec = init_intersection(ray);
-			sphere_intersection(intersec, &sphere);
-			plane_intersection(intersec, &plane);
+			intersec = init_intersection(make_ray(&camera, u, v));
+			check_all_shapes(scene, intersec);
+
 			if (intersected(intersec) && intersec->shape->id == SPHERE)
 				mlx_pixel_put(data.mlx_ptr, data.mlx_win, i, j, 160230000);
 			else if (intersected(intersec) && intersec->shape->id == PLANE)
@@ -51,4 +49,21 @@ void	color_window(t_data data, t_camera camera, t_shape sphere, t_shape plane)
 		j++;
 	}
     mlx_loop(data.mlx_ptr);
+}
+
+void	check_all_shapes(t_list *scene, t_intersec *intersec)
+{
+	int		shape;
+	t_list	*scene_cpy;
+
+	scene_cpy = scene;
+	while (scene_cpy)
+	{
+		shape = ((t_shape *)(scene_cpy->content))->id;
+		if (shape == PLANE)
+			plane_intersection(intersec, (t_shape *)(scene_cpy->content));
+		else if (shape == SPHERE)
+			sphere_intersection(intersec, (t_shape *)(scene_cpy->content));
+		scene_cpy = scene_cpy->next;
+	}
 }

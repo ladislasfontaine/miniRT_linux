@@ -1,9 +1,9 @@
 #include "minirt.h"
 
-t_shape	*init_plane(t_shape *plane)
+t_shape	*init_plane(t_shape *plane, t_vector *position, t_vector *normal)
 {
-	plane->position = init_vector(0.0, 0.0, 0.0);
-	plane->normal = init_vector(0.0, 1.0, 0.0);
+	plane->position = position;
+	plane->normal = normal;
 	return (plane);
 }
 
