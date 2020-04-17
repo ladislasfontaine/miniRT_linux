@@ -1,5 +1,16 @@
 #include "minirt.h"
 
+/*
+** create functions:
+**
+** parse identifier
+** specific function for each identifier
+** parse vector
+** parse rgb color
+** parse float
+** parse int
+*/
+
 int		parse_file(char *file)
 {
 	int		fd;
@@ -7,14 +18,27 @@ int		parse_file(char *file)
 	char	*line;
 
 	res = 1;
-	fd = open(file, O_RDONLY);
+	if ((fd = open(file, O_RDONLY)) == -1)
+	{
+		ft_putstr("Error\nCannot open the file\n");
+		return (1);
+	}
 	while (res)
 	{
 		res = get_next_line(fd, &line);
+		if (res == -1)
+		{
+			ft_putstr("Error\nCannot read the file\n");
+			return (1);
+		}
 		parse_line(line);
 		free(line);
 	}
-	close(fd);
+	if (close(fd) == -1)
+	{
+		ft_putstr("Error\nCannot close the file\n");
+		return (1);
+	}
 	return (0);
 }
 

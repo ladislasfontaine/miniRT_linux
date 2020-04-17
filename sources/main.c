@@ -2,7 +2,11 @@
 
 /*
 ** parsing of the file with get next line
+** listen on the window for smooth exit / resizing etc
+** --save option to create an image
 ** read MLX (use image to show scene)
+** error number function
+** convert rgb to int (each byte in binary, assemble 3 bytes, convert to int)
 */
 
 int		main(int ac, char **av)
@@ -15,7 +19,8 @@ int		main(int ac, char **av)
 
 	if (arguments_error(ac, av))
 		return (1);
-	parse_file(av[1]);
+	if (parse_file(av[1]))
+		return (1);
 	// create cameras
 	// create shapes
 	scene = NULL;
