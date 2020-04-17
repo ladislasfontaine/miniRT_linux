@@ -91,6 +91,7 @@ int		parse_line(char *line);
 t_data	*init_window(void);
 void	color_window(t_data data, t_camera camera, t_list *scene);
 void	check_all_shapes(t_list *scene, t_intersec *intersec);
+int		rgb_to_int(int r, int g, int b);
 /* VECTORS */
 t_vector	*init_vector(float x, float y, float z);
 float		square(float x);

@@ -97,5 +97,9 @@ char	*ft_strnew(size_t size);
 void	ft_strdel(char **as);
 void	ft_strclr(char *s);
 int		get_next_line(int fd, char **line);
+int		ft_no_error(char *base);
+void	ft_strcat_char(char *dest, char c);
+void	ft_putnbr_base(int nbr, char *base, char *result);
+char	*ft_convert_base(char *nbr, char *base_from, char *base_to);
 
 #endif

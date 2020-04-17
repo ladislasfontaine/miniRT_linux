@@ -39,7 +39,7 @@ void	color_window(t_data data, t_camera camera, t_list *scene)
 			check_all_shapes(scene, intersec);
 
 			if (intersected(intersec) && intersec->shape->id == SPHERE)
-				mlx_pixel_put(data.mlx_ptr, data.mlx_win, i, j, 160230000);
+				mlx_pixel_put(data.mlx_ptr, data.mlx_win, i, j, rgb_to_int(200, 20, 255));
 			else if (intersected(intersec) && intersec->shape->id == PLANE)
 				mlx_pixel_put(data.mlx_ptr, data.mlx_win, i, j, 255);
 			else
