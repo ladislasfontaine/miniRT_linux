@@ -32,11 +32,24 @@
 # define SQUARE		4
 # define TRIANGLE	5
 
-typedef struct    s_data
+typedef struct	s_data
 {
     void          *mlx_ptr;
     void          *mlx_win;
-}                 t_data;
+}				t_data;
+
+typedef struct	s_color
+{
+    float	r;
+    float	g;
+    float	b;
+}				t_color;
+
+typedef struct	s_resolution
+{
+    int		w;
+    int		h;
+}				t_resolution;
 
 typedef struct	s_vector
 {
@@ -52,16 +65,43 @@ typedef struct	s_ray
 	float		max_t;
 }				t_ray;
 
+typedef struct	s_camera
+{
+	t_vector	*origin;
+	t_vector	*direction;
+	t_vector	*up;
+	t_vector	*right;
+	float		h;
+	float		w;
+	float		fov;
+}				t_camera;
+
+typedef struct	s_light
+{
+	t_vector	*origin;
+	float		brightness;
+	t_color		*color;
+}				t_light;
+
+typedef struct	s_ambient
+{
+	t_color		*color;
+	float		ratio;
+}				t_ambient;
+
 typedef struct	s_shape
 {
 	int			id;
 	float		diameter;
+	float		height;
+	float		side;
 	t_vector	*center;
 	t_vector	*position;
 	t_vector	*normal;
-	int			color_r;
-	int			color_g;
-	int			color_b;
+	t_vector	*p1;
+	t_vector	*p2;
+	t_vector	*p3;
+	t_color		*color;
 }				t_shape;
 
 typedef struct	s_intersec
@@ -72,21 +112,23 @@ typedef struct	s_intersec
 	// add details about surface, materials, etc
 }				t_intersec;
 
-typedef struct	s_camera
+typedef struct	s_scene
 {
-	t_vector	*origin;
-	t_vector	*direction;
-	t_vector	*up;
-	t_vector	*right;
-	float		h;
-	float		w;
-}				t_camera;
+	t_resolution	*resolution;
+	t_ambient		*ambient;
+	t_list			*cameras;
+	t_list			*shapes;
+	t_list			*lights;
+}				t_scene;
+
 
 /* ERRORS */
 int		arguments_error(int ac, char **av);
 /* PARSING */
 int		parse_file(char *file);
 int		parse_line(char *line);
+int		parse_int(char *line);
+int		parse_resolution(char *line);
 /* WINDOW */
 t_data	*init_window(void);
 void	color_window(t_data data, t_camera camera, t_list *scene);

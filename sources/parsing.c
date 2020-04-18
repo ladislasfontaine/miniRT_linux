@@ -1,16 +1,5 @@
 #include "minirt.h"
 
-/*
-** create functions:
-**
-** parse identifier
-** specific function for each identifier
-** parse vector
-** parse rgb color
-** parse float
-** parse int
-*/
-
 int		parse_file(char *file)
 {
 	int		fd;
@@ -31,7 +20,8 @@ int		parse_file(char *file)
 			ft_putstr("Error\nCannot read the file\n");
 			return (1);
 		}
-		parse_line(line);
+		if (parse_line(line) == -1)
+			return (1);
 		free(line);
 	}
 	if (close(fd) == -1)
@@ -44,8 +34,21 @@ int		parse_file(char *file)
 
 int		parse_line(char *line)
 {
-	(void)line;
-	//ft_putstr(line);
-	//ft_putstr("\n");
-	return (0);
+	int		i;
+	int		ret;
+
+	i = 0;
+	while (line[i] && line[i] == ' ')
+		i++;
+	if (!line[i])
+		return (0);
+	if (ft_strncmp(line + i, "R ", 2) == 0)
+		ret = parse_resolution(line + i + 2);
+	else
+	{
+		ft_putstr("Error\nUnknown identifier in the .rt file\n");
+		return (-1);
+	}
+	// different function according to the identifier
+	return (ret);
 }

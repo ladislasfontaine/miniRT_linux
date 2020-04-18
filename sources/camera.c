@@ -15,6 +15,7 @@ t_camera	*init_camera(t_vector *origin, t_vector *orientation, float aspect_rati
 	normalize(new->direction);
 	new->h = tan(fov / 180.0);
 	new->w = new->h * aspect_ratio;
+	new->fov = fov;
 	new->right = cross_product(new->direction, upguide);
 	normalize(new->right);
 	new->up = cross_product(new->right, new->direction);

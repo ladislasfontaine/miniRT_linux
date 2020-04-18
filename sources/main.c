@@ -6,7 +6,6 @@
 ** --save option to create an image
 ** read MLX (use image to show scene)
 ** error number function
-** convert rgb to int (each byte in binary, assemble 3 bytes, convert to int)
 */
 
 int		main(int ac, char **av)
@@ -15,24 +14,29 @@ int		main(int ac, char **av)
 	t_camera	*camera;
 	t_shape		*sphere;
 	t_shape		*plane;
-	t_list		*scene;
+	t_list		*shapes;
+	//t_list		*cameras;
+	//t_list		*lights;
+	//t_resolution	*resolution;
 
+	// t_scene		*scene;
+
+	shapes = NULL;
 	if (arguments_error(ac, av))
 		return (1);
 	if (parse_file(av[1]))
 		return (1);
 	// create cameras
 	// create shapes
-	scene = NULL;
 	camera = init_camera(init_vector(-5.0, 1.0, 0.0), init_vector(5.0, 0.0, 0.0), 640.0 / 480.0, 70);
 	sphere = init_sphere(init_shape());
 	plane = init_plane(init_shape(), init_vector(0.0, 0.0, 0.0), init_vector(0.0, 1.0, 0.0));
 
-	ft_lstadd_back(&scene, ft_lstnew((void *)sphere));
-	ft_lstadd_back(&scene, ft_lstnew((void *)plane));
+	ft_lstadd_back(&shapes, ft_lstnew((void *)sphere));
+	ft_lstadd_back(&shapes, ft_lstnew((void *)plane));
     if (!(window = init_window()))
 		return (1);
-    color_window(*window, *camera, scene);
+    color_window(*window, *camera, shapes);
     return (0);
 }
 
