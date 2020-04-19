@@ -5,9 +5,7 @@ t_shape	*init_sphere(t_shape *sphere)
 	sphere->id = 2;
 	sphere->diameter = 1.0;
 	sphere->center = init_vector(0.0, 1.0, 0.0);
-	sphere->color_r = 160;
-	sphere->color_g = 230;
-	sphere->color_b = 0;
+	sphere->color = NULL;
 	return (sphere);
 }
 

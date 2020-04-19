@@ -19,7 +19,7 @@ t_data	*init_window(void)
     return (data);
 }
 
-void	color_window(t_data data, t_camera camera, t_list *scene)
+void	color_window(t_scene *scene)
 {
 	int			i;
 	int			j;
@@ -28,42 +28,42 @@ void	color_window(t_data data, t_camera camera, t_list *scene)
 	t_intersec	*intersec;
 
 	j = 0;
-	while (j < 480)
+	while (j < scene->resolution->h)
 	{
 		i = 0;
-		while (i < 640)
+		while (i < scene->resolution->w)
 		{
 			u = (2.0f * i) / 640.0 - 1.0f;
 			v = (-2.0f * j) / 480.0 + 1.0f;
-			intersec = init_intersection(make_ray(&camera, u, v));
-			check_all_shapes(scene, intersec);
+			intersec = init_intersection(make_ray((t_camera *)scene->cameras->content, u, v));
+			check_all_shapes(scene->shapes, intersec);
 
 			if (intersected(intersec) && intersec->shape->id == SPHERE)
-				mlx_pixel_put(data.mlx_ptr, data.mlx_win, i, j, rgb_to_int(200, 20, 255));
+				mlx_pixel_put(scene->window->mlx_ptr, scene->window->mlx_win, i, j, rgb_to_int(200, 20, 255));
 			else if (intersected(intersec) && intersec->shape->id == PLANE)
-				mlx_pixel_put(data.mlx_ptr, data.mlx_win, i, j, 255);
+				mlx_pixel_put(scene->window->mlx_ptr, scene->window->mlx_win, i, j, 255);
 			else
-				mlx_pixel_put(data.mlx_ptr, data.mlx_win, i, j, 50);
+				mlx_pixel_put(scene->window->mlx_ptr, scene->window->mlx_win, i, j, 50);
 			i++;
 		}
 		j++;
 	}
-    mlx_loop(data.mlx_ptr);
+    mlx_loop(scene->window->mlx_ptr);
 }
 
-void	check_all_shapes(t_list *scene, t_intersec *intersec)
+void	check_all_shapes(t_list *shapes, t_intersec *intersec)
 {
 	int		shape;
-	t_list	*scene_cpy;
+	t_list	*lst_cpy;
 
-	scene_cpy = scene;
-	while (scene_cpy)
+	lst_cpy = shapes;
+	while (lst_cpy)
 	{
-		shape = ((t_shape *)(scene_cpy->content))->id;
+		shape = ((t_shape *)(lst_cpy->content))->id;
 		if (shape == PLANE)
-			plane_intersection(intersec, (t_shape *)(scene_cpy->content));
+			plane_intersection(intersec, (t_shape *)(lst_cpy->content));
 		else if (shape == SPHERE)
-			sphere_intersection(intersec, (t_shape *)(scene_cpy->content));
-		scene_cpy = scene_cpy->next;
+			sphere_intersection(intersec, (t_shape *)(lst_cpy->content));
+		lst_cpy = lst_cpy->next;
 	}
 }

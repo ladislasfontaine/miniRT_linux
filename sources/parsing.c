@@ -1,6 +1,6 @@
 #include "minirt.h"
 
-int		parse_file(char *file)
+int		parse_file(char *file, t_scene *scene)
 {
 	int		fd;
 	int		res;
@@ -20,7 +20,7 @@ int		parse_file(char *file)
 			ft_putstr("Error\nCannot read the file\n");
 			return (1);
 		}
-		if (parse_line(line) == -1)
+		if (parse_line(line, scene) == -1)
 			return (1);
 		free(line);
 	}
@@ -32,18 +32,20 @@ int		parse_file(char *file)
 	return (0);
 }
 
-int		parse_line(char *line)
+int		parse_line(char *line, t_scene *scene)
 {
 	int		i;
 	int		ret;
 
 	i = 0;
-	while (line[i] && line[i] == ' ')
+	while (line[i] && (line[i] == ' ' || line[i] == '\t'))
 		i++;
 	if (!line[i])
 		return (0);
 	if (ft_strncmp(line + i, "R ", 2) == 0)
-		ret = parse_resolution(line + i + 2);
+		ret = parse_resolution(line + i + 2, scene);
+	else if (ft_strncmp(line + i, "A ", 2) == 0)
+		ret = parse_ambient(line + i + 2, scene);
 	else
 	{
 		ft_putstr("Error\nUnknown identifier in the .rt file\n");

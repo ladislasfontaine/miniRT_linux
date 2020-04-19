@@ -12,8 +12,6 @@ t_shape		*init_shape(void)
 	new->center = NULL;
 	new->position = NULL;
 	new->normal = NULL;
-	new->color_r = 0;
-	new->color_g = 0;
-	new->color_b = 0;
+	new->color = NULL;
 	return (new);
 }

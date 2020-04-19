@@ -11,30 +11,48 @@
 ** parse int
 */
 
-int		parse_int(char *line)
+int		is_space(char *line)
 {
-	int	i;
+	int i;
 
 	i = 0;
 	while (line[i] && line[i] == ' ')
 		i++;
-	if (ft_isdigit(line[i]))
-		return (ft_atoi(line + i));
+	return (i);
+}
+
+int		parse_int(char *line, int *n)
+{
+	if (ft_isdigit(line[0]))
+	{
+		*n = ft_atoi(line);
+		return (ft_numlen(*n));
+	}
 	return (-1);
 }
-/*
-float	parse_float(char *line)
+
+int		parse_float(char *line, float *f)
 {
-	int	i;
-	int	integer;
-	int	decimal;
+	int		i;
+	int		integer;
+	int		decimal;
 
 	i = 0;
-	while (line[i] && line[i] == ' ')
-		i++;
 	if (ft_isdigit(line[i]) || line[i] == '-')
-		integer = ft_atoi(line + i);
-	ft_numlen
-	return (-1);
+		integer = ft_atoi(line);
+	else
+		return (-1);
+	i += ft_numlen(integer);
+	if (line[i] == ' ' || !line[i])
+		return (integer);
+	else if (line[i] == '.' && ft_isdigit(line[i + 1]))
+	{
+		i++;
+		decimal = ft_atoi(line + i);
+		i += ft_numlen(decimal);
+	}
+	else
+		return (-1);
+	*f = (float)integer + ((float)decimal / pow(10.0, (double)ft_numlen(decimal)));
+	return (i);
 }
-*/

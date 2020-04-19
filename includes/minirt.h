@@ -119,20 +119,26 @@ typedef struct	s_scene
 	t_list			*cameras;
 	t_list			*shapes;
 	t_list			*lights;
+	t_data			*window;
 }				t_scene;
 
 
 /* ERRORS */
 int		arguments_error(int ac, char **av);
 /* PARSING */
-int		parse_file(char *file);
-int		parse_line(char *line);
-int		parse_int(char *line);
-int		parse_resolution(char *line);
+int		parse_file(char *file, t_scene *scene);
+int		parse_line(char *line, t_scene *scene);
+int		parse_int(char *line, int *n);
+int		parse_float(char *line, float *f);
+int		parse_resolution(char *line, t_scene *scene);
+int		parse_ambient(char *line, t_scene *scene);
+int		is_space(char *line);
+/* SCENE */
+t_scene	*init_scene(void);
 /* WINDOW */
 t_data	*init_window(void);
-void	color_window(t_data data, t_camera camera, t_list *scene);
-void	check_all_shapes(t_list *scene, t_intersec *intersec);
+void	color_window(t_scene *scene);
+void	check_all_shapes(t_list *shapes, t_intersec *intersec);
 int		rgb_to_int(int r, int g, int b);
 /* VECTORS */
 t_vector	*init_vector(float x, float y, float z);
