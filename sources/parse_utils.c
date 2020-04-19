@@ -1,16 +1,5 @@
 #include "minirt.h"
 
-/*
-** create functions:
-**
-** parse identifier
-** specific function for each identifier
-** parse vector
-** parse rgb color
-** parse float
-** parse int
-*/
-
 int		is_space(char *line)
 {
 	int i;
@@ -43,8 +32,11 @@ int		parse_float(char *line, float *f)
 	else
 		return (-1);
 	i += ft_numlen(integer);
-	if (line[i] == ' ' || !line[i])
-		return (integer);
+	if (line[i] != '.')
+	{
+		*f = integer;
+		return (i);
+	}
 	else if (line[i] == '.' && ft_isdigit(line[i + 1]))
 	{
 		i++;
@@ -82,6 +74,36 @@ int		parse_color(char *line, t_color *color)
 
 	if (ft_isdigit(line[i]))
 		i += parse_int(line + i, &color->b);
+	else
+		return (-1);
+	return (i);
+}
+
+int		parse_vector(char *line, t_vector *vector)
+{
+	int	i;
+
+	i = 0;
+	if (ft_isdigit(line[i]) || line[i] == '-')
+		i += parse_float(line + i, &vector->x);
+	else
+		return (-1);
+	if (line[i] == ',')
+		i++;
+	else
+		return (-1);
+
+	if (ft_isdigit(line[i]) || line[i] == '-')
+		i += parse_float(line + i, &vector->y);
+	else
+		return (-1);
+	if (line[i] == ',')
+		i++;
+	else
+		return (-1);
+
+	if (ft_isdigit(line[i]) || line[i] == '-')
+		i += parse_float(line + i, &vector->z);
 	else
 		return (-1);
 	return (i);

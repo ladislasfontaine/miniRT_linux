@@ -131,8 +131,10 @@ int		parse_line(char *line, t_scene *scene);
 int		parse_int(char *line, int *n);
 int		parse_float(char *line, float *f);
 int		parse_color(char *line, t_color *color);
+int		parse_vector(char *line, t_vector *vector);
 int		parse_resolution(char *line, t_scene *scene);
 int		parse_ambient(char *line, t_scene *scene);
+int		parse_camera(char *line, t_scene *scene);
 int		is_space(char *line);
 /* SCENE */
 t_scene	*init_scene(void);
@@ -169,6 +171,7 @@ int		sphere_intersection(t_intersec *intersec, t_shape *sphere);
 int		sphere_points(t_intersec *intersec, float a, float b, float discriminant);
 /* CAMERA */
 t_camera	*init_camera(t_vector *origin, t_vector *orientation, float aspect_ratio, float fov);
+t_camera	*init_camera_null(void);
 t_ray		*make_ray(t_camera *camera, float u, float v);
 
 #endif

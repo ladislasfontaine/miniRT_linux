@@ -17,6 +17,10 @@ int		main(int ac, char **av)
 	t_shape		*plane;
 
 	scene = init_scene();
+	
+	camera = init_camera(init_vector(-5.0, 1.0, 0.0), init_vector(5.0, 0.0, 0.0), 640.0 / 480.0, 70);
+	ft_lstadd_back(&scene->cameras, ft_lstnew((void *)camera));
+
 	if (arguments_error(ac, av))
 		return (1);
 	if (parse_file(av[1], scene))
@@ -24,8 +28,7 @@ int		main(int ac, char **av)
 	
 	// create cameras
 	// create shapes
-	camera = init_camera(init_vector(-5.0, 1.0, 0.0), init_vector(5.0, 0.0, 0.0), 640.0 / 480.0, 70);
-	ft_lstadd_back(&scene->cameras, ft_lstnew((void *)camera));
+	
 	sphere = init_sphere(init_shape());
 	ft_lstadd_back(&scene->shapes, ft_lstnew((void *)sphere));
 	plane = init_plane(init_shape(), init_vector(0.0, 0.0, 0.0), init_vector(0.0, 1.0, 0.0));

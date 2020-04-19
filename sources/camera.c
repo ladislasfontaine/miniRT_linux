@@ -23,6 +23,23 @@ t_camera	*init_camera(t_vector *origin, t_vector *orientation, float aspect_rati
 	return (new);
 }
 
+t_camera	*init_camera_null(void)
+{
+	t_camera	*camera;
+
+	camera = (t_camera *)malloc(sizeof(t_camera));
+	if (!camera)
+		return (NULL);
+	camera->origin = (t_vector *)malloc(sizeof(t_vector));
+	camera->direction = (t_vector *)malloc(sizeof(t_vector));
+	camera->up = (t_vector *)malloc(sizeof(t_vector));
+	camera->right = (t_vector *)malloc(sizeof(t_vector));
+	camera->h = 0;
+	camera->w = 0;
+	camera->fov = 0;
+	return (camera);
+}
+
 t_ray		*make_ray(t_camera *camera, float u, float v)
 {
 	t_vector	*origin;

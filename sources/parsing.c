@@ -46,6 +46,8 @@ int		parse_line(char *line, t_scene *scene)
 		ret = parse_resolution(line + i + 2, scene);
 	else if (ft_strncmp(line + i, "A ", 2) == 0)
 		ret = parse_ambient(line + i + 2, scene);
+	else if (ft_strncmp(line + i, "c ", 2) == 0)
+		ret = parse_camera(line + i + 2, scene);
 	else
 	{
 		ft_putstr("Error\nUnknown identifier in the .rt file\n");
