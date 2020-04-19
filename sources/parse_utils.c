@@ -16,7 +16,7 @@ int		is_space(char *line)
 	int i;
 
 	i = 0;
-	while (line[i] && line[i] == ' ')
+	while (line[i] && (line[i] == ' ' || line[i] == '\t'))
 		i++;
 	return (i);
 }
@@ -54,5 +54,35 @@ int		parse_float(char *line, float *f)
 	else
 		return (-1);
 	*f = (float)integer + ((float)decimal / pow(10.0, (double)ft_numlen(decimal)));
+	return (i);
+}
+
+int		parse_color(char *line, t_color *color)
+{
+	int	i;
+
+	i = 0;
+	if (ft_isdigit(line[i]))
+		i += parse_int(line + i, &color->r);
+	else
+		return (-1);
+	if (line[i] == ',')
+		i++;
+	else
+		return (-1);
+
+	if (ft_isdigit(line[i]))
+		i += parse_int(line + i, &color->g);
+	else
+		return (-1);
+	if (line[i] == ',')
+		i++;
+	else
+		return (-1);
+
+	if (ft_isdigit(line[i]))
+		i += parse_int(line + i, &color->b);
+	else
+		return (-1);
 	return (i);
 }

@@ -40,9 +40,9 @@ typedef struct	s_data
 
 typedef struct	s_color
 {
-    float	r;
-    float	g;
-    float	b;
+    int		r;
+    int		g;
+    int		b;
 }				t_color;
 
 typedef struct	s_resolution
@@ -130,11 +130,13 @@ int		parse_file(char *file, t_scene *scene);
 int		parse_line(char *line, t_scene *scene);
 int		parse_int(char *line, int *n);
 int		parse_float(char *line, float *f);
+int		parse_color(char *line, t_color *color);
 int		parse_resolution(char *line, t_scene *scene);
 int		parse_ambient(char *line, t_scene *scene);
 int		is_space(char *line);
 /* SCENE */
 t_scene	*init_scene(void);
+void	clear_scene(t_scene *scene);
 /* WINDOW */
 t_data	*init_window(void);
 void	color_window(t_scene *scene);
