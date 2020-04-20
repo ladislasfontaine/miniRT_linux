@@ -94,3 +94,39 @@ int		parse_camera(char *line, t_scene *scene)
 	}
 	return (0);
 }
+
+int		parse_light(char *line, t_scene *scene)
+{
+	t_light		*light;
+	int			i;
+
+	light = init_light_null();
+	ft_lstadd_back(&scene->lights, ft_lstnew((void *)light));
+	light = (t_light *)(ft_lstlast(scene->lights)->content);
+	i = 0;
+	i += is_space(line + i);
+	i += parse_vector(line + i, light->origin);
+	i += is_space(line + i);
+	i += parse_float(line + i, &light->brightness);
+	i += is_space(line + i);
+	i += parse_color(line + i, light->color);
+	i += is_space(line + i);
+	if (light->brightness < 0.0 || light->brightness > 1.0)
+	{
+		ft_putstr("Error\nBrightness of light should be between 0.0 and 1.0\n");
+		return (-1);
+	}
+	if (light->color->r < 0 || light->color->r >255 ||
+		light->color->g < 0 || light->color->g >255 ||
+		light->color->b < 0 || light->color->b >255)
+	{
+		ft_putstr("Error\nEach color value should be between 0 and 255\n");
+		return (-1);
+	}
+	if (line[i])
+	{
+		ft_putstr("Error\nProblem parsing the camera line\n"); // put line number
+		return (-1);
+	}
+	return (0);
+}

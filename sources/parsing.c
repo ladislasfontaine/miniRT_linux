@@ -38,8 +38,7 @@ int		parse_line(char *line, t_scene *scene)
 	int		ret;
 
 	i = 0;
-	while (line[i] && (line[i] == ' ' || line[i] == '\t'))
-		i++;
+	i += is_space(line + i);
 	if (!line[i])
 		return (0);
 	if (ft_strncmp(line + i, "R ", 2) == 0)
@@ -48,6 +47,8 @@ int		parse_line(char *line, t_scene *scene)
 		ret = parse_ambient(line + i + 2, scene);
 	else if (ft_strncmp(line + i, "c ", 2) == 0)
 		ret = parse_camera(line + i + 2, scene);
+	else if (ft_strncmp(line + i, "l ", 2) == 0)
+		ret = parse_light(line + i + 2, scene);
 	else
 	{
 		ft_putstr("Error\nUnknown identifier in the .rt file\n");

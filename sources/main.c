@@ -2,6 +2,8 @@
 
 /*
 ** parsing of the file with get next line
+** add ft_printf for errors handling with line numbers
+** camera remove aspect ratio from init function
 ** listen on the window for smooth exit / resizing etc
 ** --save option to create an image
 ** read MLX (use image to show scene)
@@ -20,23 +22,20 @@ int		main(int ac, char **av)
 	
 	camera = init_camera(init_vector(-5.0, 1.0, 0.0), init_vector(5.0, 0.0, 0.0), 640.0 / 480.0, 70);
 	ft_lstadd_back(&scene->cameras, ft_lstnew((void *)camera));
+	sphere = init_sphere(init_shape());
+	ft_lstadd_back(&scene->shapes, ft_lstnew((void *)sphere));
+	plane = init_plane(init_shape(), init_vector(0.0, 0.0, 0.0), init_vector(0.0, 1.0, 0.0));
+	ft_lstadd_back(&scene->shapes, ft_lstnew((void *)plane));
 
 	if (arguments_error(ac, av))
 		return (1);
 	if (parse_file(av[1], scene))
 		return (1);
 	
-	// create cameras
 	// create shapes
-	
-	sphere = init_sphere(init_shape());
-	ft_lstadd_back(&scene->shapes, ft_lstnew((void *)sphere));
-	plane = init_plane(init_shape(), init_vector(0.0, 0.0, 0.0), init_vector(0.0, 1.0, 0.0));
-	ft_lstadd_back(&scene->shapes, ft_lstnew((void *)plane));
 
     if (!(scene->window = init_window()))
 		return (1);
-    //color_window(*window, *camera, shapes);
     color_window(scene);
     return (0);
 }
