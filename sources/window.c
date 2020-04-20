@@ -33,9 +33,9 @@ void	color_window(t_scene *scene)
 		i = 0;
 		while (i < scene->resolution->w)
 		{
-			u = (2.0f * i) / 640.0 - 1.0f;
-			v = (-2.0f * j) / 480.0 + 1.0f;
-			intersec = init_intersection(make_ray((t_camera *)scene->cameras->content, u, v));
+			u = (2.0f * i) / (float)scene->resolution->w - 1.0f;
+			v = (-2.0f * j) / (float)scene->resolution->h + 1.0f;
+			intersec = init_intersection(make_ray(scene, (t_camera *)scene->cameras->content, u, v));
 			check_all_shapes(scene->shapes, intersec);
 
 			if (intersected(intersec) && intersec->shape->id == SPHERE)

@@ -71,8 +71,6 @@ typedef struct	s_camera
 	t_vector	*direction;
 	t_vector	*up;
 	t_vector	*right;
-	float		h;
-	float		w;
 	float		fov;
 }				t_camera;
 
@@ -176,9 +174,9 @@ t_shape	*init_sphere(t_shape *sphere);
 int		sphere_intersection(t_intersec *intersec, t_shape *sphere);
 int		sphere_points(t_intersec *intersec, float a, float b, float discriminant);
 /* CAMERA */
-t_camera	*init_camera(t_vector *origin, t_vector *orientation, float aspect_ratio, float fov);
+t_camera	*init_camera(t_vector *origin, t_vector *orientation, float fov);
 t_camera	*init_camera_null(void);
-t_ray		*make_ray(t_camera *camera, float u, float v);
+t_ray		*make_ray(t_scene *scene, t_camera *camera, float u, float v);
 /* LIGHT */
 t_light	*init_light_null(void);
 /*  */

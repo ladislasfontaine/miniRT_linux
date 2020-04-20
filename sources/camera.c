@@ -1,6 +1,6 @@
 #include "minirt.h"
 
-t_camera	*init_camera(t_vector *origin, t_vector *orientation, float aspect_ratio, float fov)
+t_camera	*init_camera(t_vector *origin, t_vector *orientation, float fov)
 {
 	t_vector	*upguide;
 	t_camera	*new;
@@ -13,8 +13,6 @@ t_camera	*init_camera(t_vector *origin, t_vector *orientation, float aspect_rati
 	new->origin = origin;
 	new->direction = orientation;
 	normalize(new->direction);
-	new->h = tan(fov / 180.0);
-	new->w = new->h * aspect_ratio;
 	new->fov = fov;
 	new->right = cross_product(new->direction, upguide);
 	normalize(new->right);
@@ -34,32 +32,31 @@ t_camera	*init_camera_null(void)
 	camera->direction = (t_vector *)malloc(sizeof(t_vector));
 	camera->up = (t_vector *)malloc(sizeof(t_vector));
 	camera->right = (t_vector *)malloc(sizeof(t_vector));
-	camera->h = 0;
-	camera->w = 0;
 	camera->fov = 0;
 	return (camera);
 }
 
-t_ray		*make_ray(t_camera *camera, float u, float v)
+t_ray		*make_ray(t_scene *scene, t_camera *camera, float u, float v)
 {
 	t_vector	*origin;
 	t_vector	*direction;
-	float		x;
-	float		y;
-	float		z;
+	float		w;
+	float		h;
 
+	h = tan(camera->fov / 180.0);
+	w = h * ((float)scene->resolution->w / (float)scene->resolution->h);
 	origin = init_vector(camera->origin->x, camera->origin->y, camera->origin->z);
 	if (!origin)
 		return (NULL);
-	x = camera->direction->x + u * camera->w * camera->right->x + v * camera->h * camera->up->x;
-	y = camera->direction->y + u * camera->w * camera->right->y + v * camera->h * camera->up->y;
-	z = camera->direction->z + u * camera->w * camera->right->z + v * camera->h * camera->up->z;
-	direction = init_vector(x, y, z);
+	direction = (t_vector *)malloc(sizeof(t_vector));
 	if (!direction)
 	{
 		free(origin);
 		return (NULL);
 	}
+	direction->x = camera->direction->x + u * w * camera->right->x + v * h * camera->up->x;
+	direction->y = camera->direction->y + u * w * camera->right->y + v * h * camera->up->y;
+	direction->z = camera->direction->z + u * w * camera->right->z + v * h * camera->up->z;
 	normalize(direction);
 	return (init_ray(origin, direction, RAY_MAX));
 }

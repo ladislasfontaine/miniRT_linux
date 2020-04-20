@@ -56,6 +56,7 @@ int		parse_ambient(char *line, t_scene *scene)
 int		parse_camera(char *line, t_scene *scene)
 {
 	t_camera	*camera;
+	t_vector	*upguide;
 	int			i;
 
 	camera = init_camera_null();
@@ -69,6 +70,13 @@ int		parse_camera(char *line, t_scene *scene)
 	i += is_space(line + i);
 	i += parse_float(line + i, &camera->fov);
 	i += is_space(line + i);
+	if (!(upguide = init_vector(0.0, 1.0, 0.0)))
+		return (-1);
+	normalize(camera->direction);
+	camera->right = cross_product(camera->direction, upguide);
+	normalize(camera->right);
+	camera->up = cross_product(camera->right, camera->direction);
+	free(upguide);
 	if (camera->fov < 0.0 || camera->fov > 180.0)
 	{
 		ft_putstr("Error\nField of view (FOV) should be between 0 and 180 degrees\n"); // put line number
