@@ -1,6 +1,6 @@
 #include "minirt.h"
 
-char	*create_binary(int n)
+static char	*create_binary(int n)
 {
 	char	*temp;
 	char	*byte;
@@ -34,4 +34,16 @@ int		rgb_to_int(int r, int g, int b)
 	ft_strcat(binary, create_binary(b));
 	num = ft_convert_base(binary, "01", "0123456789");
 	return (ft_atoi(num));
+}
+
+int		check_color_range(t_color *color)
+{
+	if (color->r < 0 || color->r >255 ||
+		color->g < 0 || color->g >255 ||
+		color->b < 0 || color->b >255)
+	{
+		ft_putstr("Error\nEach color value should be between 0 and 255\n");
+		return (-1);
+	}
+	return (0);
 }

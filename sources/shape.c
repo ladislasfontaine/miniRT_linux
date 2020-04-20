@@ -9,9 +9,14 @@ t_shape		*init_shape(void)
 		return (NULL);
 	new->id = 1;
 	new->diameter = 0.0;
-	new->center = NULL;
-	new->position = NULL;
-	new->normal = NULL;
-	new->color = NULL;
+	new->height = 0.0;
+	new->side = 0.0;
+	new->center = (t_vector *)malloc(sizeof(t_vector));
+	new->position = (t_vector *)malloc(sizeof(t_vector));
+	new->normal = (t_vector *)malloc(sizeof(t_vector));
+	new->p1 = (t_vector *)malloc(sizeof(t_vector));
+	new->p2 = (t_vector *)malloc(sizeof(t_vector));
+	new->p3 = (t_vector *)malloc(sizeof(t_vector));
+	new->color = (t_color *)malloc(sizeof(t_color));
 	return (new);
 }

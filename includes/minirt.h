@@ -136,6 +136,11 @@ int		parse_resolution(char *line, t_scene *scene);
 int		parse_ambient(char *line, t_scene *scene);
 int		parse_camera(char *line, t_scene *scene);
 int		parse_light(char *line, t_scene *scene);
+int		parse_sphere(char *line, t_scene *scene);
+int		parse_plane(char *line, t_scene *scene);
+int		parse_square(char *line, t_scene *scene);
+int		parse_cylinder(char *line, t_scene *scene);
+int		parse_triangle(char *line, t_scene *scene);
 int		is_space(char *line);
 /* SCENE */
 t_scene	*init_scene(void);
@@ -144,7 +149,6 @@ void	clear_scene(t_scene *scene);
 t_data	*init_window(void);
 void	color_window(t_scene *scene);
 void	check_all_shapes(t_list *shapes, t_intersec *intersec);
-int		rgb_to_int(int r, int g, int b);
 /* VECTORS */
 t_vector	*init_vector(float x, float y, float z);
 float		square(float x);
@@ -154,6 +158,7 @@ float		normalize(t_vector *u);
 float		dot_product(t_vector *u, t_vector *v);
 t_vector	*cross_product(t_vector *u, t_vector *v);
 t_vector	*vector_diff(t_vector *u, t_vector *v);
+int			check_normal_vector(t_vector *u);
 /* RAYS */
 t_ray		*init_ray(t_vector *u, t_vector *v, float t);
 t_vector	*point_on_ray(t_ray ray, float t);
@@ -176,5 +181,8 @@ t_camera	*init_camera_null(void);
 t_ray		*make_ray(t_camera *camera, float u, float v);
 /* LIGHT */
 t_light	*init_light_null(void);
+/*  */
+int		check_color_range(t_color *color);
+int		rgb_to_int(int r, int g, int b);
 
 #endif

@@ -49,6 +49,16 @@ int		parse_line(char *line, t_scene *scene)
 		ret = parse_camera(line + i + 2, scene);
 	else if (ft_strncmp(line + i, "l ", 2) == 0)
 		ret = parse_light(line + i + 2, scene);
+	else if (ft_strncmp(line + i, "sp ", 3) == 0)
+		ret = parse_sphere(line + i + 3, scene);
+	else if (ft_strncmp(line + i, "pl ", 3) == 0)
+		ret = parse_plane(line + i + 3, scene);
+	else if (ft_strncmp(line + i, "sq ", 3) == 0)
+		ret = parse_square(line + i + 3, scene);
+	else if (ft_strncmp(line + i, "cy ", 3) == 0)
+		ret = parse_cylinder(line + i + 3, scene);
+	else if (ft_strncmp(line + i, "tr ", 3) == 0)
+		ret = parse_triangle(line + i + 3, scene);
 	else
 	{
 		ft_putstr("Error\nUnknown identifier in the .rt file\n");

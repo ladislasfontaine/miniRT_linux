@@ -48,13 +48,8 @@ int		parse_ambient(char *line, t_scene *scene)
 		ft_putstr("Error\nProblem parsing the ambient lightning line\n");
 		return (-1);
 	}
-	if (scene->ambient->color->r < 0 || scene->ambient->color->r >255 ||
-		scene->ambient->color->g < 0 || scene->ambient->color->g >255 ||
-		scene->ambient->color->b < 0 || scene->ambient->color->b >255)
-	{
-		ft_putstr("Error\nEach color value should be between 0 and 255\n");
+	if (check_color_range(scene->ambient->color) == -1)
 		return (-1);
-	}
 	return (0);
 }
 
@@ -79,14 +74,8 @@ int		parse_camera(char *line, t_scene *scene)
 		ft_putstr("Error\nField of view (FOV) should be between 0 and 180 degrees\n"); // put line number
 		return (-1);
 	}
-	if (camera->direction->x < -1.0 || camera->direction->x > 1.0 ||
-		camera->direction->y < -1.0 || camera->direction->y > 1.0 ||
-		camera->direction->z < -1.0 || camera->direction->z > 1.0 ||
-		length(camera->direction) < 0.99 || length(camera->direction) > 1.01)
-	{
-		ft_putstr("Error\nProblem with the orientation vector for camera\n"); // put line number
+	if (check_normal_vector(camera->direction) == -1)
 		return (-1);
-	}
 	if (line[i])
 	{
 		ft_putstr("Error\nProblem parsing the camera line\n"); // put line number
@@ -116,13 +105,8 @@ int		parse_light(char *line, t_scene *scene)
 		ft_putstr("Error\nBrightness of light should be between 0.0 and 1.0\n");
 		return (-1);
 	}
-	if (light->color->r < 0 || light->color->r >255 ||
-		light->color->g < 0 || light->color->g >255 ||
-		light->color->b < 0 || light->color->b >255)
-	{
-		ft_putstr("Error\nEach color value should be between 0 and 255\n");
+	if (check_color_range(light->color) == -1)
 		return (-1);
-	}
 	if (line[i])
 	{
 		ft_putstr("Error\nProblem parsing the camera line\n"); // put line number
