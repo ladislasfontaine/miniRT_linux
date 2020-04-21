@@ -21,6 +21,7 @@
 # include <stdio.h>
 # include <string.h>
 # include <math.h>
+# include "keys.h"
 # include "../libft/libft.h"
 # include "../minilibx/mlx.h"
 
@@ -144,9 +145,13 @@ int		is_space(char *line);
 t_scene	*init_scene(void);
 void	clear_scene(t_scene *scene);
 /* WINDOW */
-t_data	*init_window(void);
+t_data	*init_window(t_scene *scene);
+void	listen_events(t_scene *scene);
+int		get_key(int key, t_scene *scene);
+int		get_mouse(int key, int x, int y, t_scene *scene);
 void	color_window(t_scene *scene);
 void	check_all_shapes(t_list *shapes, t_intersec *intersec);
+int		close_and_quit(t_scene *scene);
 /* VECTORS */
 t_vector	*init_vector(float x, float y, float z);
 float		square(float x);
@@ -179,7 +184,7 @@ t_camera	*init_camera_null(void);
 t_ray		*make_ray(t_scene *scene, t_camera *camera, float u, float v);
 /* LIGHT */
 t_light	*init_light_null(void);
-/*  */
+/* COLOR */
 int		check_color_range(t_color *color);
 int		rgb_to_int(int r, int g, int b);
 

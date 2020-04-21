@@ -12,7 +12,7 @@ int		is_space(char *line)
 
 int		parse_int(char *line, int *n)
 {
-	if (ft_isdigit(line[0]))
+	if (ft_isdigit(line[0]) || line[0] == '-')
 	{
 		*n = ft_atoi(line);
 		return (ft_numlen(*n));

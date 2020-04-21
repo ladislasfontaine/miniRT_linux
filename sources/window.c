@@ -1,6 +1,6 @@
 #include "minirt.h"
 
-t_data	*init_window(void)
+t_data	*init_window(t_scene *scene)
 {
     t_data  *data;
 
@@ -11,7 +11,7 @@ t_data	*init_window(void)
 		ft_putstr("Error\nCannot initialize the minilibX\n");
         return (NULL);
 	}
-    if ((data->mlx_win = mlx_new_window(data->mlx_ptr, 640, 480, "miniRT project")) == NULL)
+    if ((data->mlx_win = mlx_new_window(data->mlx_ptr, scene->resolution->w, scene->resolution->h, "miniRT")) == NULL)
     {
 		ft_putstr("Error\nCannot create a new window\n");
         return (NULL);
@@ -48,7 +48,6 @@ void	color_window(t_scene *scene)
 		}
 		j++;
 	}
-    mlx_loop(scene->window->mlx_ptr);
 }
 
 void	check_all_shapes(t_list *shapes, t_intersec *intersec)

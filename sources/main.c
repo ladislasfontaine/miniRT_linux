@@ -17,9 +17,10 @@ int		main(int ac, char **av)
 		return (1);
 	if (parse_file(av[1], scene))
 		return (1);
-    if (!(scene->window = init_window()))
+    if (!(scene->window = init_window(scene)))
 		return (1);
     color_window(scene);
+	listen_events(scene);
     return (0);
 }
 

@@ -20,6 +20,11 @@ int		parse_resolution(char *line, t_scene *scene)
 		ft_putstr("Error\nProblem parsing the resolution line\n");
 		return (-1);
 	}
+	else if (scene->resolution->w <=0  || scene->resolution->h <= 0)
+	{
+		ft_putstr("Error\nResolution sizes should be greater than zero\n");
+		return (-1);
+	}
 	return (0);
 }
 
