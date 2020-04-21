@@ -20,5 +20,7 @@ int		plane_intersection(t_intersec *intersec, t_shape *plane)
 		return (0);
 	intersec->t = t;
 	intersec->shape = plane;
+	intersec->normal = plane->normal;
+	intersec->color = init_color(intersec->shape->color->r, intersec->shape->color->g, intersec->shape->color->b);
 	return (1);
 }

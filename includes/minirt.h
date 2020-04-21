@@ -105,9 +105,12 @@ typedef struct	s_shape
 
 typedef struct	s_intersec
 {
-	t_ray	*ray;
-	float	t;
-	t_shape	*shape;
+	t_ray		*ray;
+	float		t;
+	t_shape		*shape;
+	t_vector	*normal;
+	t_color		*color;
+	t_color		*reflect;
 	// add details about surface, materials, etc
 }				t_intersec;
 
@@ -151,6 +154,7 @@ int		get_key(int key, t_scene *scene);
 int		get_mouse(int key, int x, int y, t_scene *scene);
 void	color_window(t_scene *scene);
 void	check_all_shapes(t_list *shapes, t_intersec *intersec);
+void	check_all_lights(t_list *lights, t_intersec *intersec);
 int		close_and_quit(t_scene *scene);
 /* VECTORS */
 t_vector	*init_vector(float x, float y, float z);
@@ -178,6 +182,7 @@ int		plane_intersection(t_intersec *intersec, t_shape *plane);
 t_shape	*init_sphere(t_shape *sphere);
 int		sphere_intersection(t_intersec *intersec, t_shape *sphere);
 int		sphere_points(t_intersec *intersec, float a, float b, float discriminant);
+int		sphere_normal_vector(t_intersec *intersec);
 /* CAMERA */
 t_camera	*init_camera(t_vector *origin, t_vector *orientation, float fov);
 t_camera	*init_camera_null(void);
@@ -185,7 +190,8 @@ t_ray		*make_ray(t_scene *scene, t_camera *camera, float u, float v);
 /* LIGHT */
 t_light	*init_light_null(void);
 /* COLOR */
+t_color		*init_color(int r, int g, int b);
 int		check_color_range(t_color *color);
-int		rgb_to_int(int r, int g, int b);
+int		rgb_to_int(t_color *color);
 
 #endif

@@ -31,6 +31,8 @@ int		sphere_intersection(t_intersec *intersec, t_shape *sphere)
 	if (sphere_points(intersec, a, b, discriminant))
 	{
 		intersec->shape = sphere;
+		intersec->color = init_color(intersec->shape->color->r, intersec->shape->color->g, intersec->shape->color->b);
+		sphere_normal_vector(intersec);
 		return (1);
 	}
 	return (0);
@@ -50,4 +52,21 @@ int		sphere_points(t_intersec *intersec, float a, float b, float discriminant)
 	else
 		return (0);
 	return (1);
+}
+
+int		sphere_normal_vector(t_intersec *intersec)
+{
+	float		x;
+	float		y;
+	float		z;
+	t_vector	*point;
+
+	x = intersec->ray->origin->x + intersec->t * intersec->ray->direction->x;
+	y = intersec->ray->origin->y + intersec->t * intersec->ray->direction->y;
+	z = intersec->ray->origin->z + intersec->t * intersec->ray->direction->z;
+	point = init_vector(x, y, z);
+	intersec->normal = vector_diff(point, intersec->shape->center);
+	normalize(intersec->normal);
+	free(point);
+	return (0);
 }

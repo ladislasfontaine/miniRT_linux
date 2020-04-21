@@ -37,13 +37,13 @@ void	color_window(t_scene *scene)
 			v = (-2.0f * j) / (float)scene->resolution->h + 1.0f;
 			intersec = init_intersection(make_ray(scene, (t_camera *)scene->cameras->content, u, v));
 			check_all_shapes(scene->shapes, intersec);
-
-			if (intersected(intersec) && intersec->shape->id == SPHERE)
-				mlx_pixel_put(scene->window->mlx_ptr, scene->window->mlx_win, i, j, rgb_to_int(200, 20, 255));
-			else if (intersected(intersec) && intersec->shape->id == PLANE)
-				mlx_pixel_put(scene->window->mlx_ptr, scene->window->mlx_win, i, j, 255);
+			if (intersected(intersec))
+			{
+				check_all_lights(scene->lights, intersec);
+				mlx_pixel_put(scene->window->mlx_ptr, scene->window->mlx_win, i, j, rgb_to_int(intersec->color));
+			}
 			else
-				mlx_pixel_put(scene->window->mlx_ptr, scene->window->mlx_win, i, j, 50);
+				mlx_pixel_put(scene->window->mlx_ptr, scene->window->mlx_win, i, j, 0);
 			i++;
 		}
 		j++;

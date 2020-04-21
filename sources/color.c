@@ -1,5 +1,18 @@
 #include "minirt.h"
 
+t_color		*init_color(int r, int g, int b)
+{
+	t_color	*color;
+
+	color = (t_color *)malloc(sizeof(t_color));
+	if (!color)
+		return (NULL);
+	color->r = r;
+	color->g = g;
+	color->b = b;
+	return (color);
+}
+
 static char	*create_binary(int n)
 {
 	char	*temp;
@@ -21,17 +34,17 @@ static char	*create_binary(int n)
 	return (byte);
 }
 
-int		rgb_to_int(int r, int g, int b)
+int		rgb_to_int(t_color *color)//int r, int g, int b)
 {
 	char	binary[25];
 	char	*num;
 
-	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
+	if (color->r < 0 || color->r > 255 || color->g < 0 || color->g > 255 || color->b < 0 || color->b > 255)
 		return (-1);
 	binary[0] = '\0';
-	ft_strcat(binary, create_binary(r));
-	ft_strcat(binary, create_binary(g));
-	ft_strcat(binary, create_binary(b));
+	ft_strcat(binary, create_binary(color->r));
+	ft_strcat(binary, create_binary(color->g));
+	ft_strcat(binary, create_binary(color->b));
 	num = ft_convert_base(binary, "01", "0123456789");
 	return (ft_atoi(num));
 }

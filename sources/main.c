@@ -1,6 +1,9 @@
 #include "minirt.h"
 
 /*
+** check light ray intersection for shadow
+** multiple lights
+** color additions
 ** add ft_printf for errors handling with line numbers
 ** listen on the window for smooth exit / resizing etc
 ** --save option to create an image
