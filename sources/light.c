@@ -13,44 +13,52 @@ t_light	*init_light_null(void)
 	return (light);
 }
 
-void	check_all_lights(t_list *lights, t_intersec *intersec)
+void	check_all_lights(t_scene *scene, t_intersec *intersec)
 {
+	t_list		*lst_cpy;
 	t_light		*light;
 	t_vector	*light_dir;
 	t_vector	*point;
+	t_intersec	*light_ray;
 	float		light_ratio;
 
-	light = (t_light *)lights->content;
-	point = get_point(intersec->ray->origin, intersec->ray->direction, intersec->t);
-	light_dir = vector_diff(light->origin, point);
-	normalize(light_dir);
-	light_ratio = dot_product(light_dir, intersec->normal);
-	set_shadow(intersec->color, light_ratio);
-
-	// créer un intersec avec un ray qui part du point vers light
-	// puis méthode check_all_shapes pour voir si intersection
+	lst_cpy = scene->lights;
+	while (lst_cpy)
+	{
+		light = (t_light *)lst_cpy->content;
+		point = get_point(intersec->ray->origin, intersec->ray->direction, intersec->t);
+		light_dir = vector_diff(light->origin, point);
+		normalize(light_dir);
+		light_ray = init_intersection(init_ray(point, light_dir, RAY_MAX));
+		check_all_shapes(scene->shapes, light_ray);
+		if (!intersected(light_ray))
+		{
+			light_ratio = dot_product(light_dir, intersec->normal);
+			add_light_to_pixel(intersec, light_ratio);
+		}
+		lst_cpy = lst_cpy->next;
+	}
 }
 
-void	set_shadow(t_color *color, float ratio)
+void	add_light_to_pixel(t_intersec *intersec, float ratio)
 {
-	if (!color)
+	t_color	*shape;
+	t_color	*pixel;
+
+	shape = intersec->shape->color;
+	pixel = intersec->color;
+	if (!pixel)
 		return ;
-	if (ratio <= 0.0)
-	{
-		color->r = 0;
-		color->g = 0;
-		color->b = 0;
-	}
-	else
-	{
-		color->r *= ratio;
-		color->g *= ratio;
-		color->b *= ratio;
-	}
-	if (color->r > 255)
-		color->r = 255;
-	if (color->g > 255)
-		color->g = 255;
-	if (color->b > 255)
-		color->b = 255;
+	//if (ratio <= 0.0)
+	//	ratio = 0.0;
+	pixel->r += shape->r * ratio;//(color->r + color->r * ratio) / 2.0;
+	pixel->g += shape->g * ratio;
+	pixel->b += shape->b * ratio;
+	
+	if (pixel->r > shape->r)
+		pixel->r = shape->r;
+	if (pixel->g > shape->g)
+		pixel->g = shape->g;
+	if (pixel->b > shape->b)
+		pixel->b = shape->b;
 }

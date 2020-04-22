@@ -154,7 +154,7 @@ int		get_key(int key, t_scene *scene);
 int		get_mouse(int key, int x, int y, t_scene *scene);
 void	color_window(t_scene *scene);
 void	check_all_shapes(t_list *shapes, t_intersec *intersec);
-void	check_all_lights(t_list *lights, t_intersec *intersec);
+void	check_all_lights(t_scene *scene, t_intersec *intersec);
 int		close_and_quit(t_scene *scene);
 /* VECTORS */
 t_vector	*init_vector(float x, float y, float z);
@@ -190,10 +190,10 @@ t_camera	*init_camera_null(void);
 t_ray		*make_ray(t_scene *scene, t_camera *camera, float u, float v);
 /* LIGHT */
 t_light	*init_light_null(void);
+void	add_light_to_pixel(t_intersec *intersec, float ratio);
 /* COLOR */
 t_color		*init_color(int r, int g, int b);
 int		check_color_range(t_color *color);
 int		rgb_to_int(t_color *color);
-void	set_shadow(t_color *color, float ratio);
 
 #endif

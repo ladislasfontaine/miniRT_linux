@@ -9,6 +9,7 @@ t_intersec	*init_intersection(t_ray *ray)
 	new->ray = ray;
 	new->shape = NULL;
 	new->t = ray->max_t;
+	new->color = init_color(0, 0, 0);
 	return (new);
 }
 

@@ -39,7 +39,7 @@ void	color_window(t_scene *scene)
 			check_all_shapes(scene->shapes, intersec);
 			if (intersected(intersec))
 			{
-				check_all_lights(scene->lights, intersec);
+				check_all_lights(scene, intersec);
 				mlx_pixel_put(scene->window->mlx_ptr, scene->window->mlx_win, i, j, rgb_to_int(intersec->color));
 			}
 			else
