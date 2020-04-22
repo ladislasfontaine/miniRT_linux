@@ -52,17 +52,17 @@ void	color_window(t_scene *scene)
 
 void	check_all_shapes(t_list *shapes, t_intersec *intersec)
 {
-	int		shape;
+	t_shape	*shape;
 	t_list	*lst_cpy;
 
 	lst_cpy = shapes;
 	while (lst_cpy)
 	{
-		shape = ((t_shape *)(lst_cpy->content))->id;
-		if (shape == PLANE)
-			plane_intersection(intersec, (t_shape *)(lst_cpy->content));
-		else if (shape == SPHERE)
-			sphere_intersection(intersec, (t_shape *)(lst_cpy->content));
+		shape = (t_shape *)(lst_cpy->content);
+		if (shape->id == PLANE)
+			plane_intersection(intersec, shape);
+		else if (shape->id == SPHERE)
+			sphere_intersection(intersec, shape);
 		lst_cpy = lst_cpy->next;
 	}
 }

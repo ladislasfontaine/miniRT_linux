@@ -19,31 +19,38 @@ void	check_all_lights(t_list *lights, t_intersec *intersec)
 	t_vector	*light_dir;
 	t_vector	*point;
 	float		light_ratio;
-	float		x;
-	float		y;
-	float		z;
 
 	light = (t_light *)lights->content;
-	x = intersec->ray->origin->x + intersec->t * intersec->ray->direction->x;
-	y = intersec->ray->origin->y + intersec->t * intersec->ray->direction->y;
-	z = intersec->ray->origin->z + intersec->t * intersec->ray->direction->z;
-	point = init_vector(x, y, z);
+	point = get_point(intersec->ray->origin, intersec->ray->direction, intersec->t);
 	light_dir = vector_diff(light->origin, point);
 	normalize(light_dir);
 	light_ratio = dot_product(light_dir, intersec->normal);
-	if (light_ratio > 0.0)
+	set_shadow(intersec->color, light_ratio);
+
+	// créer un intersec avec un ray qui part du point vers light
+	// puis méthode check_all_shapes pour voir si intersection
+}
+
+void	set_shadow(t_color *color, float ratio)
+{
+	if (!color)
+		return ;
+	if (ratio <= 0.0)
 	{
-		intersec->color->r *= light_ratio;
-		intersec->color->g *= light_ratio;
-		intersec->color->b *= light_ratio;
+		color->r = 0;
+		color->g = 0;
+		color->b = 0;
 	}
 	else
 	{
-		intersec->color->r = 0;
-		intersec->color->g = 0;
-		intersec->color->b = 0;
+		color->r *= ratio;
+		color->g *= ratio;
+		color->b *= ratio;
 	}
-	//if (intersec->shape->id == SPHERE)
-	//	printf("Light ratio: %f\n", light_ratio);
-	// quantité de lumière = dot product (direction source lumineuse, normale du point d'intersection)
+	if (color->r > 255)
+		color->r = 255;
+	if (color->g > 255)
+		color->g = 255;
+	if (color->b > 255)
+		color->b = 255;
 }

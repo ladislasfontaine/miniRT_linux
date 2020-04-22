@@ -158,6 +158,7 @@ void	check_all_lights(t_list *lights, t_intersec *intersec);
 int		close_and_quit(t_scene *scene);
 /* VECTORS */
 t_vector	*init_vector(float x, float y, float z);
+t_vector	*get_point(t_vector *origin, t_vector *dir, float t);
 float		square(float x);
 float		length_square(t_vector *u);
 float		length(t_vector *u);
@@ -193,5 +194,6 @@ t_light	*init_light_null(void);
 t_color		*init_color(int r, int g, int b);
 int		check_color_range(t_color *color);
 int		rgb_to_int(t_color *color);
+void	set_shadow(t_color *color, float ratio);
 
 #endif

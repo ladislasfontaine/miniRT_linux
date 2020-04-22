@@ -25,8 +25,11 @@ int		parse_float(char *line, float *f)
 	int		i;
 	int		integer;
 	int		decimal;
+	int		len;
 
 	i = 0;
+	len = 0;
+	decimal = 0;
 	if (ft_isdigit(line[i]) || line[i] == '-')
 		integer = ft_atoi(line);
 	else
@@ -40,12 +43,21 @@ int		parse_float(char *line, float *f)
 	else if (line[i] == '.' && ft_isdigit(line[i + 1]))
 	{
 		i++;
-		decimal = ft_atoi(line + i);
-		i += ft_numlen(decimal);
+		while (line[i] == '0' && line[i])
+		{
+			len++;
+			i++;
+		}
+		if (ft_isdigit(line[i]))
+		{
+			decimal = ft_atoi(line + i);
+			i += ft_numlen(decimal);
+			len += ft_numlen(decimal);
+		}
 	}
 	else
 		return (-1);
-	*f = (float)integer + ((float)decimal / pow(10.0, (double)ft_numlen(decimal)));
+	*f = (float)integer + ((float)decimal / pow(10.0, (double)len));
 	return (i);
 }
 

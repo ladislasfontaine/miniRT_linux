@@ -56,15 +56,9 @@ int		sphere_points(t_intersec *intersec, float a, float b, float discriminant)
 
 int		sphere_normal_vector(t_intersec *intersec)
 {
-	float		x;
-	float		y;
-	float		z;
 	t_vector	*point;
-
-	x = intersec->ray->origin->x + intersec->t * intersec->ray->direction->x;
-	y = intersec->ray->origin->y + intersec->t * intersec->ray->direction->y;
-	z = intersec->ray->origin->z + intersec->t * intersec->ray->direction->z;
-	point = init_vector(x, y, z);
+	
+	point = get_point(intersec->ray->origin, intersec->ray->direction, intersec->t);
 	intersec->normal = vector_diff(point, intersec->shape->center);
 	normalize(intersec->normal);
 	free(point);

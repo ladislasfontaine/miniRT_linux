@@ -12,6 +12,20 @@ t_vector	*init_vector(float x, float y, float z)
 	return (new);
 }
 
+t_vector	*get_point(t_vector *origin, t_vector *dir, float t)
+{
+	t_vector	*point;
+	float		x;
+	float		y;
+	float		z;
+
+	x = origin->x + t * dir->x;
+	y = origin->y + t * dir->y;
+	z = origin->z + t * dir->z;
+	point = init_vector(x, y, z);
+	return (point);
+}
+
 float		square(float x)
 {
 	return (x * x);
