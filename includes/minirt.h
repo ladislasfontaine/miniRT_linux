@@ -184,6 +184,8 @@ t_shape	*init_sphere(t_shape *sphere);
 int		sphere_intersection(t_intersec *intersec, t_shape *sphere);
 int		sphere_points(t_intersec *intersec, float a, float b, float discriminant);
 int		sphere_normal_vector(t_intersec *intersec);
+/* SQUARE */
+int		square_intersection(t_intersec *intersec, t_shape *square);
 /* CAMERA */
 t_camera	*init_camera(t_vector *origin, t_vector *orientation, float fov);
 t_camera	*init_camera_null(void);

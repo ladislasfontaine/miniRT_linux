@@ -63,6 +63,8 @@ void	check_all_shapes(t_list *shapes, t_intersec *intersec)
 			plane_intersection(intersec, shape);
 		else if (shape->id == SPHERE)
 			sphere_intersection(intersec, shape);
+		else if (shape->id == SQUARE)
+			square_intersection(intersec, shape);
 		lst_cpy = lst_cpy->next;
 	}
 }
