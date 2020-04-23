@@ -21,6 +21,7 @@ void	check_all_lights(t_scene *scene, t_intersec *intersec)
 	t_vector	*point;
 	t_intersec	*light_ray;
 	float		light_ratio;
+	float		distance;
 
 	lst_cpy = scene->lights;
 	while (lst_cpy)
@@ -28,12 +29,13 @@ void	check_all_lights(t_scene *scene, t_intersec *intersec)
 		light = (t_light *)lst_cpy->content;
 		point = get_point(intersec->ray->origin, intersec->ray->direction, intersec->t);
 		light_dir = vector_diff(light->origin, point);
+		distance = length(light_dir);
 		normalize(light_dir);
 		light_ray = init_intersection(init_ray(point, light_dir, RAY_MAX));
 		check_all_shapes(scene->shapes, light_ray);
-		if (!intersected(light_ray))
+		if (!intersected(light_ray) || (intersected(light_ray) && light_ray->t > distance))
 		{
-			light_ratio = dot_product(light_dir, intersec->normal);
+			light_ratio = fabs(dot_product(light_dir, intersec->normal));
 			add_light_to_pixel(intersec, light_ratio);
 		}
 		lst_cpy = lst_cpy->next;
@@ -49,12 +51,9 @@ void	add_light_to_pixel(t_intersec *intersec, float ratio)
 	pixel = intersec->color;
 	if (!pixel)
 		return ;
-	//if (ratio <= 0.0)
-	//	ratio = 0.0;
-	pixel->r += shape->r * ratio;//(color->r + color->r * ratio) / 2.0;
+	pixel->r += shape->r * ratio;
 	pixel->g += shape->g * ratio;
 	pixel->b += shape->b * ratio;
-	
 	if (pixel->r > shape->r)
 		pixel->r = shape->r;
 	if (pixel->g > shape->g)
