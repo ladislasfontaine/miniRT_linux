@@ -3,26 +3,32 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lafontai <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/23 09:39:28 by lafontai          #+#    #+#              #
-#    Updated: 2020/03/23 10:40:47 by lafontai         ###   ########.fr        #
+#    Updated: 2020/05/07 08:01:37 by lafontai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS	= $(shell find . -name '*.c' | grep -v lst)
+SRCS	= $(addprefix $(FOLDER), \
+			flag1.c \
+			flag2.c \
+			format1.c \
+			format2.c \
+			ft_printf.c \
+			list.c \
+			parse.c \
+			utils.c)
 
-A_SRCS	= $(shell find . -name '*.c')
+FOLDER	= printf/
 
 OBJS	= $(SRCS:.c=.o)
 
-A_OBJS	= $(A_SRCS:.c=.o)
-
-NAME	= libft.a
+NAME	= libftprintf.a
 
 RM		= rm -f
 
-CC		= gcc
+CC		= clang
 
 CFLAGS	= -Wall -Wextra -Werror
 
@@ -33,18 +39,21 @@ endif
 all:		$(NAME)
 
 $(NAME):	$(OBJS)
+			cd libft && make bonus
+			cp libft/libft.a ./$(NAME)
 			ar rcs $(NAME) $(OBJS)
 
-bonus:		$(A_OBJS)
-			ar rcs $(NAME) $(A_OBJS)
+bonus:		$(NAME)
 
 %.o:		%.c
 			$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-			$(RM) $(A_OBJS)
+			cd libft && make clean
+			$(RM) $(OBJS)
 
 fclean:		clean
+			$(RM) libft/libft.a
 			$(RM) $(NAME)
 
 re:			fclean all

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lafontai <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/23 09:39:28 by lafontai          #+#    #+#              #
-#    Updated: 2020/04/12 15:31:19 by marvin           ###   ########.fr        #
+#    Updated: 2020/05/11 11:52:49 by lafontai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,21 +33,21 @@ endif
 all:		$(NAME)
 
 $(NAME):	$(OBJS)
-			cd libft/ && make bonus
+			cd libftprintf/ && make
 			cd minilibx/ && make
 			mv minilibx/libmlx.dylib .
-			$(CC) $(CFLAGS) libft/libft.a libmlx.dylib $(OBJS) -o $(NAME)
+			$(CC) $(CFLAGS) libftprintf/libftprintf.a libmlx.dylib $(OBJS) -o $(NAME)
 
 %.o:		%.c
 			$(CC) $(CFLAGS) -c $< -o $@ -I $(INCS)
 
 clean:
-			make clean -C libft/
+			make clean -C libftprintf/
 			make clean -C minilibx/
 			$(RM) $(OBJS)
 
 fclean:		clean
-			make fclean -C libft/
+			make fclean -C libftprintf/
 			$(RM) libmlx.dylib
 			$(RM) $(NAME)
 
