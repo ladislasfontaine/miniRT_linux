@@ -6,20 +6,20 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:19:34 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/11 10:19:39 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/11 15:53:08 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-int		parse_resolution(char *line, t_scene *scene)
+int		parse_resolution(char *line, t_scene *scene, int n)
 {
 	int	i;
 
 	i = 0;
 	if (scene->resolution->w != 0 || scene->resolution->h != 0)
 	{
-		ft_putstr("Error\nResolution can only be declared once\n");
+		ft_printf("Error\nLine %d. Resolution can only be declared once\n", n);
 		return (-1);
 	}
 	i += is_space(line + i);
@@ -29,32 +29,33 @@ int		parse_resolution(char *line, t_scene *scene)
 	i += is_space(line + i);
 	if (scene->resolution->w == -1 || scene->resolution->h == -1 || line[i])
 	{
-		ft_putstr("Error\nProblem parsing the resolution line\n");
+		ft_printf("Error\nLine %d. Problem parsing the resolution line\n", n);
 		return (-1);
 	}
-	else if (scene->resolution->w <=0  || scene->resolution->h <= 0)
+	else if (scene->resolution->w <= 0 || scene->resolution->h <= 0)
 	{
-		ft_putstr("Error\nResolution sizes should be greater than zero\n");
+		ft_printf("Error\nLine %d. ", n);
+		ft_printf("Resolution sizes should be greater than zero\n");
 		return (-1);
 	}
 	return (0);
 }
 
-int		parse_ambient(char *line, t_scene *scene)
+int		parse_ambient(char *line, t_scene *scene, int n)
 {
 	int	i;
 
 	i = 0;
 	if (scene->ambient->ratio != -1 || scene->ambient->color->r != -1)
 	{
-		ft_putstr("Error\nAmbient lightning can only be declared once\n");
+		ft_printf("Error\nLine %d. Ambient light declared more than once\n", n);
 		return (-1);
 	}
 	i += is_space(line + i);
 	i += parse_float(line + i, &scene->ambient->ratio);
 	if (scene->ambient->ratio < 0.0 || scene->ambient->ratio > 1.0)
 	{
-		ft_putstr("Error\nAmbient ratio should be between 0.0 and 1.0\n");
+		ft_printf("Error\nLine %d. Ambient ratio not in range 0.0 to 1.0\n", n);
 		return (-1);
 	}
 	i += is_space(line + i);
@@ -62,15 +63,15 @@ int		parse_ambient(char *line, t_scene *scene)
 	i += is_space(line + i);
 	if (line[i])
 	{
-		ft_putstr("Error\nProblem parsing the ambient lightning line\n");
+		ft_printf("Error\nLine %d. Problem in the ambient lightning line\n", n);
 		return (-1);
 	}
-	if (check_color_range(scene->ambient->color) == -1)
+	if (check_color_range(scene->ambient->color, n) == -1)
 		return (-1);
 	return (0);
 }
 
-int		parse_camera(char *line, t_scene *scene)
+int		parse_camera(char *line, t_scene *scene, int n)
 {
 	t_camera	*camera;
 	t_vector	*upguide;
@@ -96,20 +97,20 @@ int		parse_camera(char *line, t_scene *scene)
 	free(upguide);
 	if (camera->fov < 0.0 || camera->fov > 180.0)
 	{
-		ft_putstr("Error\nField of view (FOV) should be between 0 and 180 degrees\n"); // put line number
+		ft_printf("Error\nLine %d. FOV not in range 0 to 180 degrees\n", n);
 		return (-1);
 	}
-	if (check_normal_vector(camera->direction) == -1)
+	if (check_normal_vector(camera->direction, n) == -1)
 		return (-1);
 	if (line[i])
 	{
-		ft_putstr("Error\nProblem parsing the camera line\n"); // put line number
+		ft_printf("Error\nLine %d. Problem parsing the camera line\n", n);
 		return (-1);
 	}
 	return (0);
 }
 
-int		parse_light(char *line, t_scene *scene)
+int		parse_light(char *line, t_scene *scene, int n)
 {
 	t_light		*light;
 	int			i;
@@ -127,14 +128,14 @@ int		parse_light(char *line, t_scene *scene)
 	i += is_space(line + i);
 	if (light->brightness < 0.0 || light->brightness > 1.0)
 	{
-		ft_putstr("Error\nBrightness of light should be between 0.0 and 1.0\n");
+		ft_printf("Error\nLine %d. Brightness not in range 0.0 to 1.0\n", n);
 		return (-1);
 	}
-	if (check_color_range(light->color) == -1)
+	if (check_color_range(light->color, n) == -1)
 		return (-1);
 	if (line[i])
 	{
-		ft_putstr("Error\nProblem parsing the camera line\n"); // put line number
+		ft_printf("Error\nLine %d. Problem parsing the light line\n", n);
 		return (-1);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:21:08 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/11 10:21:09 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/11 15:16:02 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,22 @@
 
 t_data	*init_window(t_scene *scene)
 {
-    t_data  *data;
+	t_data	*data;
 
 	if (!(data = (t_data *)malloc(sizeof(t_data))))
 		return (NULL);
-    if (!(data->mlx_ptr = mlx_init()))
+	if (!(data->mlx_ptr = mlx_init()))
 	{
 		ft_putstr("Error\nCannot initialize the minilibX\n");
-        return (NULL);
+		return (NULL);
 	}
-    if ((data->mlx_win = mlx_new_window(data->mlx_ptr, scene->resolution->w, scene->resolution->h, "miniRT")) == NULL)
-    {
+	if ((data->mlx_win = mlx_new_window(data->mlx_ptr,
+		scene->resolution->w, scene->resolution->h, "miniRT")) == NULL)
+	{
 		ft_putstr("Error\nCannot create a new window\n");
-        return (NULL);
+		return (NULL);
 	}
-    return (data);
+	return (data);
 }
 
 void	color_window(t_scene *scene)

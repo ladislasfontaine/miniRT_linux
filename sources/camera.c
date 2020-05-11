@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:18:46 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/11 10:18:52 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/11 15:41:11 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,27 +48,27 @@ t_camera	*init_camera_null(void)
 	return (camera);
 }
 
-t_ray		*make_ray(t_scene *scene, t_camera *camera, float u, float v)
+t_ray		*make_ray(t_scene *scene, t_camera *cam, float u, float v)
 {
 	t_vector	*origin;
-	t_vector	*direction;
+	t_vector	*dir;
 	float		w;
 	float		h;
 
-	h = tan(camera->fov / 180.0);
+	h = tan(cam->fov / 180.0);
 	w = h * ((float)scene->resolution->w / (float)scene->resolution->h);
-	origin = init_vector(camera->origin->x, camera->origin->y, camera->origin->z);
+	origin = init_vector(cam->origin->x, cam->origin->y, cam->origin->z);
 	if (!origin)
 		return (NULL);
-	direction = (t_vector *)malloc(sizeof(t_vector));
-	if (!direction)
+	dir = (t_vector *)malloc(sizeof(t_vector));
+	if (!dir)
 	{
 		free(origin);
 		return (NULL);
 	}
-	direction->x = camera->direction->x + u * w * camera->right->x + v * h * camera->up->x;
-	direction->y = camera->direction->y + u * w * camera->right->y + v * h * camera->up->y;
-	direction->z = camera->direction->z + u * w * camera->right->z + v * h * camera->up->z;
-	normalize(direction);
-	return (init_ray(origin, direction, RAY_MAX));
+	dir->x = cam->direction->x + u * w * cam->right->x + v * h * cam->up->x;
+	dir->y = cam->direction->y + u * w * cam->right->y + v * h * cam->up->y;
+	dir->z = cam->direction->z + u * w * cam->right->z + v * h * cam->up->z;
+	normalize(dir);
+	return (init_ray(origin, dir, RAY_MAX));
 }

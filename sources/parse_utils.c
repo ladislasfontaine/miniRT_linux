@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:19:50 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/11 10:19:54 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/11 15:54:07 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ int		parse_color(char *line, t_color *color)
 		i++;
 	else
 		return (-1);
-
 	if (ft_isdigit(line[i]))
 		i += parse_int(line + i, &color->g);
 	else
@@ -95,7 +94,6 @@ int		parse_color(char *line, t_color *color)
 		i++;
 	else
 		return (-1);
-
 	if (ft_isdigit(line[i]))
 		i += parse_int(line + i, &color->b);
 	else
@@ -116,7 +114,6 @@ int		parse_vector(char *line, t_vector *vector)
 		i++;
 	else
 		return (-1);
-
 	if (ft_isdigit(line[i]) || line[i] == '-')
 		i += parse_float(line + i, &vector->y);
 	else
@@ -125,7 +122,6 @@ int		parse_vector(char *line, t_vector *vector)
 		i++;
 	else
 		return (-1);
-
 	if (ft_isdigit(line[i]) || line[i] == '-')
 		i += parse_float(line + i, &vector->z);
 	else

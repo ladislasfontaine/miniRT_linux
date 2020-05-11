@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:20:41 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/11 10:20:45 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/11 15:44:09 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ int		sphere_intersection(t_intersec *intersec, t_shape *sphere)
 	float	discriminant;
 	t_ray	*local_ray;
 
-	local_ray = init_ray(vector_diff(intersec->ray->origin, sphere->center), intersec->ray->direction, intersec->ray->max_t);
+	local_ray = init_ray(vector_diff(intersec->ray->origin, sphere->center)
+				, intersec->ray->direction, intersec->ray->max_t);
 	if (!local_ray)
 		return (0);
 	a = length_square(local_ray->direction);
@@ -49,13 +50,13 @@ int		sphere_intersection(t_intersec *intersec, t_shape *sphere)
 	return (0);
 }
 
-int		sphere_points(t_intersec *intersec, float a, float b, float discriminant)
+int		sphere_points(t_intersec *intersec, float a, float b, float d)
 {
 	float	t1;
 	float	t2;
 
-	t1 = (-b - sqrt(discriminant)) / (2 * a);
-	t2 = (-b + sqrt(discriminant)) / (2 * a);
+	t1 = (-b - sqrt(d)) / (2 * a);
+	t2 = (-b + sqrt(d)) / (2 * a);
 	if (t1 > RAY_MIN && t1 < intersec->t)
 		intersec->t = t1;
 	else if (t2 > RAY_MIN && t2 < intersec->t)
@@ -68,8 +69,9 @@ int		sphere_points(t_intersec *intersec, float a, float b, float discriminant)
 int		sphere_normal_vector(t_intersec *intersec)
 {
 	t_vector	*point;
-	
-	point = get_point(intersec->ray->origin, intersec->ray->direction, intersec->t);
+
+	point = get_point(intersec->ray->origin
+			, intersec->ray->direction, intersec->t);
 	intersec->normal = vector_diff(point, intersec->shape->center);
 	normalize(intersec->normal);
 	free(point);

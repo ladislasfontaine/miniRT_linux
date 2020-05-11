@@ -6,13 +6,13 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:18:55 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/11 10:19:00 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/11 15:37:52 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_color		*init_color(int r, int g, int b)
+t_color	*init_color(int r, int g, int b)
 {
 	t_color	*color;
 
@@ -25,7 +25,7 @@ t_color		*init_color(int r, int g, int b)
 	return (color);
 }
 
-static char	*create_binary(int n)
+char	*create_binary(int n)
 {
 	char	*temp;
 	char	*byte;
@@ -46,12 +46,13 @@ static char	*create_binary(int n)
 	return (byte);
 }
 
-int		rgb_to_int(t_color *color)//int r, int g, int b)
+int		rgb_to_int(t_color *color)
 {
 	char	binary[25];
 	char	*num;
 
-	if (color->r < 0 || color->r > 255 || color->g < 0 || color->g > 255 || color->b < 0 || color->b > 255)
+	if (color->r < 0 || color->r > 255 || color->g < 0
+		|| color->g > 255 || color->b < 0 || color->b > 255)
 		return (-1);
 	binary[0] = '\0';
 	ft_strcat(binary, create_binary(color->r));
@@ -61,13 +62,14 @@ int		rgb_to_int(t_color *color)//int r, int g, int b)
 	return (ft_atoi(num));
 }
 
-int		check_color_range(t_color *color)
+int		check_color_range(t_color *color, int n)
 {
-	if (color->r < 0 || color->r >255 ||
-		color->g < 0 || color->g >255 ||
-		color->b < 0 || color->b >255)
+	if (color->r < 0 || color->r > 255 ||
+		color->g < 0 || color->g > 255 ||
+		color->b < 0 || color->b > 255)
 	{
-		ft_putstr("Error\nEach color value should be between 0 and 255\n");
+		ft_printf("Error\nLine %d. ", n);
+		ft_printf("Each color value should be between 0 and 255\n");
 		return (-1);
 	}
 	return (0);
