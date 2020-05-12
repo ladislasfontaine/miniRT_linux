@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:19:03 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/11 16:06:55 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/12 16:05:39 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int		close_and_quit(t_scene *scene)
 {
 	mlx_clear_window(scene->window->mlx_ptr, scene->window->mlx_win);
 	mlx_destroy_window(scene->window->mlx_ptr, scene->window->mlx_win);
+	clear_scene(scene);
 	exit(1);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:21:08 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/11 15:16:02 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/12 09:18:41 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	color_window(t_scene *scene)
 			}
 			else
 				mlx_pixel_put(scene->window->mlx_ptr, scene->window->mlx_win, i, j, 0);
+			clear_intersection(intersec);
 			i++;
 		}
 		j++;

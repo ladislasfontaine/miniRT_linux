@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:19:25 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/11 16:03:40 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/12 16:05:42 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,12 @@ int		main(int ac, char **av)
 	t_scene		*scene;
 
 	scene = init_scene();
-	if (arguments_error(ac, av))
+	if (arguments_error(ac, av) || parse_file(av[1], scene)
+		|| !(scene->window = init_window(scene)))
+	{
+		clear_scene(scene);
 		return (1);
-	if (parse_file(av[1], scene))
-		return (1);
-	if (!(scene->window = init_window(scene)))
-		return (1);
+	}
 	color_window(scene);
 	listen_events(scene);
 	return (0);

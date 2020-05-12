@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 14:20:39 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/11 14:49:41 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/12 16:25:11 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,9 @@ int				is_space(char *line);
 /* SCENE */
 t_scene			*init_scene(void);
 void			clear_scene(t_scene *scene);
+void			delete_shape(void *element);
+void			delete_camera(void *element);
+void			delete_light(void *element);
 /* WINDOW */
 t_data			*init_window(t_scene *scene);
 void			listen_events(t_scene *scene);
@@ -172,6 +175,7 @@ t_vector		*point_on_ray(t_ray ray, float t);
 t_intersec		*init_intersection(t_ray *ray);
 int				intersected(t_intersec *intersec);
 t_vector		*intersection(t_intersec *intersec);
+void			clear_intersection(t_intersec *intersec);
 
 t_shape			*init_shape(void);
 /* PLANE */
