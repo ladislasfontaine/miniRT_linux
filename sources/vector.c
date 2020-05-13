@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:21:01 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/11 14:49:34 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/13 09:50:25 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,16 @@ t_vector	*cross_product(t_vector *u, t_vector *v)
 t_vector	*vector_diff(t_vector *u, t_vector *v)
 {
 	return (init_vector(u->x - v->x, u->y - v->y, u->z - v->z));
+}
+
+t_vector	*vector_add(t_vector *u, t_vector *v)
+{
+	return (init_vector(u->x + v->x, u->y + v->y, u->z + v->z));
+}
+
+t_vector	*vector_mul(t_vector *u, float n)
+{
+	return (init_vector(u->x * n, u->y * n, u->z * n));
 }
 
 int			check_normal_vector(t_vector *u, int n)

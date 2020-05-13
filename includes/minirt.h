@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 14:20:39 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/12 16:25:11 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/13 16:07:45 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,6 +167,8 @@ float			normalize(t_vector *u);
 float			dot_product(t_vector *u, t_vector *v);
 t_vector		*cross_product(t_vector *u, t_vector *v);
 t_vector		*vector_diff(t_vector *u, t_vector *v);
+t_vector		*vector_add(t_vector *u, t_vector *v);
+t_vector		*vector_mul(t_vector *u, float n);
 int				check_normal_vector(t_vector *u, int n);
 /* RAYS */
 t_ray			*init_ray(t_vector *u, t_vector *v, float t);
@@ -189,6 +191,8 @@ int				sphere_points(t_intersec *intersec, float a, float b,
 							float discriminant);
 int				sphere_normal_vector(t_intersec *intersec);
 /* SQUARE */
+t_shape			*init_square(t_vector *c, t_vector *n, float side, t_color *color);
+int				square_sides(t_scene *scene, t_vector *center, float s, t_color *c);
 int				square_intersection(t_intersec *intersec, t_shape *square);
 /* CAMERA */
 t_camera		*init_camera(t_vector *origin, t_vector *orientation,

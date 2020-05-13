@@ -6,11 +6,29 @@
 #    By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/23 09:39:28 by lafontai          #+#    #+#              #
-#    Updated: 2020/05/11 11:52:49 by lafontai         ###   ########.fr        #
+#    Updated: 2020/05/13 08:56:06 by lafontai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS	= $(addprefix $(FOLDER), main.c scene.c camera.c light.c parsing.c parse_utils.c parse_identifier.c parse_shape.c window.c event.c color.c vector.c ray.c intersection.c shape.c plane.c sphere.c square.c)
+SRCS	= $(addprefix $(FOLDER), \
+			main.c \
+			scene.c \
+			camera.c \
+			light.c \
+			parsing.c \
+			parse_utils.c \
+			parse_identifier.c \
+			parse_shape.c \
+			window.c \
+			event.c \
+			color.c \
+			vector.c \
+			ray.c \
+			intersection.c \
+			shape.c \
+			plane.c \
+			sphere.c \
+			square.c)
 
 OBJS	= $(SRCS:.c=.o)
 
