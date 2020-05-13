@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 14:20:39 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/13 16:07:45 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/13 18:00:35 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,6 +194,8 @@ int				sphere_normal_vector(t_intersec *intersec);
 t_shape			*init_square(t_vector *c, t_vector *n, float side, t_color *color);
 int				square_sides(t_scene *scene, t_vector *center, float s, t_color *c);
 int				square_intersection(t_intersec *intersec, t_shape *square);
+/* TRIANGLE */
+int				triangle_intersection(t_intersec *intersec, t_shape *tri);
 /* CAMERA */
 t_camera		*init_camera(t_vector *origin, t_vector *orientation,
 							float fov);
