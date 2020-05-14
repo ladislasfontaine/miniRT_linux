@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:20:19 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/12 16:22:17 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/14 13:08:55 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,6 @@ void	clear_scene(t_scene *scene)
 		free(scene->ambient->color);
 	if (scene->ambient)
 		free(scene->ambient);
-	if (scene->window)
-		free(scene->window);
 	ft_lstclear(&scene->shapes, &delete_shape);
 	ft_lstclear(&scene->cameras, &delete_camera);
 	ft_lstclear(&scene->lights, &delete_light);

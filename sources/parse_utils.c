@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:19:50 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/13 12:07:40 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/14 13:03:36 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int		parse_float(char *line, float *f)
 		integer = ft_atoi(line);
 	else
 		return (-1);
-	i += (integer == 0 && neg) ? ft_numlen(integer) + 1 : ft_numlen(integer);
+	i += (integer == 0 && neg) ? (ft_numlen(integer) + 1) : (ft_numlen(integer));
 	if (line[i] != '.')
 	{
 		*f = integer;
@@ -71,8 +71,11 @@ int		parse_float(char *line, float *f)
 	}
 	else
 		return (-1);
-	*f = (float)integer + ((float)decimal / pow(10.0, (double)len));
-	if (neg && *f >= 0)
+	if (integer < 0)
+		*f = (float)integer - ((float)decimal / pow(10.0, (double)len));
+	else
+		*f = (float)integer + ((float)decimal / pow(10.0, (double)len));
+	if (neg && integer == 0 && *f > 0.0)
 		*f = -*f;
 	return (i);
 }
