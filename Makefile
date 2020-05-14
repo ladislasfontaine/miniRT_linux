@@ -6,7 +6,7 @@
 #    By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/23 09:39:28 by lafontai          #+#    #+#              #
-#    Updated: 2020/05/13 18:05:43 by lafontai         ###   ########.fr        #
+#    Updated: 2020/05/14 13:10:30 by lafontai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,7 @@ SRCS	= $(addprefix $(FOLDER), \
 			plane.c \
 			sphere.c \
 			triangle.c \
+			cylinder.c \
 			square.c)
 
 OBJS	= $(SRCS:.c=.o)

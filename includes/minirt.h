@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 14:20:39 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/14 11:59:04 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/14 18:36:47 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # include "../libftprintf/printf/printf.h"
 # include "../minilibx/mlx.h"
 
-# define RAY_MIN 0.0001f
+# define RAY_MIN 0.0000001f
 # define RAY_MAX 1.0e30f
 # define PI 3.14159265359
 # define PLANE		1
@@ -196,8 +196,11 @@ int				sphere_normal_vector(t_intersec *intersec);
 t_shape			*init_square(t_vector *c, t_vector *n, float side, t_color *color);
 int				square_sides(t_scene *scene, t_vector *center, float s, t_color *c);
 int				square_intersection(t_intersec *intersec, t_shape *square);
-/* TRIANGLE */
+/* TRIANGLE CYLINDER */
 int				triangle_intersection(t_intersec *intersec, t_shape *tri);
+int				cylinder_intersection(t_intersec *intersec, t_shape *cy);
+int				intersect_base(t_intersec *intersec, t_shape *cy, t_vector *c, float *dist);
+t_vector		*cylinder_normal(t_shape *cy, t_vector *p);
 /* CAMERA */
 t_camera		*init_camera(t_vector *origin, t_vector *orientation,
 							float fov);

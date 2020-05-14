@@ -6,14 +6,12 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/13 16:22:17 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/14 12:42:53 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/14 13:10:09 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-// faire des tests avec différents coordonnés
-// parsing de nombre négatifs à virgule ne fonctionne pas ?
 int		triangle_intersection(t_intersec *intersec, t_shape *tri)
 {
 	t_vector	*v0v1;

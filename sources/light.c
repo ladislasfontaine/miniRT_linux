@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:19:18 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/14 11:52:49 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/14 17:49:07 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	check_all_lights(t_scene *scene, t_intersec *intersec)
 		check_all_shapes(scene->shapes, light_ray);
 		if (!intersected(light_ray) || (intersected(light_ray) && (light_ray->t > distance || light_ray->t < RAY_MIN)))
 		{
-			if (intersec->shape->id == TRIANGLE)
+			if (intersec->shape->id == TRIANGLE || intersec->shape->id == CYLINDER)
 				light_ratio = dot_product(light_dir, intersec->normal);
 			else
 				light_ratio = fabs(dot_product(light_dir, intersec->normal));

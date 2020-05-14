@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:21:08 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/13 18:00:49 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/14 16:28:44 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ void	check_all_shapes(t_list *shapes, t_intersec *intersec)
 			square_intersection(intersec, shape);
 		else if (shape->id == TRIANGLE)
 			triangle_intersection(intersec, shape);
+		else if (shape->id == CYLINDER)
+			cylinder_intersection(intersec, shape);
 		lst_cpy = lst_cpy->next;
 	}
 }

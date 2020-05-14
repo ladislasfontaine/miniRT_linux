@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:19:11 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/13 10:20:42 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/14 16:28:39 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ void		clear_intersection(t_intersec *intersec)
 		free(intersec->color);
 	if (intersec->reflect)
 		free(intersec->reflect);
-	if (intersec->normal && intersec->shape && intersec->shape->id != PLANE && intersec->shape->id != SQUARE)
+	if (intersec->normal && intersec->shape && intersec->shape->id != PLANE
+		&& intersec->shape->id != SQUARE && intersec->shape->id != CYLINDER)
 		free(intersec->normal);
 	if (intersec)
 		free(intersec);
