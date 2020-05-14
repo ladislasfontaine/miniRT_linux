@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:21:01 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/13 09:50:25 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/14 11:59:07 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,4 +100,12 @@ int			check_normal_vector(t_vector *u, int n)
 		return (-1);
 	}
 	return (0);
+}
+
+float		get_angle(t_vector *u, t_vector *v)
+{
+	float	angle;
+
+	angle = acos((dot_product(u, v) / (length(u) * length(v))));
+	return (angle * 180 / PI);
 }

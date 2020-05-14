@@ -6,54 +6,49 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/13 16:22:17 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/13 19:04:42 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/14 12:42:53 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
 // faire des tests avec différents coordonnés
+// parsing de nombre négatifs à virgule ne fonctionne pas ?
 int		triangle_intersection(t_intersec *intersec, t_shape *tri)
 {
-	t_vector	*a;
-	t_vector	*b;
+	t_vector	*v0v1;
+	t_vector	*v0v2;
+	t_vector	*pvec;
+	t_vector	*tvec;
 	t_vector	*normal;
-	float d;
-	float t;
-	t_vector	*e0;
-	t_vector	*e1;
-	t_vector	*e2;
-	t_vector	*c0;
-	t_vector	*c1;
-	t_vector	*c2;
-	t_vector	*point;
+	float		det;
+	float		invdet;
+	float		u;
+	float		v;
+	float		t;
 
-	a = vector_diff(tri->p2, tri->p1);
-	b = vector_diff(tri->p3, tri->p1);
-	normal = cross_product(a, b);
-	normalize(normal);
+	v0v1 = vector_diff(tri->p2, tri->p1);
+	v0v2 = vector_diff(tri->p3, tri->p1);
+	normal = cross_product(v0v1, v0v2);
+	pvec = cross_product(intersec->ray->direction, v0v2);
+	det = dot_product(v0v1, pvec);
 
-	d = dot_product(normal, tri->p1);
-	t = - (dot_product(normal, intersec->ray->origin) + d) / dot_product(normal, intersec->ray->direction);
-
-	if (dot_product(normal, intersec->ray->direction) == 0.0)
+	if ((det > -RAY_MIN && det < RAY_MIN) || fabs(det) < RAY_MIN)
 		return (0);
-	point = point_on_ray(*intersec->ray, t);
-	e0 = vector_diff(tri->p2, tri->p1);
-	e1 = vector_diff(tri->p3, tri->p2);
-	e2 = vector_diff(tri->p1, tri->p3);
-	c0 = vector_diff(point, tri->p1);
-	c1 = vector_diff(point, tri->p2);
-	c2 = vector_diff(point, tri->p3);
-	if (t <= RAY_MIN || t >= intersec->t)
+	invdet = 1 / det;
+	tvec = vector_diff(intersec->ray->origin, tri->p1);
+	u = dot_product(tvec, pvec) * invdet;
+	if (u < 0 || u > 1)
 		return (0);
-	if (dot_product(normal, cross_product(e0, c0)) > 0 &&
-		dot_product(normal, cross_product(e1, c1)) > 0 &&
-		dot_product(normal, cross_product(e2, c2)) > 0)
-	{
-		intersec->t = t;
-		intersec->shape = tri;
+	v = dot_product(intersec->ray->direction, cross_product(tvec, v0v1)) * invdet;
+	if (v < 0 || u + v > 1)
+		return (0);
+	t = dot_product(v0v2, cross_product(tvec, v0v1)) * invdet;
+	intersec->t = t;
+	intersec->shape = tri;
+	if (get_angle(intersec->ray->direction, normal) < 90.0)
+		intersec->normal = init_vector(-(normal->x), -(normal->y), -(normal->z));
+	else
 		intersec->normal = normal;
-	}
 	return (0);
 }

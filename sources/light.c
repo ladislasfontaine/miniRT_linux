@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:19:18 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/11 10:19:22 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/14 11:52:49 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,12 @@ void	check_all_lights(t_scene *scene, t_intersec *intersec)
 		normalize(light_dir);
 		light_ray = init_intersection(init_ray(point, light_dir, RAY_MAX));
 		check_all_shapes(scene->shapes, light_ray);
-		if (!intersected(light_ray) || (intersected(light_ray) && light_ray->t > distance))
+		if (!intersected(light_ray) || (intersected(light_ray) && (light_ray->t > distance || light_ray->t < RAY_MIN)))
 		{
-			light_ratio = fabs(dot_product(light_dir, intersec->normal));
+			if (intersec->shape->id == TRIANGLE)
+				light_ratio = dot_product(light_dir, intersec->normal);
+			else
+				light_ratio = fabs(dot_product(light_dir, intersec->normal));
 			add_light_to_pixel(intersec, light_ratio);
 		}
 		lst_cpy = lst_cpy->next;
@@ -61,7 +64,7 @@ void	add_light_to_pixel(t_intersec *intersec, float ratio)
 
 	shape = intersec->shape->color;
 	pixel = intersec->color;
-	if (!pixel)
+	if (!pixel || ratio < 0)
 		return ;
 	pixel->r += shape->r * ratio;
 	pixel->g += shape->g * ratio;

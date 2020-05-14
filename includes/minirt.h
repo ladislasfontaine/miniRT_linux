@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 14:20:39 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/13 18:00:35 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/14 11:59:04 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 
 # define RAY_MIN 0.0001f
 # define RAY_MAX 1.0e30f
+# define PI 3.14159265359
 # define PLANE		1
 # define SPHERE		2
 # define CYLINDER	3
@@ -170,6 +171,7 @@ t_vector		*vector_diff(t_vector *u, t_vector *v);
 t_vector		*vector_add(t_vector *u, t_vector *v);
 t_vector		*vector_mul(t_vector *u, float n);
 int				check_normal_vector(t_vector *u, int n);
+float			get_angle(t_vector *u, t_vector *v);
 /* RAYS */
 t_ray			*init_ray(t_vector *u, t_vector *v, float t);
 t_vector		*point_on_ray(t_ray ray, float t);
