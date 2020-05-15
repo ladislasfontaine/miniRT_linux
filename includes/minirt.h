@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 14:20:39 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/15 11:51:29 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/15 15:53:55 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,7 @@ int				parse_triangle(char *line, t_scene *scene, int n);
 int				is_space(char *line);
 /* SCENE */
 t_scene			*init_scene(void);
+int				scene_error(t_scene *scene);
 void			clear_scene(t_scene *scene);
 void			delete_shape(void *element);
 void			delete_camera(void *element);
