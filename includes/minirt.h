@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 14:20:39 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/14 18:36:47 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/15 11:51:29 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # include "../libftprintf/printf/printf.h"
 # include "../minilibx/mlx.h"
 
-# define RAY_MIN 0.0000001f
+# define RAY_MIN 0.0001f
 # define RAY_MAX 1.0e30f
 # define PI 3.14159265359
 # define PLANE		1

@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:19:42 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/14 08:58:04 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/15 12:29:19 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,10 +156,6 @@ int		parse_triangle(char *line, t_scene *scene, int n)
 	i += is_space(line + i);
 	if (check_color_range(shape->color, n) == -1)
 		return (-1);
-	// printf here
-	printf("Point 1 : %f, %f, %f\nPoint 2 : %f, %f, %f\nPoint 3 : %f, %f, %f\n",
-	shape->p1->x, shape->p1->y, shape->p1->z, shape->p2->x, shape->p2->y, shape->p2->z,
-	shape->p3->x, shape->p3->y, shape->p3->z);
 	if (line[i])
 	{
 		ft_printf("Error\nLine %d. Problem parsing the triangle line\n", n);
