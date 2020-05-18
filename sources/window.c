@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:21:08 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/15 11:42:39 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/18 15:36:49 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	color_window(t_scene *scene)
 			check_all_shapes(scene->shapes, intersec);
 			if (intersected(intersec))
 			{
+				add_ambient_light(scene, intersec);
 				check_all_lights(scene, intersec);
 				mlx_pixel_put(scene->window->mlx_ptr, scene->window->mlx_win, i, j, rgb_to_int(intersec->color));
 			}

@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 14:20:39 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/15 15:53:55 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/18 18:08:58 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # include "../libftprintf/printf/printf.h"
 # include "../minilibx/mlx.h"
 
-# define RAY_MIN 0.0001f
+# define RAY_MIN 0.01f
 # define RAY_MAX 1.0e30f
 # define PI 3.14159265359
 # define PLANE		1
@@ -209,10 +209,12 @@ t_camera		*init_camera_null(void);
 t_ray			*make_ray(t_scene *scene, t_camera *camera, float u, float v);
 /* LIGHT */
 t_light			*init_light_null(void);
-void			add_light_to_pixel(t_intersec *intersec, float ratio);
+void			add_light_to_pixel(t_intersec *intersec, t_light *light, float ratio);
+void			cap_light(t_color *color);
 /* COLOR */
 t_color			*init_color(int r, int g, int b);
 int				check_color_range(t_color *color, int n);
 int				rgb_to_int(t_color *color);
+void			add_ambient_light(t_scene *scene, t_intersec *intersec);
 
 #endif

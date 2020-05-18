@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:18:55 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/11 15:37:52 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/18 18:21:56 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,36 @@ int		check_color_range(t_color *color, int n)
 		return (-1);
 	}
 	return (0);
+}
+
+void	add_ambient_light(t_scene *scene, t_intersec *intersec)
+{
+	t_color	*shape;
+	t_color	*pixel;
+	t_color	*ambient;
+	int		r;
+	int		g;
+	int		b;
+
+	ambient = scene->ambient->color;
+	r = ambient->r * scene->ambient->ratio;
+	g = ambient->g * scene->ambient->ratio;
+	b = ambient->b * scene->ambient->ratio;
+	if (scene->ambient && scene->ambient->color->r != -1)
+	{
+		shape = intersec->shape->color;
+		pixel = intersec->color;
+		if (ambient->r == 255 && ambient->g == 255 && ambient->b == 255)
+		{
+			pixel->r = (shape->r > r) ? r : shape->r;
+			pixel->g = (shape->g > g) ? g : shape->g;
+			pixel->b = (shape->b > b) ? b : shape->b;
+		}
+		else
+		{
+			pixel->r = r + shape->r;
+			pixel->g = g + shape->g;
+			pixel->b = b + shape->b;
+		}
+	}
 }
