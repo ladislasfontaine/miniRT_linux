@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:19:25 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/18 11:17:58 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/19 14:46:33 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 // OK cas d'erreur lorsqu'il n'y a pas de résolution ou que le fichier est vide ou pas de caméra (no camera to see the scene)
 // OK gestion de la lumière d'ambiance
 // gestion des couleurs, additions, ratio de luminosité
-// mettre printf dans le dossier de la libft pour avoir le dossier libft à la racine du projet (comme dit dans sujet)
-// utiliser les images de la mlx
+// OK mettre printf dans le dossier de la libft pour avoir le dossier libft à la racine du projet (comme dit dans sujet)
+// OK utiliser les images de la mlx
 // pouvoir changer de caméra lorsqu'il y en a plusieurs (et changer l'image dans la fenêtre)
 // option -save à gérer
 // gérer la taille de l'écran pour resize si besoin
@@ -34,13 +34,13 @@ int		main(int ac, char **av)
 		clear_scene(scene);
 		return (1);
 	}
-	if (!(scene->window = init_window(scene)))
+	if (!(scene->win = init_window(scene)))
 	{
 		ft_putstr("Error\nWindow initialization failed\n");
 		clear_scene(scene);
 		return (1);
 	}
-	color_window(scene);
+	create_images(scene);
 	listen_events(scene);
 	return (0);
 }
@@ -67,7 +67,7 @@ int		arguments_error(int ac, char **av)
 
 int		scene_error(t_scene *scene)
 {
-	if (scene->resolution->h <= 0 || scene->resolution->w <= 0)
+	if (scene->res->h <= 0 || scene->res->w <= 0)
 	{
 		ft_putstr("Error\nNo resolution information in the scene\n");
 		return (1);

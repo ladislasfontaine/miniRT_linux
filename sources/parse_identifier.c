@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:19:34 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/11 15:53:08 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/19 10:41:19 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ int		parse_camera(char *line, t_scene *scene, int n)
 	if (!(upguide = init_vector(0.0, 1.0, 0.0)))
 		return (-1);
 	normalize(camera->direction);
+	// working if camera direction is 0,1,0 ?
 	camera->right = cross_product(camera->direction, upguide);
 	normalize(camera->right);
 	camera->up = cross_product(camera->right, camera->direction);

@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:20:19 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/14 13:08:55 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/19 14:47:05 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ t_scene	*init_scene(void)
 
 	if (!(scene = (t_scene *)malloc(sizeof(t_scene))))
 		return (NULL);
-	if (!(scene->resolution = (t_resolution *)malloc(sizeof(t_resolution))))
+	if (!(scene->res = (t_resolution *)malloc(sizeof(t_resolution))))
 		return (NULL);
-	scene->resolution->w = 0;
-	scene->resolution->h = 0;
+	scene->res->w = 0;
+	scene->res->h = 0;
 	if (!(scene->ambient = (t_ambient *)malloc(sizeof(t_ambient))))
 		return (NULL);
 	scene->ambient->ratio = -1;
@@ -33,7 +33,7 @@ t_scene	*init_scene(void)
 	scene->lights = NULL;
 	scene->cameras = NULL;
 	scene->shapes = NULL;
-	scene->window = NULL;
+	scene->win = NULL;
 	return (scene);
 }
 
@@ -92,8 +92,8 @@ void	delete_light(void *element)
 
 void	clear_scene(t_scene *scene)
 {
-	if (scene->resolution)
-		free(scene->resolution);
+	if (scene->res)
+		free(scene->res);
 	if (scene->ambient->color)
 		free(scene->ambient->color);
 	if (scene->ambient)

@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 14:20:39 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/19 10:25:39 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/19 14:46:09 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,19 @@
 # define SQUARE		4
 # define TRIANGLE	5
 
+typedef struct	s_img
+{
+	void	*mlx_img;
+	int		bpp;
+	int		size_line;
+	int		endian;
+}				t_img;
+
 typedef struct	s_data
 {
 	void	*mlx_ptr;
 	void	*mlx_win;
+	t_img	*img;
 }				t_data;
 
 typedef struct	s_color
@@ -117,12 +126,12 @@ typedef struct	s_intersec
 
 typedef struct	s_scene
 {
-	t_resolution	*resolution;
+	t_resolution	*res;
 	t_ambient		*ambient;
 	t_list			*cameras;
 	t_list			*shapes;
 	t_list			*lights;
-	t_data			*window;
+	t_data			*win;
 }				t_scene;
 
 /* ERRORS */
@@ -151,12 +160,15 @@ void			clear_scene(t_scene *scene);
 void			delete_shape(void *element);
 void			delete_camera(void *element);
 void			delete_light(void *element);
+/* IMAGES */
+t_img			*init_image(t_scene *scene);
+int				create_images(t_scene *sc);
+int				color_image(t_scene *scene);
 /* WINDOW */
 t_data			*init_window(t_scene *scene);
 void			listen_events(t_scene *scene);
 int				get_key(int key, t_scene *scene);
 int				get_mouse(int key, int x, int y, t_scene *scene);
-void			color_window(t_scene *scene);
 void			check_all_shapes(t_list *shapes, t_intersec *intersec);
 void			check_all_lights(t_scene *scene, t_intersec *intersec);
 int				close_and_quit(t_scene *scene);
