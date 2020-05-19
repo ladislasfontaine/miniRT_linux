@@ -6,7 +6,7 @@
 #    By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/23 09:39:28 by lafontai          #+#    #+#              #
-#    Updated: 2020/05/14 13:10:30 by lafontai         ###   ########.fr        #
+#    Updated: 2020/05/19 10:27:49 by lafontai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,8 @@ FOLDER	= sources/
 
 INCS	= includes/
 
+INC_LIB	= libft/includes/
+
 NAME	= miniRT
 
 RM		= rm -f
@@ -53,21 +55,21 @@ endif
 all:		$(NAME)
 
 $(NAME):	$(OBJS)
-			cd libftprintf/ && make
+			cd libft/ && make
 			cd minilibx/ && make
 			mv minilibx/libmlx.dylib .
-			$(CC) $(CFLAGS) libftprintf/libftprintf.a libmlx.dylib $(OBJS) -o $(NAME)
+			$(CC) $(CFLAGS) libft/libft.a libmlx.dylib $(OBJS) -o $(NAME)
 
 %.o:		%.c
-			$(CC) $(CFLAGS) -c $< -o $@ -I $(INCS)
+			$(CC) $(CFLAGS) -c $< -o $@ -I $(INCS) -I $(INC_LIB)
 
 clean:
-			make clean -C libftprintf/
+			make clean -C libft/
 			make clean -C minilibx/
 			$(RM) $(OBJS)
 
 fclean:		clean
-			make fclean -C libftprintf/
+			make fclean -C libft/
 			$(RM) libmlx.dylib
 			$(RM) $(NAME)
 

@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 14:20:39 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/18 18:08:58 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/19 10:25:39 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@
 # include <string.h>
 # include <math.h>
 # include "keys.h"
-# include "../libftprintf/printf/printf.h"
+# include "printf.h"
+# include "libft.h"
 # include "../minilibx/mlx.h"
 
 # define RAY_MIN 0.01f

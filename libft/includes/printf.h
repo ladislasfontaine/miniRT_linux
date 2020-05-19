@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 10:00:53 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/06 09:45:25 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/19 10:19:22 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdarg.h>
-# include "../libft/libft.h"
+# include "libft.h"
 
 typedef struct	s_arg
 {

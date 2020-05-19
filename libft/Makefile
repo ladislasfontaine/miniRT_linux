@@ -6,7 +6,7 @@
 #    By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/23 09:39:28 by lafontai          #+#    #+#              #
-#    Updated: 2020/05/11 12:02:04 by lafontai         ###   ########.fr        #
+#    Updated: 2020/05/19 10:20:57 by lafontai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,9 +73,7 @@ SRCS	= \
 			ft_tolower.c \
 			ft_toupper.c \
 			ft_ultohex.c \
-			get_next_line.c
-
-BONUS	= \
+			get_next_line.c \
 			ft_lstadd_back.c \
 			ft_lstadd_front.c \
 			ft_lstclear.c \
@@ -84,11 +82,19 @@ BONUS	= \
 			ft_lstlast.c \
 			ft_lstmap.c \
 			ft_lstnew.c \
-			ft_lstsize.c
+			ft_lstsize.c \
+			printf/flag1.c \
+			printf/flag2.c \
+			printf/format1.c \
+			printf/format2.c \
+			printf/ft_printf.c \
+			printf/list.c \
+			printf/parse.c \
+			printf/utils.c
 
 OBJS	= $(SRCS:.c=.o)
 
-B_OBJS	= $(BONUS:.c=.o)
+INC		= includes/
 
 NAME	= libft.a
 
@@ -107,14 +113,11 @@ all:		$(NAME)
 $(NAME):	$(OBJS)
 			ar rcs $(NAME) $(OBJS)
 
-bonus:		$(OBJS) $(B_OBJS)
-			ar rcs $(NAME) $(OBJS) $(B_OBJS)
-
 %.o:		%.c
-			$(CC) $(CFLAGS) -c $< -o $@
+			$(CC) $(CFLAGS) -c $< -o $@ -I $(INC)
 
 clean:
-			$(RM) $(OBJS) $(B_OBJS)
+			$(RM) $(OBJS)
 
 fclean:		clean
 			$(RM) $(NAME)
