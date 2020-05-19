@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:19:34 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/19 10:41:19 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/19 15:24:26 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,22 @@ int		parse_resolution(char *line, t_scene *scene, int n)
 	int	i;
 
 	i = 0;
-	if (scene->resolution->w != 0 || scene->resolution->h != 0)
+	if (scene->res->w != 0 || scene->res->h != 0)
 	{
 		ft_printf("Error\nLine %d. Resolution can only be declared once\n", n);
 		return (-1);
 	}
 	i += is_space(line + i);
-	i += parse_int(line + i, &scene->resolution->w);
+	i += parse_int(line + i, &scene->res->w);
 	i += is_space(line + i);
-	i += parse_int(line + i, &scene->resolution->h);
+	i += parse_int(line + i, &scene->res->h);
 	i += is_space(line + i);
-	if (scene->resolution->w == -1 || scene->resolution->h == -1 || line[i])
+	if (scene->res->w == -1 || scene->res->h == -1 || line[i])
 	{
 		ft_printf("Error\nLine %d. Problem parsing the resolution line\n", n);
 		return (-1);
 	}
-	else if (scene->resolution->w <= 0 || scene->resolution->h <= 0)
+	else if (scene->res->w <= 0 || scene->res->h <= 0)
 	{
 		ft_printf("Error\nLine %d. ", n);
 		ft_printf("Resolution sizes should be greater than zero\n");

@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/19 11:49:24 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/19 14:48:06 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/19 15:21:43 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,6 @@ t_img	*init_image(t_scene *scene)
 	image->endian = 1;
 	image->size_line = 4 * scene->res->w;
 	image->mlx_img = NULL;
+	image->data = NULL;
 	return (image);
 }

@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:21:08 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/19 14:52:05 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/19 16:47:14 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,37 +14,36 @@
 
 t_data	*init_window(t_scene *scene)
 {
-	t_data	*data;
+	t_data	*win;
 
-	if (!(data = (t_data *)malloc(sizeof(t_data))))
+	if (!(win = (t_data *)malloc(sizeof(t_data))))
 		return (NULL);
-	if (!(data->mlx_ptr = mlx_init()))
+	if (!(win->mlx_ptr = mlx_init()))
 	{
 		ft_putstr("Error\nCannot initialize the minilibX\n");
 		return (NULL);
 	}
-	if ((data->mlx_win = mlx_new_window(data->mlx_ptr,
+	if ((win->mlx_win = mlx_new_window(win->mlx_ptr,
 		scene->res->w, scene->res->h, "miniRT")) == NULL)
 	{
 		ft_putstr("Error\nCannot create a new window\n");
 		return (NULL);
 	}
-	return (data);
+	win->imgs = NULL;
+	win->img_id = 0;
+	return (win);
 }
 
-int		color_image(t_scene *scene)
+int		color_image(t_scene *scene, t_camera *camera,t_img *img)
 {
-	char		*data;
 	float		u;
 	float		v;
 	int			i;
 	int			j;
 	int			k;
 	t_intersec	*intersec;
-	t_img		*img;
 
-	img = scene->win->img;
-	data = mlx_get_data_addr(img->mlx_img, &img->bpp, &img->size_line, &img->endian);
+	img->data = mlx_get_data_addr(img->mlx_img, &img->bpp, &img->size_line, &img->endian);
 	k = 0;
 	j = 0;
 	while (j < scene->res->h)
@@ -54,17 +53,17 @@ int		color_image(t_scene *scene)
 		{
 			u = (2.0f * i) / (float)scene->res->w - 1.0f;
 			v = (-2.0f * j) / (float)scene->res->h + 1.0f;
-			intersec = init_intersection(make_ray(scene, (t_camera *)scene->cameras->content, u, v));
+			intersec = init_intersection(make_ray(scene, camera, u, v));
 			check_all_shapes(scene->shapes, intersec);
 			if (intersected(intersec))
 			{
 				add_ambient_light(scene, intersec);
 				check_all_lights(scene, intersec);
 			}
-			data[k] = (intersected(intersec)) ? intersec->color->b : 0;
-			data[k + 1] = (intersected(intersec)) ? intersec->color->g : 0;
-			data[k + 2] = (intersected(intersec)) ? intersec->color->r : 0;
-			data[k + 3] = 0;
+			img->data[k] = (intersected(intersec)) ? intersec->color->b : 0;
+			img->data[k + 1] = (intersected(intersec)) ? intersec->color->g : 0;
+			img->data[k + 2] = (intersected(intersec)) ? intersec->color->r : 0;
+			img->data[k + 3] = 0;
 			k += 4;
 			clear_intersection(intersec);
 			i++;
@@ -77,19 +76,29 @@ int		color_image(t_scene *scene)
 int		create_images(t_scene *sc)
 {
 	t_data	*w;
+	t_list	*cameras;
+	t_img	*img;
 
 	w = sc->win;
-	// while cameras on crée une nouvelle image
-	if (!(w->img = init_image(sc)))
+	cameras = sc->cameras;
+	while (cameras)
 	{
-		ft_printf("Error\nCannot initialize the minilibX image\n");
-		return (-1);
+		img = NULL;
+		if (!(img = init_image(sc)))
+		{
+			ft_printf("Error\nCannot initialize the minilibX image\n");
+			return (-1);
+		}
+		if (!(img->mlx_img = mlx_new_image(w->mlx_ptr, sc->res->w, sc->res->h)))
+		{
+			ft_printf("Error\nMalloc for new image failed\n");
+			return (-1);
+		}
+		color_image(sc, (t_camera *)cameras->content, img);
+		ft_lstadd_back(&sc->win->imgs, ft_lstnew((void *)img));
+		cameras = cameras->next;
 	}
-	w->img->mlx_img = mlx_new_image(w->mlx_ptr, sc->res->w, sc->res->h);
-	color_image(sc);
-
-	// select an image
-	mlx_put_image_to_window(w->mlx_ptr, w->mlx_win, w->img->mlx_img, 0, 0);
+	mlx_put_image_to_window(w->mlx_ptr, w->mlx_win, ((t_img *)(w->imgs->content))->mlx_img, 0, 0);
 	return (0);
 }
 

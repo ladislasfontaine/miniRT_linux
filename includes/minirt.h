@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 14:20:39 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/19 14:46:09 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/19 16:35:21 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@
 typedef struct	s_img
 {
 	void	*mlx_img;
+	char	*data;
 	int		bpp;
 	int		size_line;
 	int		endian;
@@ -47,7 +48,8 @@ typedef struct	s_data
 {
 	void	*mlx_ptr;
 	void	*mlx_win;
-	t_img	*img;
+	t_list	*imgs;
+	int		img_id;
 }				t_data;
 
 typedef struct	s_color
@@ -163,7 +165,8 @@ void			delete_light(void *element);
 /* IMAGES */
 t_img			*init_image(t_scene *scene);
 int				create_images(t_scene *sc);
-int				color_image(t_scene *scene);
+int				color_image(t_scene *scene, t_camera *camera, t_img *img);
+int				change_camera(t_scene *scene, int id);
 /* WINDOW */
 t_data			*init_window(t_scene *scene);
 void			listen_events(t_scene *scene);

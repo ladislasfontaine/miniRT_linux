@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:18:46 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/11 15:41:11 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/19 16:57:48 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ t_ray		*make_ray(t_scene *scene, t_camera *cam, float u, float v)
 	float		h;
 
 	h = tan(cam->fov / 180.0);
-	w = h * ((float)scene->resolution->w / (float)scene->resolution->h);
+	w = h * ((float)scene->res->w / (float)scene->res->h);
 	origin = init_vector(cam->origin->x, cam->origin->y, cam->origin->z);
 	if (!origin)
 		return (NULL);
@@ -71,4 +71,28 @@ t_ray		*make_ray(t_scene *scene, t_camera *cam, float u, float v)
 	dir->z = cam->direction->z + u * w * cam->right->z + v * h * cam->up->z;
 	normalize(dir);
 	return (init_ray(origin, dir, RAY_MAX));
+}
+
+int		change_camera(t_scene *scene, int id)
+{
+	t_data	*w;
+	t_list	*img;
+	int		i;
+
+	w = scene->win;
+	if (id < 0)
+		w->img_id = ft_lstsize(w->imgs) + id;
+	else if (id > ft_lstsize(w->imgs) - 1)
+		w->img_id = id % ft_lstsize(w->imgs);
+	else
+		w->img_id = id;
+	img = w->imgs;
+	i = 0;
+	while (img && i < w->img_id)
+	{
+		img = img->next;
+		i++;
+	}
+	mlx_put_image_to_window(w->mlx_ptr, w->mlx_win, ((t_img *)(img->content))->mlx_img, 0, 0);
+	return (0);
 }
