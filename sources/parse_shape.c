@@ -6,13 +6,13 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:19:42 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/15 15:28:23 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/20 10:32:12 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-int		parse_sphere(char *line, t_scene *scene, int n)
+int		parse_sphere(char *line, t_scene *scene)
 {
 	t_shape		*shape;
 	int			i;
@@ -29,17 +29,13 @@ int		parse_sphere(char *line, t_scene *scene, int n)
 	i += is_space(line + i);
 	i += parse_color(line + i, shape->color);
 	i += is_space(line + i);
-	if (check_color_range(shape->color, n) == -1)
-		return (-1);
+	check_color_range(scene, shape->color);
 	if (line[i])
-	{
-		ft_printf("Error\nLine %d. Problem parsing the sphere line\n", n);
-		return (-1);
-	}
+		error_and_quit(scene, "Problem parsing the sphere line");
 	return (0);
 }
 
-int		parse_plane(char *line, t_scene *scene, int n)
+int		parse_plane(char *line, t_scene *scene)
 {
 	t_shape		*shape;
 	int			i;
@@ -56,19 +52,14 @@ int		parse_plane(char *line, t_scene *scene, int n)
 	i += is_space(line + i);
 	i += parse_color(line + i, shape->color);
 	i += is_space(line + i);
-	if (check_color_range(shape->color, n) == -1)
-		return (-1);
-	if (check_normal_vector(shape->normal, n) == -1)
-		return (-1);
+	check_color_range(scene, shape->color);
+	check_normal_vector(scene, shape->normal);
 	if (line[i])
-	{
-		ft_printf("Error\nLine %d. Problem parsing the plane line\n", n);
-		return (-1);
-	}
+		error_and_quit(scene, "Problem parsing the plane line");
 	return (0);
 }
 
-int		parse_square(char *line, t_scene *scene, int n)
+int		parse_square(char *line, t_scene *scene)
 {
 	t_shape		*shape;
 	int			i;
@@ -87,20 +78,15 @@ int		parse_square(char *line, t_scene *scene, int n)
 	i += is_space(line + i);
 	i += parse_color(line + i, shape->color);
 	i += is_space(line + i);
-	if (check_color_range(shape->color, n) == -1)
-		return (-1);
-	if (check_normal_vector(shape->normal, n) == -1)
-		return (-1);
+	check_color_range(scene, shape->color);
+	check_normal_vector(scene, shape->normal);
 	if (line[i])
-	{
-		ft_printf("Error\nLine %d. Problem parsing the square line\n", n);
-		return (-1);
-	}
+		error_and_quit(scene, "Problem parsing the square line");
 	//square_sides(scene, center, side, color);
 	return (0);
 }
 
-int		parse_cylinder(char *line, t_scene *scene, int n)
+int		parse_cylinder(char *line, t_scene *scene)
 {
 	t_shape		*shape;
 	int			i;
@@ -121,19 +107,14 @@ int		parse_cylinder(char *line, t_scene *scene, int n)
 	i += is_space(line + i);
 	i += parse_color(line + i, shape->color);
 	i += is_space(line + i);
-	if (check_color_range(shape->color, n) == -1)
-		return (-1);
-	if (check_normal_vector(shape->normal, n) == -1)
-		return (-1);
+	check_color_range(scene, shape->color);
+	check_normal_vector(scene, shape->normal);
 	if (line[i])
-	{
-		ft_printf("Error\nLine %d. Problem parsing the cylinder line\n", n);
-		return (-1);
-	}
+		error_and_quit(scene, "Problem parsing the cylinder line");
 	return (0);
 }
 
-int		parse_triangle(char *line, t_scene *scene, int n)
+int		parse_triangle(char *line, t_scene *scene)
 {
 	t_shape		*shape;
 	int			i;
@@ -152,12 +133,8 @@ int		parse_triangle(char *line, t_scene *scene, int n)
 	i += is_space(line + i);
 	i += parse_color(line + i, shape->color);
 	i += is_space(line + i);
-	if (check_color_range(shape->color, n) == -1)
-		return (-1);
+	check_color_range(scene, shape->color);
 	if (line[i])
-	{
-		ft_printf("Error\nLine %d. Problem parsing the triangle line\n", n);
-		return (-1);
-	}
+		error_and_quit(scene, "Problem parsing the triangle line");
 	return (0);
 }

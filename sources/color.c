@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:18:55 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/18 18:21:56 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/20 10:19:11 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,17 +62,12 @@ int		rgb_to_int(t_color *color)
 	return (ft_atoi(num));
 }
 
-int		check_color_range(t_color *color, int n)
+void	check_color_range(t_scene *scene, t_color *color)
 {
 	if (color->r < 0 || color->r > 255 ||
 		color->g < 0 || color->g > 255 ||
 		color->b < 0 || color->b > 255)
-	{
-		ft_printf("Error\nLine %d. ", n);
-		ft_printf("Each color value should be between 0 and 255\n");
-		return (-1);
-	}
-	return (0);
+		error_and_quit(scene, "Each color value should be between 0 and 255");
 }
 
 void	add_ambient_light(t_scene *scene, t_intersec *intersec)

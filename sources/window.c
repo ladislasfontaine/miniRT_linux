@@ -6,32 +6,26 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:21:08 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/19 16:47:14 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/20 10:49:38 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_data	*init_window(t_scene *scene)
+void	init_mlx(t_scene *scene)
 {
-	t_data	*win;
+	if (!(scene->win = (t_data *)malloc(sizeof(t_data))))
+		error_and_quit(scene, "Malloc failed");
+	if (!(scene->win->mlx_ptr = mlx_init()))
+		error_and_quit(scene, "Cannot initialize the minilibX");
+	scene->win->img_id = 0;
+}
 
-	if (!(win = (t_data *)malloc(sizeof(t_data))))
-		return (NULL);
-	if (!(win->mlx_ptr = mlx_init()))
-	{
-		ft_putstr("Error\nCannot initialize the minilibX\n");
-		return (NULL);
-	}
-	if ((win->mlx_win = mlx_new_window(win->mlx_ptr,
+void	init_window(t_scene *scene)
+{
+	if ((scene->win->mlx_win = mlx_new_window(scene->win->mlx_ptr,
 		scene->res->w, scene->res->h, "miniRT")) == NULL)
-	{
-		ft_putstr("Error\nCannot create a new window\n");
-		return (NULL);
-	}
-	win->imgs = NULL;
-	win->img_id = 0;
-	return (win);
+		error_and_quit(scene, "Failed to create a new window");
 }
 
 int		color_image(t_scene *scene, t_camera *camera,t_img *img)
@@ -73,33 +67,25 @@ int		color_image(t_scene *scene, t_camera *camera,t_img *img)
 	return (0);
 }
 
-int		create_images(t_scene *sc)
+void	create_images(t_scene *sc)
 {
-	t_data	*w;
 	t_list	*cameras;
 	t_img	*img;
 
-	w = sc->win;
 	cameras = sc->cameras;
 	while (cameras)
 	{
 		img = NULL;
 		if (!(img = init_image(sc)))
-		{
-			ft_printf("Error\nCannot initialize the minilibX image\n");
-			return (-1);
-		}
-		if (!(img->mlx_img = mlx_new_image(w->mlx_ptr, sc->res->w, sc->res->h)))
-		{
-			ft_printf("Error\nMalloc for new image failed\n");
-			return (-1);
-		}
+			error_and_quit(sc, "Cannot initialize the minilibX image");
+		if (!(img->mlx_img = mlx_new_image(sc->win->mlx_ptr, sc->res->w, sc->res->h)))
+			error_and_quit(sc, "Malloc for new image failed");
 		color_image(sc, (t_camera *)cameras->content, img);
-		ft_lstadd_back(&sc->win->imgs, ft_lstnew((void *)img));
+		ft_lstadd_back(&sc->imgs, ft_lstnew((void *)img));
 		cameras = cameras->next;
 	}
-	mlx_put_image_to_window(w->mlx_ptr, w->mlx_win, ((t_img *)(w->imgs->content))->mlx_img, 0, 0);
-	return (0);
+	if (!sc->save)
+		mlx_put_image_to_window(sc->win->mlx_ptr, sc->win->mlx_win, ((t_img *)(sc->imgs->content))->mlx_img, 0, 0);
 }
 
 void	check_all_shapes(t_list *shapes, t_intersec *intersec)

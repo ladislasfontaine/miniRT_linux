@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:18:46 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/19 16:57:48 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/19 18:32:19 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,14 +81,14 @@ int		change_camera(t_scene *scene, int id)
 
 	w = scene->win;
 	if (id < 0)
-		w->img_id = ft_lstsize(w->imgs) + id;
-	else if (id > ft_lstsize(w->imgs) - 1)
-		w->img_id = id % ft_lstsize(w->imgs);
+		scene->win->img_id = ft_lstsize(scene->imgs) + id;
+	else if (id > ft_lstsize(scene->imgs) - 1)
+		scene->win->img_id = id % ft_lstsize(scene->imgs);
 	else
-		w->img_id = id;
-	img = w->imgs;
+		scene->win->img_id = id;
+	img = scene->imgs;
 	i = 0;
-	while (img && i < w->img_id)
+	while (img && i < scene->win->img_id)
 	{
 		img = img->next;
 		i++;

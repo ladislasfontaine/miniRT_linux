@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 14:20:39 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/19 16:35:21 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/20 10:58:59 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,10 @@
 # define SQUARE		4
 # define TRIANGLE	5
 
+# define BMP_FILE_NAME "image.bmp"
+# define BMP_FILE_HEADER_SIZE 14
+# define BMP_INFO_HEADER_SIZE 40
+
 typedef struct	s_img
 {
 	void	*mlx_img;
@@ -48,7 +52,6 @@ typedef struct	s_data
 {
 	void	*mlx_ptr;
 	void	*mlx_win;
-	t_list	*imgs;
 	int		img_id;
 }				t_data;
 
@@ -133,48 +136,55 @@ typedef struct	s_scene
 	t_list			*cameras;
 	t_list			*shapes;
 	t_list			*lights;
+	t_list			*imgs;
 	t_data			*win;
+	int				save;
 }				t_scene;
 
 /* ERRORS */
-int				arguments_error(int ac, char **av);
+void			arguments_error(t_scene *scene, int ac, char **av);
+void			scene_error(t_scene *scene);
+void			error_and_quit(t_scene *scene, char *error);
 /* PARSING */
 int				parse_file(char *file, t_scene *scene);
-int				parse_line(char *line, t_scene *scene, int n);
+void			parse_line(char *line, t_scene *scene);
 int				parse_int(char *line, int *n);
 int				parse_float(char *line, float *f);
 int				parse_color(char *line, t_color *color);
 int				parse_vector(char *line, t_vector *vector);
-int				parse_resolution(char *line, t_scene *scene, int n);
-int				parse_ambient(char *line, t_scene *scene, int n);
-int				parse_camera(char *line, t_scene *scene, int n);
-int				parse_light(char *line, t_scene *scene, int n);
-int				parse_sphere(char *line, t_scene *scene, int n);
-int				parse_plane(char *line, t_scene *scene, int n);
-int				parse_square(char *line, t_scene *scene, int n);
-int				parse_cylinder(char *line, t_scene *scene, int n);
-int				parse_triangle(char *line, t_scene *scene, int n);
+int				parse_resolution(char *line, t_scene *scene);
+int				parse_ambient(char *line, t_scene *scene);
+int				parse_camera(char *line, t_scene *scene);
+int				parse_light(char *line, t_scene *scene);
+int				parse_sphere(char *line, t_scene *scene);
+int				parse_plane(char *line, t_scene *scene);
+int				parse_square(char *line, t_scene *scene);
+int				parse_cylinder(char *line, t_scene *scene);
+int				parse_triangle(char *line, t_scene *scene);
 int				is_space(char *line);
 /* SCENE */
 t_scene			*init_scene(void);
-int				scene_error(t_scene *scene);
 void			clear_scene(t_scene *scene);
 void			delete_shape(void *element);
 void			delete_camera(void *element);
 void			delete_light(void *element);
 /* IMAGES */
 t_img			*init_image(t_scene *scene);
-int				create_images(t_scene *sc);
+void			create_images(t_scene *sc);
 int				color_image(t_scene *scene, t_camera *camera, t_img *img);
 int				change_camera(t_scene *scene, int id);
+int				save_image(t_scene *scene);
+void			bitmap_file_header(t_scene *scene, int padding_size, int fd);
+void			bitmap_info_header(t_scene *scene, int fd);
+void			create_bmp_image(t_scene *scene, char *file_name);
 /* WINDOW */
-t_data			*init_window(t_scene *scene);
+void			init_mlx(t_scene *scene);
+void			init_window(t_scene *scene);
 void			listen_events(t_scene *scene);
 int				get_key(int key, t_scene *scene);
-int				get_mouse(int key, int x, int y, t_scene *scene);
 void			check_all_shapes(t_list *shapes, t_intersec *intersec);
 void			check_all_lights(t_scene *scene, t_intersec *intersec);
-int				close_and_quit(t_scene *scene);
+void			close_and_quit(t_scene *scene);
 /* VECTORS */
 t_vector		*init_vector(float x, float y, float z);
 t_vector		*get_point(t_vector *origin, t_vector *dir, float t);
@@ -187,7 +197,7 @@ t_vector		*cross_product(t_vector *u, t_vector *v);
 t_vector		*vector_diff(t_vector *u, t_vector *v);
 t_vector		*vector_add(t_vector *u, t_vector *v);
 t_vector		*vector_mul(t_vector *u, float n);
-int				check_normal_vector(t_vector *u, int n);
+void			check_normal_vector(t_scene *scene, t_vector *u);
 float			get_angle(t_vector *u, t_vector *v);
 /* RAYS */
 t_ray			*init_ray(t_vector *u, t_vector *v, float t);
@@ -229,7 +239,7 @@ void			add_light_to_pixel(t_intersec *intersec, t_light *light, float ratio);
 void			cap_light(t_color *color);
 /* COLOR */
 t_color			*init_color(int r, int g, int b);
-int				check_color_range(t_color *color, int n);
+void			check_color_range(t_scene *scene, t_color *color);
 int				rgb_to_int(t_color *color);
 void			add_ambient_light(t_scene *scene, t_intersec *intersec);
 

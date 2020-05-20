@@ -6,7 +6,7 @@
 #    By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/23 09:39:28 by lafontai          #+#    #+#              #
-#    Updated: 2020/05/19 11:49:19 by lafontai         ###   ########.fr        #
+#    Updated: 2020/05/19 17:06:43 by lafontai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ SRCS	= $(addprefix $(FOLDER), \
 			ray.c \
 			intersection.c \
 			image.c \
+			save.c \
 			shape.c \
 			plane.c \
 			sphere.c \
