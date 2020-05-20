@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:20:19 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/20 10:57:58 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/20 15:53:22 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,59 +39,6 @@ t_scene	*init_scene(void)
 	return (scene);
 }
 
-void	delete_shape(void *element)
-{
-	t_shape	*shape;
-
-	shape = (t_shape *)element;
-	if (shape->center)
-		free(shape->center);
-	if (shape->position)
-		free(shape->position);
-	if (shape->normal)
-		free(shape->normal);
-	if (shape->p1)
-		free(shape->p1);
-	if (shape->p2)
-		free(shape->p2);
-	if (shape->p3)
-		free(shape->p3);
-	if (shape->color)
-		free(shape->color);
-	if (shape)
-		free(shape);
-}
-
-void	delete_camera(void *element)
-{
-	t_camera	*camera;
-
-	camera = (t_camera *)element;
-	if (camera->origin)
-		free(camera->origin);
-	if (camera->direction)
-		free(camera->direction);
-	if (camera->up)
-		free(camera->up);
-	if (camera->right)
-		free(camera->right);
-	if (camera)
-		free(camera);
-}
-
-void	delete_light(void *element)
-{
-	t_light	*light;
-
-	light = (t_light *)element;
-	if (light->origin)
-		free(light->origin);
-	if (light->color)
-		free(light->color);
-	if (light)
-		free(light);
-}
-
 void	clear_scene(t_scene *scene)
 {
 	if (scene)
@@ -107,7 +54,7 @@ void	clear_scene(t_scene *scene)
 		ft_lstclear(&scene->shapes, &delete_shape);
 		ft_lstclear(&scene->cameras, &delete_camera);
 		ft_lstclear(&scene->lights, &delete_light);
-		// clear toutes les images avec destroy
+		delete_images(&scene->imgs, scene);
 		free(scene);
 	}
 }

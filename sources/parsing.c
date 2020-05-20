@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:19:59 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/20 10:37:27 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/20 15:19:23 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,7 @@ void	parse_line(char *line, t_scene *scene)
 {
 	int		i;
 
-	i = 0;
-	i += is_space(line + i);
+	i = is_space(line);
 	if (!line[i])
 		return ;
 	if (ft_strncmp(line + i, "R ", 2) == 0)
@@ -62,4 +61,24 @@ void	parse_line(char *line, t_scene *scene)
 		parse_triangle(line + i + 3, scene);
 	else
 		error_and_quit(scene, "Unknown identifier in the .rt file");
+}
+
+int		is_space(char *line)
+{
+	int i;
+
+	i = 0;
+	while (line[i] && (line[i] == ' ' || line[i] == '\t'))
+		i++;
+	return (i);
+}
+
+int		parse_int(char *line, int *n)
+{
+	if (ft_isdigit(line[0]) || line[0] == '-')
+	{
+		*n = ft_atoi(line);
+		return (ft_numlen(*n));
+	}
+	return (-1);
 }

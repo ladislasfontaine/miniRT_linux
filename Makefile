@@ -6,7 +6,7 @@
 #    By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/23 09:39:28 by lafontai          #+#    #+#              #
-#    Updated: 2020/05/19 17:06:43 by lafontai         ###   ########.fr        #
+#    Updated: 2020/05/20 15:44:25 by lafontai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@ SRCS	= $(addprefix $(FOLDER), \
 			main.c \
 			scene.c \
 			camera.c \
+			delete.c \
 			light.c \
 			parsing.c \
 			parse_utils.c \
@@ -22,7 +23,9 @@ SRCS	= $(addprefix $(FOLDER), \
 			window.c \
 			event.c \
 			color.c \
-			vector.c \
+			vector1.c \
+			vector2.c \
+			vector3.c \
 			ray.c \
 			intersection.c \
 			image.c \

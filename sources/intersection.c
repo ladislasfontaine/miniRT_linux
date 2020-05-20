@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:19:11 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/14 16:28:39 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/20 11:44:04 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,19 +40,23 @@ t_vector	*intersection(t_intersec *intersec)
 
 void		clear_intersection(t_intersec *intersec)
 {
-	if (intersec->ray->origin)
-		free(intersec->ray->origin);
-	if (intersec->ray->direction)
-		free(intersec->ray->direction);
-	if (intersec->ray)
-		free(intersec->ray);
-	if (intersec->color)
-		free(intersec->color);
-	if (intersec->reflect)
-		free(intersec->reflect);
-	if (intersec->normal && intersec->shape && intersec->shape->id != PLANE
-		&& intersec->shape->id != SQUARE && intersec->shape->id != CYLINDER)
-		free(intersec->normal);
 	if (intersec)
+	{
+		if (intersec->ray)
+		{
+			if (intersec->ray->origin)
+				free(intersec->ray->origin);
+			if (intersec->ray->direction)
+				free(intersec->ray->direction);
+			free(intersec->ray);
+		}
+		if (intersec->color)
+			free(intersec->color);
+		if (intersec->reflect)
+			free(intersec->reflect);
+		if (intersec->normal && intersec->shape && intersec->shape->id != PLANE
+			&& intersec->shape->id != SQUARE && intersec->shape->id != CYLINDER)
+			free(intersec->normal);
 		free(intersec);
+	}
 }

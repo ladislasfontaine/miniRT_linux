@@ -6,36 +6,16 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:19:50 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/20 10:42:40 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/20 15:17:23 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-int		is_space(char *line)
-{
-	int i;
-
-	i = 0;
-	while (line[i] && (line[i] == ' ' || line[i] == '\t'))
-		i++;
-	return (i);
-}
-
-int		parse_int(char *line, int *n)
-{
-	if (ft_isdigit(line[0]) || line[0] == '-')
-	{
-		*n = ft_atoi(line);
-		return (ft_numlen(*n));
-	}
-	return (-1);
-}
-
 int		parse_float(char *line, float *f)
 {
 	int		i;
-	int		integer;
+	int		num;
 	int		decimal;
 	int		len;
 	int		neg;
@@ -44,40 +24,47 @@ int		parse_float(char *line, float *f)
 	len = 0;
 	decimal = 0;
 	neg = (line[i] == '-') ? 1 : 0;
-	if (ft_isdigit(line[i]) || line[i] == '-')
-		integer = ft_atoi(line);
-	else
+	num = (ft_isdigit(line[i]) || line[i] == '-') ? ft_atoi(line) : 0;
+	if (!(ft_isdigit(line[i]) || line[i] == '-'))
 		return (-1);
-	i += (integer == 0 && neg) ? (ft_numlen(integer) + 1) : (ft_numlen(integer));
+	i += (num == 0 && neg) ? (ft_numlen(num) + 1) : (ft_numlen(num));
 	if (line[i] != '.')
 	{
-		*f = integer;
+		*f = num;
 		return (i);
 	}
 	else if (line[i] == '.' && ft_isdigit(line[i + 1]))
-	{
-		i++;
-		while (line[i] == '0' && line[i])
-		{
-			len++;
-			i++;
-		}
-		if (ft_isdigit(line[i]))
-		{
-			decimal = ft_atoi(line + i);
-			i += ft_numlen(decimal);
-			len += ft_numlen(decimal);
-		}
-	}
+		parse_float_two(line, &i, &len, &decimal);
 	else
 		return (-1);
-	if (integer < 0)
-		*f = (float)integer - ((float)decimal / pow(10.0, (double)len));
-	else
-		*f = (float)integer + ((float)decimal / pow(10.0, (double)len));
-	if (neg && integer == 0 && *f > 0.0)
-		*f = -*f;
+	parse_float_three(f, (t_vector){num, decimal, len}, neg);
 	return (i);
+}
+
+void	parse_float_two(char *line, int *i, int *len, int *dec)
+{
+	*i += 1;
+	while (line[*i] == '0' && line[*i])
+	{
+		*len += 1;
+		*i += 1;
+	}
+	if (ft_isdigit(line[*i]))
+	{
+		*dec = ft_atoi(line + *i);
+		*i += ft_numlen(*dec);
+		*len += ft_numlen(*dec);
+	}
+}
+
+void	parse_float_three(float *f, t_vector v, int neg)
+{
+	if (v.x < 0)
+		*f = v.x - (v.y / pow(10.0, v.z));
+	else
+		*f = v.x + (v.y / pow(10.0, v.z));
+	if (neg && v.x == 0 && *f > 0.0)
+		*f = -*f;
 }
 
 int		parse_color(char *line, t_color *color)

@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 14:20:39 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/20 10:58:59 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/20 15:52:43 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@
 # define TRIANGLE	5
 
 # define BMP_FILE_NAME "image.bmp"
-# define BMP_FILE_HEADER_SIZE 14
-# define BMP_INFO_HEADER_SIZE 40
+# define BMP_FILE_HDR_SIZE 14
+# define BMP_INFO_HDR_SIZE 40
 
 typedef struct	s_img
 {
@@ -141,6 +141,21 @@ typedef struct	s_scene
 	int				save;
 }				t_scene;
 
+typedef struct	s_triangle
+{
+	t_vector	*v0v1;
+	t_vector	*v0v2;
+	t_vector	*pvec;
+	t_vector	*tvec;
+	t_vector	*normal;
+	float		det;
+	float		invdet;
+	float		u;
+	float		v;
+	float		t;
+}				t_triangle;
+
+
 /* ERRORS */
 void			arguments_error(t_scene *scene, int ac, char **av);
 void			scene_error(t_scene *scene);
@@ -150,6 +165,8 @@ int				parse_file(char *file, t_scene *scene);
 void			parse_line(char *line, t_scene *scene);
 int				parse_int(char *line, int *n);
 int				parse_float(char *line, float *f);
+void			parse_float_two(char *line, int *i, int *len, int *dec);
+void			parse_float_three(float *f, t_vector v, int neg);
 int				parse_color(char *line, t_color *color);
 int				parse_vector(char *line, t_vector *vector);
 int				parse_resolution(char *line, t_scene *scene);
@@ -168,6 +185,7 @@ void			clear_scene(t_scene *scene);
 void			delete_shape(void *element);
 void			delete_camera(void *element);
 void			delete_light(void *element);
+void			delete_images(t_list **lst, t_scene *scene);
 /* IMAGES */
 t_img			*init_image(t_scene *scene);
 void			create_images(t_scene *sc);
@@ -184,7 +202,7 @@ void			listen_events(t_scene *scene);
 int				get_key(int key, t_scene *scene);
 void			check_all_shapes(t_list *shapes, t_intersec *intersec);
 void			check_all_lights(t_scene *scene, t_intersec *intersec);
-void			close_and_quit(t_scene *scene);
+int				close_and_quit(t_scene *scene);
 /* VECTORS */
 t_vector		*init_vector(float x, float y, float z);
 t_vector		*get_point(t_vector *origin, t_vector *dir, float t);
@@ -202,6 +220,7 @@ float			get_angle(t_vector *u, t_vector *v);
 /* RAYS */
 t_ray			*init_ray(t_vector *u, t_vector *v, float t);
 t_vector		*point_on_ray(t_ray ray, float t);
+void			check_rays(t_scene *scene, char *data, t_vector vec, t_camera *camera);
 /* INTERSECTIONS */
 t_intersec		*init_intersection(t_ray *ray);
 int				intersected(t_intersec *intersec);
@@ -221,10 +240,10 @@ int				sphere_points(t_intersec *intersec, float a, float b,
 int				sphere_normal_vector(t_intersec *intersec);
 /* SQUARE */
 t_shape			*init_square(t_vector *c, t_vector *n, float side, t_color *color);
-int				square_sides(t_scene *scene, t_vector *center, float s, t_color *c);
 int				square_intersection(t_intersec *intersec, t_shape *square);
 /* TRIANGLE CYLINDER */
 int				triangle_intersection(t_intersec *intersec, t_shape *tri);
+void			triangle_calculations(t_intersec *intersec, t_shape *tri, t_triangle *t);
 int				cylinder_intersection(t_intersec *intersec, t_shape *cy);
 int				intersect_base(t_intersec *intersec, t_shape *cy, t_vector *c, float *dist);
 t_vector		*cylinder_normal(t_shape *cy, t_vector *p);
@@ -232,6 +251,8 @@ t_vector		*cylinder_normal(t_shape *cy, t_vector *p);
 t_camera		*init_camera(t_vector *origin, t_vector *orientation,
 							float fov);
 t_camera		*init_camera_null(void);
+void			camera_vector_calculation(t_scene *scene, t_camera *camera);
+void			clear_camera(t_camera *cam);
 t_ray			*make_ray(t_scene *scene, t_camera *camera, float u, float v);
 /* LIGHT */
 t_light			*init_light_null(void);
@@ -240,7 +261,6 @@ void			cap_light(t_color *color);
 /* COLOR */
 t_color			*init_color(int r, int g, int b);
 void			check_color_range(t_scene *scene, t_color *color);
-int				rgb_to_int(t_color *color);
 void			add_ambient_light(t_scene *scene, t_intersec *intersec);
 
 #endif

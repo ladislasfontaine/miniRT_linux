@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:19:25 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/20 10:42:12 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/20 14:43:14 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,16 @@
 
 // OK cas d'erreur lorsqu'il n'y a pas de résolution ou que le fichier est vide ou pas de caméra (no camera to see the scene)
 // OK gestion de la lumière d'ambiance
-// gestion des couleurs, additions, ratio de luminosité
 // OK mettre printf dans le dossier de la libft pour avoir le dossier libft à la racine du projet (comme dit dans sujet)
 // OK utiliser les images de la mlx
 // OK pouvoir changer de caméra lorsqu'il y en a plusieurs (et changer l'image dans la fenêtre)
 // OK option -save à gérer
+// OK faire une fonction error_message
+// gestion des couleurs, additions, ratio de luminosité
 // gérer la taille de l'écran pour resize si besoin
 // vérifier les translations et rotations des objets (principalement pour le cylindre)
 // norm
 // leaks
-// OK faire une fonction error_message
 // protéger chaque malloc
 
 int		main(int ac, char **av)

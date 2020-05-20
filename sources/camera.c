@@ -6,31 +6,24 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:18:46 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/19 18:32:19 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/20 16:15:37 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_camera	*init_camera(t_vector *origin, t_vector *orientation, float fov)
+void		camera_vector_calculation(t_scene *scene, t_camera *camera)
 {
-	t_vector	*upguide;
-	t_camera	*new;
-
-	new = (t_camera *)malloc(sizeof(t_camera));
-	if (!new)
-		return (NULL);
-	if (!(upguide = init_vector(0.0, 1.0, 0.0)))
-		return (NULL);
-	new->origin = origin;
-	new->direction = orientation;
-	normalize(new->direction);
-	new->fov = fov;
-	new->right = cross_product(new->direction, upguide);
-	normalize(new->right);
-	new->up = cross_product(new->right, new->direction);
-	free(upguide);
-	return (new);
+	normalize(camera->direction);
+	if (camera->direction->x == 0 && camera->direction->y == 1
+		&& camera->direction->z == 0)
+		camera->right = cross_product(camera->direction, &(t_vector){-1, 0, 0});
+	else
+		camera->right = cross_product(camera->direction, &(t_vector){0, 1, 0});
+	normalize(camera->right);
+	camera->up = cross_product(camera->right, camera->direction);
+	if (camera->fov < 0.0 || camera->fov > 180.0)
+		error_and_quit(scene, "FOV not in range 0 to 180 degrees");
 }
 
 t_camera	*init_camera_null(void)
@@ -46,6 +39,22 @@ t_camera	*init_camera_null(void)
 	camera->right = (t_vector *)malloc(sizeof(t_vector));
 	camera->fov = 0;
 	return (camera);
+}
+
+void		clear_camera(t_camera *cam)
+{
+	if (cam)
+	{
+		if (cam->origin)
+			free(cam->origin);
+		if (cam->direction)
+			free(cam->direction);
+		if (cam->up)
+			free(cam->up);
+		if (cam->right)
+			free(cam->right);
+		free(cam);
+	}
 }
 
 t_ray		*make_ray(t_scene *scene, t_camera *cam, float u, float v)
@@ -73,7 +82,7 @@ t_ray		*make_ray(t_scene *scene, t_camera *cam, float u, float v)
 	return (init_ray(origin, dir, RAY_MAX));
 }
 
-int		change_camera(t_scene *scene, int id)
+int			change_camera(t_scene *scene, int id)
 {
 	t_data	*w;
 	t_list	*img;
@@ -93,6 +102,7 @@ int		change_camera(t_scene *scene, int id)
 		img = img->next;
 		i++;
 	}
-	mlx_put_image_to_window(w->mlx_ptr, w->mlx_win, ((t_img *)(img->content))->mlx_img, 0, 0);
+	mlx_put_image_to_window(w->mlx_ptr, w->mlx_win,
+			((t_img *)(img->content))->mlx_img, 0, 0);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:19:42 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/20 10:32:12 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/20 13:55:36 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int		parse_plane(char *line, t_scene *scene)
 	i += is_space(line + i);
 	check_color_range(scene, shape->color);
 	check_normal_vector(scene, shape->normal);
+	normalize(shape->normal);
 	if (line[i])
 		error_and_quit(scene, "Problem parsing the plane line");
 	return (0);
@@ -80,9 +81,9 @@ int		parse_square(char *line, t_scene *scene)
 	i += is_space(line + i);
 	check_color_range(scene, shape->color);
 	check_normal_vector(scene, shape->normal);
+	normalize(shape->normal);
 	if (line[i])
 		error_and_quit(scene, "Problem parsing the square line");
-	//square_sides(scene, center, side, color);
 	return (0);
 }
 
@@ -109,6 +110,7 @@ int		parse_cylinder(char *line, t_scene *scene)
 	i += is_space(line + i);
 	check_color_range(scene, shape->color);
 	check_normal_vector(scene, shape->normal);
+	normalize(shape->normal);
 	if (line[i])
 		error_and_quit(scene, "Problem parsing the cylinder line");
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:19:34 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/20 10:26:55 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/20 14:34:05 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,17 @@ int		parse_ambient(char *line, t_scene *scene)
 int		parse_camera(char *line, t_scene *scene)
 {
 	t_camera	*camera;
-	t_vector	*upguide;
+	t_list		*element;
 	int			i;
 
-	camera = init_camera_null();
-	ft_lstadd_back(&scene->cameras, ft_lstnew((void *)camera));
+	if (!(camera = init_camera_null()))
+	{
+		clear_camera(camera);
+		error_and_quit(scene, "Malloc failed");
+	}
+	if (!(element = ft_lstnew((void *)camera)))
+		error_and_quit(scene, "Malloc failed");
+	ft_lstadd_back(&scene->cameras, element);
 	camera = (t_camera *)(ft_lstlast(scene->cameras)->content);
 	i = 0;
 	i += is_space(line + i);
@@ -68,19 +74,7 @@ int		parse_camera(char *line, t_scene *scene)
 	i += is_space(line + i);
 	i += parse_float(line + i, &camera->fov);
 	i += is_space(line + i);
-	if (!(upguide = init_vector(0.0, 1.0, 0.0)))
-		error_and_quit(scene, "Malloc failed");
-	normalize(camera->direction);
-	// working if camera direction is 0,1,0 ?
-	camera->right = cross_product(camera->direction, upguide);
-	normalize(camera->right);
-	camera->up = cross_product(camera->right, camera->direction);
-	free(upguide);
-	if (camera->fov < 0.0 || camera->fov > 180.0)
-		error_and_quit(scene, "FOV not in range 0 to 180 degrees");
-	check_normal_vector(scene, camera->direction);
-	normalize(camera->direction);
-	// normalize all normal vectors in case
+	camera_vector_calculation(scene, camera);
 	if (line[i])
 		error_and_quit(scene, "Problem parsing the camera line");
 	return (0);
