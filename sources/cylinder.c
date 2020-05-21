@@ -6,110 +6,97 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/14 13:10:33 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/15 12:27:26 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/21 11:57:52 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
+void		find_cylinder_base(t_intersec *intersec, t_shape *cy, t_shape *plane)
+{
+	float d_dot_n;
+	float t;
+
+	d_dot_n = dot_product(intersec->ray->direction, plane->normal);
+	if (d_dot_n == 0.0f)
+		t = -1;
+	else
+		t = dot_product(vector_diff(plane->position, intersec->ray->origin), plane->normal) / d_dot_n;
+	if (t > RAY_MIN && t < intersec->t && length(vector_diff(plane->position, get_point(intersec->ray->origin, intersec->ray->direction, t))) <= (cy->diameter / 2))
+	{
+		intersec->shape = cy;
+		intersec->t = t;
+		intersec->normal = plane->normal;
+	}
+}
+
+float		check_cylinder_base(t_shape *plane, t_vector *inter, t_vector *n)
+{
+	float d_dot_n;
+	float t;
+
+	d_dot_n = dot_product(n, n);
+	if (d_dot_n == 0.0f)
+		return (-1);
+	t = dot_product(vector_diff(plane->position, inter), n) / d_dot_n;
+	if (t < 0 || t >= RAY_MAX)
+		return (-1);
+	return (t);
+}
+
+t_vector	*cylinder_normal(t_vector *inter, t_shape *cy, float t3)
+{
+	return (vector_diff(inter, get_point(cy->center, cy->normal, (t3 - cy->height / 2))));
+}
+
 int			cylinder_intersection(t_intersec *intersec, t_shape *cy)
 {
+	t_vector	*cross;
+	t_vector	*cross2;
+	t_vector	*p0;
+	t_vector	*inter;
+	t_shape		*plane1;
+	t_shape		*plane2;
 	float		a;
 	float		b;
 	float		c;
-	float		delta;
+	float		det;
 	float		t;
+	float		t1;
 	float		t2;
-	float		y;
-	float		dist;
-	t_vector	*p0;
+	float		t3;
+	float		t4;
 
+	cross = cross_product(intersec->ray->direction, cy->normal);
 	p0 = vector_diff(intersec->ray->origin, cy->center);
-	a = square(intersec->ray->direction->x) + square(intersec->ray->direction->z);
-	b = intersec->ray->direction->x * p0->x + intersec->ray->direction->z * p0->z;
-	c = square(p0->x) + square(p0->z) - square(cy->diameter / 2);
-	delta = square(b) - a * c;
-
-	if (delta < RAY_MIN)
+	cross2 = cross_product(p0, cy->normal);
+	a = dot_product(cross, cross);
+	b = 2 * dot_product(cross, cross2);
+	c = dot_product(cross2, cross2) - (pow(cy->diameter / 2, 2) * dot_product(cy->normal, cy->normal));
+	det = pow(b, 2) - 4 * a * c;
+	if (det < RAY_MIN)
 		return (0);
-	t = (-b - sqrtf(delta)) / a;
-	t2 = (-b + sqrtf(delta)) / a;
-	if (t <= RAY_MIN || t >= intersec->t)
+	t1 = (-b - sqrtf(det)) / (2 * a);
+	t2 = (-b + sqrtf(det)) / (2 * a);
+	if (t1 > RAY_MIN && t1 < intersec->t)
+		t = t1;
+	else if (t2 > RAY_MIN && t2 < intersec->t)
 		t = t2;
-	if (t <= RAY_MIN || t >= intersec->t)
+	else
 		return (0);
-	y = p0->y + t * intersec->ray->direction->y;
-	if (y > cy->height + RAY_MIN || y < -RAY_MIN)
-	{
-		if (intersect_base(intersec, cy, &(t_vector){cy->center->x, (cy->center->y + cy->height), cy->center->z}, &dist))
-		{
-			intersec->shape = cy;
-			intersec->t = dist;
-			intersec->normal = init_vector(0, 1, 0);
-		}
-		if (intersect_base(intersec, cy, cy->center, &dist))
-		{
-			if (dist > RAY_MIN && dist < intersec->t)
-			{
-				intersec->shape = cy;
-				intersec->t = dist;
-				intersec->normal = init_vector(0, -1, 0);
-			}
-		}
-		return (0);
-	}
-	intersec->shape = cy;
-	intersec->t = t;
-	intersec->normal = cylinder_normal(cy, get_point(intersec->ray->origin, intersec->ray->direction, t));
 
+	inter = get_point(intersec->ray->origin, intersec->ray->direction, t);
+	plane1 = init_plane(get_point(cy->center, cy->normal, cy->height / 2), cy->normal);
+	plane2 = init_plane(get_point(cy->center, vector_mul(cy->normal, -1), cy->height / 2), vector_mul(cy->normal, -1));
+	t3 = check_cylinder_base(plane1, inter, cy->normal);
+	t4 = check_cylinder_base(plane2, inter, vector_mul(cy->normal, -1));
+	if (t3 >= 0 && t3 <= cy->height && t4 >= 0 && t4 <= cy->height)
+	{
+		intersec->shape = cy;
+		intersec->t = t;
+		intersec->normal = cylinder_normal(inter, cy, t3);
+	}
+	find_cylinder_base(intersec, cy, plane1);
+	find_cylinder_base(intersec, cy, plane2);
 	return (0);
-}
-
-int			intersect_base(t_intersec *intersec, t_shape *cy, t_vector *c, float *dist)
-{
-	t_vector	*normal;
-	t_vector	*p0;
-	t_vector	*p;
-	float		A;
-	float		B;
-	float		C;
-	float		D;
-
-	normal = cylinder_normal(cy, c);
-	p0 = vector_diff(intersec->ray->origin, cy->center);
-	A = normal->x;
-	B = normal->y;
-	C = normal->z;
-	D = - (A * (c->x - cy->center->x) + B * (c->y - cy->center->y) + C * (c->z - cy->center->z));
-	if ((A * intersec->ray->direction->x + B * intersec->ray->direction->y + C * intersec->ray->direction->z) == 0)
-		return (0);
-	*dist = - (A * p0->x + B * p0->y + C * p0->z + D) / (A * intersec->ray->direction->x + B * intersec->ray->direction->y + C * intersec->ray->direction->z);
-	if (*dist < RAY_MIN)
-		return (0);
-	p = vector_add(p0, vector_mul(intersec->ray->direction, *dist));
-	if (square(p->x) + square(p->z) - square(cy->diameter / 2.0) > RAY_MIN)
-		return (0);
-	return (1);
-}
-
-t_vector	*cylinder_normal(t_shape *cy, t_vector *p)
-{
-	t_vector	*c0;
-	t_vector	*n;
-	float		radius;
-
-	radius = cy->diameter / 2.0;
-	if (p->x < (cy->center->x + radius) && p->x > (cy->center->x - radius) &&
-		p->z < (cy->center->z + radius) && p->z > (cy->center->z - radius))
-	{
-		if (p->y < (cy->center->y + cy->height + RAY_MIN) && p->y > (cy->center->y + cy->height - RAY_MIN))
-			return (init_vector(0, 1, 0));
-		if (p->y < (cy->center->y + RAY_MIN) && p->y > (cy->center->y - RAY_MIN))
-			return (init_vector(0, -1, 0));
-	}
-	c0 = init_vector(cy->center->x, p->y, cy->center->z);
-	n = vector_diff(p, c0);
-	normalize(n);
-	free(c0);
-	return (n);
 }

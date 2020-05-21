@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 14:20:39 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/20 15:52:43 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/21 11:53:55 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,8 +229,7 @@ void			clear_intersection(t_intersec *intersec);
 
 t_shape			*init_shape(void);
 /* PLANE */
-t_shape			*init_plane(t_shape *plane, t_vector *position,
-							t_vector *normal);
+t_shape			*init_plane(t_vector *position, t_vector *normal);
 int				plane_intersection(t_intersec *intersec, t_shape *plane);
 /* SPHERE */
 t_shape			*init_sphere(t_shape *sphere);
@@ -245,8 +244,10 @@ int				square_intersection(t_intersec *intersec, t_shape *square);
 int				triangle_intersection(t_intersec *intersec, t_shape *tri);
 void			triangle_calculations(t_intersec *intersec, t_shape *tri, t_triangle *t);
 int				cylinder_intersection(t_intersec *intersec, t_shape *cy);
-int				intersect_base(t_intersec *intersec, t_shape *cy, t_vector *c, float *dist);
-t_vector		*cylinder_normal(t_shape *cy, t_vector *p);
+void			find_cylinder_base(t_intersec *intersec, t_shape *cy, t_shape *plane);
+float			check_cylinder_base(t_shape *plane, t_vector *inter, t_vector *n);
+t_vector		*cylinder_normal(t_vector *inter, t_shape *cy, float t3);
+
 /* CAMERA */
 t_camera		*init_camera(t_vector *origin, t_vector *orientation,
 							float fov);
