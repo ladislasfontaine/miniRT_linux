@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:18:55 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/20 12:03:09 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/21 17:10:14 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,16 @@ void	check_color_range(t_scene *scene, t_color *color)
 
 void	add_ambient_light(t_scene *scene, t_intersec *intersec)
 {
+	t_color	color;
+
+	color = color_mix_light(*intersec->shape->color, color_multiply(*scene->ambient->color, scene->ambient->ratio));
+	intersec->color->r = color.r;
+	intersec->color->g = color.g;
+	intersec->color->b = color.b;
+}
+/*
+void	add_ambient_light(t_scene *scene, t_intersec *intersec)
+{
 	t_color	*shape;
 	t_color	*pixel;
 	t_color	*ambient;
@@ -65,3 +75,4 @@ void	add_ambient_light(t_scene *scene, t_intersec *intersec)
 		}
 	}
 }
+*/

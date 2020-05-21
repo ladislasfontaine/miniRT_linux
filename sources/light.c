@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:19:18 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/21 10:02:17 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/21 17:30:41 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,9 @@ void	check_all_lights(t_scene *scene, t_intersec *intersec)
 		}
 		lst_cpy = lst_cpy->next;
 	}
-	cap_light(intersec->color);
+	//cap_light(intersec->color);
 }
-
+/*
 t_color	*color_average(t_color *c1, t_color *c2, float ratio)
 {
 	int		r;
@@ -97,7 +97,21 @@ t_color	*color_average(t_color *c1, t_color *c2, float ratio)
 	}
 	return (init_color(r, g, b));
 }
+*/
+void	add_light_to_pixel(t_intersec *intersec, t_light *light, float ratio)
+{
+	t_color	*shape;
+	t_color	color;
 
+	shape = intersec->shape->color;
+	if (!intersec->color || ratio < 0)
+		return ;
+	color = color_add(*intersec->color, color_multiply(color_mix_light(*shape, color_multiply(*light->color, light->brightness)), ratio));
+	intersec->color->r = color.r;
+	intersec->color->g = color.g;
+	intersec->color->b = color.b;
+}
+/*
 void	add_light_to_pixel(t_intersec *intersec, t_light *light, float ratio)
 {
 	t_color	*shape;
@@ -123,3 +137,4 @@ void	add_light_to_pixel(t_intersec *intersec, t_light *light, float ratio)
 		pixel->b += mix->b * ratio;
 	}
 }
+*/

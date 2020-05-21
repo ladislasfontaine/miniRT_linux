@@ -6,7 +6,7 @@
 #    By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/23 09:39:28 by lafontai          #+#    #+#              #
-#    Updated: 2020/05/20 15:44:25 by lafontai         ###   ########.fr        #
+#    Updated: 2020/05/21 16:03:45 by lafontai         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ SRCS	= $(addprefix $(FOLDER), \
 			window.c \
 			event.c \
 			color.c \
+			color_utils.c \
 			vector1.c \
 			vector2.c \
 			vector3.c \

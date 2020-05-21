@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 14:20:39 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/21 11:53:55 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/21 16:15:38 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,24 @@ typedef struct	s_triangle
 	float		t;
 }				t_triangle;
 
+typedef struct	s_cyl
+{
+	t_vector	*cross;
+	t_vector	*cross2;
+	t_vector	*p0;
+	t_vector	*inter;
+	t_shape		*plane1;
+	t_shape		*plane2;
+	float		a;
+	float		b;
+	float		c;
+	float		det;
+	float		t;
+	float		t1;
+	float		t2;
+	float		t3;
+	float		t4;
+}				t_cyl;
 
 /* ERRORS */
 void			arguments_error(t_scene *scene, int ac, char **av);
@@ -263,5 +281,8 @@ void			cap_light(t_color *color);
 t_color			*init_color(int r, int g, int b);
 void			check_color_range(t_scene *scene, t_color *color);
 void			add_ambient_light(t_scene *scene, t_intersec *intersec);
+t_color			color_add(t_color c1, t_color c2);
+t_color			color_mix_light(t_color c1, t_color light);
+t_color			color_multiply(t_color c1, float ratio);
 
 #endif

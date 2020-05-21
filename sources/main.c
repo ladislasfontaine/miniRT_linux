@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:19:25 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/20 14:43:14 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/21 15:45:14 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 // OK faire une fonction error_message
 // gestion des couleurs, additions, ratio de luminosité
 // gérer la taille de l'écran pour resize si besoin
-// vérifier les translations et rotations des objets (principalement pour le cylindre)
+// OK vérifier les translations et rotations des objets (principalement pour le cylindre)
 // norm
 // leaks
 // protéger chaque malloc
