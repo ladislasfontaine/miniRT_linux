@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:20:06 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/21 15:44:40 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/22 10:23:30 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,9 @@ int		plane_intersection(t_intersec *intersec, t_shape *plane)
 		return (0);
 	intersec->t = t;
 	intersec->shape = plane;
-	intersec->normal = plane->normal;
+	if (get_angle(intersec->ray->direction, plane->normal) < 90.0)
+		intersec->normal = vector_mul(plane->normal, -1);
+	else
+		intersec->normal = plane->normal;
 	return (1);
 }

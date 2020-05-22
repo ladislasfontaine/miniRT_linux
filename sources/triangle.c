@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/13 16:22:17 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/20 16:14:08 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/22 10:26:09 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,14 @@ int		triangle_intersection(t_intersec *intersec, t_shape *tri)
 	if (t.v < 0 || t.u + t.v > 1)
 		return (0);
 	t.t = dot_product(t.v0v2, cross_product(t.tvec, t.v0v1)) * t.invdet;
-	intersec->t = t.t;
-	intersec->shape = tri;
-	if (get_angle(intersec->ray->direction, t.normal) < 90.0)
-		intersec->normal = init_vector(-(t.normal->x), -(t.normal->y)
-										, -(t.normal->z));
-	else
-		intersec->normal = t.normal;
+	if (t.t > RAY_MIN && t.t < intersec->t)
+	{
+		intersec->t = t.t;
+		intersec->shape = tri;
+		if (get_angle(intersec->ray->direction, t.normal) < 90.0)
+			intersec->normal = vector_mul(t.normal, -1);
+		else
+			intersec->normal = t.normal;
+	}
 	return (0);
 }

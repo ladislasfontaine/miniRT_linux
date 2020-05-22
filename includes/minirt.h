@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 14:20:39 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/21 16:15:38 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/22 16:11:55 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,6 +174,17 @@ typedef struct	s_cyl
 	float		t4;
 }				t_cyl;
 
+typedef struct	s_lights
+{
+	t_list		*lst_cpy;
+	t_light		*light;
+	t_vector	*light_dir;
+	t_vector	*point;
+	t_intersec	*light_ray;
+	float		light_ratio;
+	float		distance;
+}				t_lights;
+
 /* ERRORS */
 void			arguments_error(t_scene *scene, int ac, char **av);
 void			scene_error(t_scene *scene);
@@ -194,7 +205,7 @@ int				parse_light(char *line, t_scene *scene);
 int				parse_sphere(char *line, t_scene *scene);
 int				parse_plane(char *line, t_scene *scene);
 int				parse_square(char *line, t_scene *scene);
-int				parse_cylinder(char *line, t_scene *scene);
+void			parse_cylinder(char *line, t_scene *scene);
 int				parse_triangle(char *line, t_scene *scene);
 int				is_space(char *line);
 /* SCENE */
@@ -254,7 +265,7 @@ t_shape			*init_sphere(t_shape *sphere);
 int				sphere_intersection(t_intersec *intersec, t_shape *sphere);
 int				sphere_points(t_intersec *intersec, float a, float b,
 							float discriminant);
-int				sphere_normal_vector(t_intersec *intersec);
+int				sphere_normal_vector(t_intersec *intersec, int inside);
 /* SQUARE */
 t_shape			*init_square(t_vector *c, t_vector *n, float side, t_color *color);
 int				square_intersection(t_intersec *intersec, t_shape *square);
@@ -276,7 +287,6 @@ t_ray			*make_ray(t_scene *scene, t_camera *camera, float u, float v);
 /* LIGHT */
 t_light			*init_light_null(void);
 void			add_light_to_pixel(t_intersec *intersec, t_light *light, float ratio);
-void			cap_light(t_color *color);
 /* COLOR */
 t_color			*init_color(int r, int g, int b);
 void			check_color_range(t_scene *scene, t_color *color);

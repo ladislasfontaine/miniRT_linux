@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:18:55 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/21 17:10:14 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/22 15:50:38 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,37 +42,11 @@ void	add_ambient_light(t_scene *scene, t_intersec *intersec)
 {
 	t_color	color;
 
-	color = color_mix_light(*intersec->shape->color, color_multiply(*scene->ambient->color, scene->ambient->ratio));
+	if (scene->ambient->ratio == -1)
+		scene->ambient->ratio = 0;
+	color = color_mix_light(*intersec->shape->color,
+			color_multiply(*scene->ambient->color, scene->ambient->ratio));
 	intersec->color->r = color.r;
 	intersec->color->g = color.g;
 	intersec->color->b = color.b;
 }
-/*
-void	add_ambient_light(t_scene *scene, t_intersec *intersec)
-{
-	t_color	*shape;
-	t_color	*pixel;
-	t_color	*ambient;
-	t_color	c;
-
-	ambient = scene->ambient->color;
-	c = color_mul(ambient, scene->ambient->ratio);
-	if (scene->ambient && scene->ambient->color->r != -1)
-	{
-		shape = intersec->shape->color;
-		pixel = intersec->color;
-		if (ambient->r == 255 && ambient->g == 255 && ambient->b == 255)
-		{
-			pixel->r = (shape->r > c.r) ? c.r : shape->r;
-			pixel->g = (shape->g > c.g) ? c.g : shape->g;
-			pixel->b = (shape->b > c.b) ? c.b : shape->b;
-		}
-		else
-		{
-			pixel->r = c.r + shape->r;
-			pixel->g = c.g + shape->g;
-			pixel->b = c.b + shape->b;
-		}
-	}
-}
-*/

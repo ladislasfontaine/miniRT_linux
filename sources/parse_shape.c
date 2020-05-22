@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:19:42 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/20 13:55:36 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/22 15:49:02 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ int		parse_sphere(char *line, t_scene *scene)
 	i += parse_color(line + i, shape->color);
 	i += is_space(line + i);
 	check_color_range(scene, shape->color);
+	if (shape->diameter <= RAY_MIN)
+		error_and_quit(scene, "Diameter of sphere too small");
 	if (line[i])
 		error_and_quit(scene, "Problem parsing the sphere line");
 	return (0);
@@ -82,12 +84,14 @@ int		parse_square(char *line, t_scene *scene)
 	check_color_range(scene, shape->color);
 	check_normal_vector(scene, shape->normal);
 	normalize(shape->normal);
+	if (shape->side <= RAY_MIN)
+		error_and_quit(scene, "Side of square too small");
 	if (line[i])
 		error_and_quit(scene, "Problem parsing the square line");
 	return (0);
 }
 
-int		parse_cylinder(char *line, t_scene *scene)
+void	parse_cylinder(char *line, t_scene *scene)
 {
 	t_shape		*shape;
 	int			i;
@@ -110,10 +114,10 @@ int		parse_cylinder(char *line, t_scene *scene)
 	i += is_space(line + i);
 	check_color_range(scene, shape->color);
 	check_normal_vector(scene, shape->normal);
-	normalize(shape->normal);
+	if (shape->diameter <= RAY_MIN || shape->height <= RAY_MIN)
+		error_and_quit(scene, "Size of cylinder too small");
 	if (line[i])
 		error_and_quit(scene, "Problem parsing the cylinder line");
-	return (0);
 }
 
 int		parse_triangle(char *line, t_scene *scene)

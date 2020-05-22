@@ -1,6 +1,7 @@
 {
 	"files.associations": {
 		"ratio": "c",
-		"algorithm": "c"
+		"algorithm": "c",
+		"iterator": "c"
 	}
 }

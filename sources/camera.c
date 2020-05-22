@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:18:46 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/20 16:15:37 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/22 09:40:51 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 void		camera_vector_calculation(t_scene *scene, t_camera *camera)
 {
 	normalize(camera->direction);
-	if (camera->direction->x == 0 && camera->direction->y == 1
-		&& camera->direction->z == 0)
+	if (camera->direction->x == 0 && camera->direction->z == 0
+		&& (camera->direction->y == 1 || camera->direction->y == -1))
 		camera->right = cross_product(camera->direction, &(t_vector){-1, 0, 0});
 	else
 		camera->right = cross_product(camera->direction, &(t_vector){0, 1, 0});

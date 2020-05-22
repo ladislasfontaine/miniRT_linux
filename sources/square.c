@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:20:55 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/20 15:23:04 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/22 16:04:01 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ int			square_intersection(t_intersec *intersec, t_shape *sq)
 	else
 		return (0);
 	intersec->shape = sq;
-	intersec->normal = sq->normal;
+	intersec->normal = (get_angle(intersec->ray->direction, sq->normal) < 90.0)
+						? vector_mul(sq->normal, -1) : sq->normal;
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:21:01 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/20 15:26:15 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/22 15:48:01 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void		check_normal_vector(t_scene *scene, t_vector *u)
 	if (u->x < -1.0 || u->x > 1.0 || u->y < -1.0 || u->y > 1.0 ||
 		u->z < -1.0 || u->z > 1.0)
 		error_and_quit(scene, "Problem with the normalized vector");
+	normalize(u);
 }
 
 float		get_angle(t_vector *u, t_vector *v)
