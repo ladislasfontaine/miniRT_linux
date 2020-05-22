@@ -6,7 +6,7 @@
 /*   By: lafontai <lafontai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 10:19:25 by lafontai          #+#    #+#             */
-/*   Updated: 2020/05/22 15:23:00 by lafontai         ###   ########.fr       */
+/*   Updated: 2020/05/22 16:27:18 by lafontai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,12 @@
 // OK option -save à gérer
 // OK faire une fonction error_message
 // OK gestion des couleurs, additions, ratio de luminosité
-// gérer la taille de l'écran pour resize si besoin
 // OK vérifier les translations et rotations des objets (principalement pour le cylindre)
 // OK gérer l'intérieur des objets (triangle + square + plane + sphere OK cylinder TO DO)
-// checker le parsing taille des objets > 0
-// norm
+// OK norm
+// OK checker le parsing taille des objets > 0
+// vérifier les touches (ESC + Q + E)
+// gérer la taille de l'écran pour resize si besoin
 // leaks
 // protéger chaque malloc
 
