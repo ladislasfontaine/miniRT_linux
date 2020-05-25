@@ -14,8 +14,9 @@
 
 void	listen_events(t_scene *scene)
 {
-	mlx_hook(scene->win->mlx_win, 17, 0, close_and_quit, scene);
+	mlx_hook(scene->win->mlx_win, 33, 0, close_and_quit, scene);
 	mlx_key_hook(scene->win->mlx_win, get_key, scene);
+	mlx_expose_hook(scene->win->mlx_win, get_expose, scene);
 	mlx_loop(scene->win->mlx_ptr);
 }
 
@@ -40,11 +41,18 @@ void	error_and_quit(t_scene *scene, char *error)
 
 int		get_key(int key, t_scene *scene)
 {
-	if (key == KEY_ESC)
+	ft_printf("==> %d <==\n", key);
+	if (key == 65307)
 		close_and_quit(scene);
-	if (key == KEY_E && ft_lstsize(scene->imgs) > 1)
+	if (key == 101 && ft_lstsize(scene->imgs) > 1)
 		change_camera(scene, scene->win->img_id + 1);
-	if (key == KEY_Q && ft_lstsize(scene->imgs) > 1)
+	if (key == 97 && ft_lstsize(scene->imgs) > 1)
 		change_camera(scene, scene->win->img_id - 1);
+	return (0);
+}
+
+int		get_expose(t_scene *scene)
+{
+	change_camera(scene, scene->win->img_id);
 	return (0);
 }

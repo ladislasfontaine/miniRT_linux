@@ -24,7 +24,8 @@
 # include "keys.h"
 # include "printf.h"
 # include "libft.h"
-# include "../minilibx/mlx.h"
+# include "mlx_int.h"
+# include "mlx.h"
 
 # define RAY_MIN 0.01f
 # define RAY_MAX 1.0e30f
@@ -39,14 +40,14 @@
 # define BMP_FILE_HDR_SIZE 14
 # define BMP_INFO_HDR_SIZE 40
 
-typedef struct	s_img
+typedef struct	s_image
 {
 	void	*mlx_img;
 	char	*data;
 	int		bpp;
 	int		size_line;
 	int		endian;
-}				t_img;
+}				t_image;
 
 typedef struct	s_data
 {
@@ -215,9 +216,9 @@ void			delete_camera(void *element);
 void			delete_light(void *element);
 void			delete_images(t_list **lst, t_scene *scene);
 
-t_img			*init_image(t_scene *scene);
+t_image			*init_image(t_scene *scene);
 void			create_images(t_scene *sc);
-int				color_image(t_scene *scene, t_camera *camera, t_img *img);
+int				color_image(t_scene *scene, t_camera *camera, t_image *img);
 int				change_camera(t_scene *scene, int id);
 int				save_image(t_scene *scene);
 void			bitmap_file_header(t_scene *scene, int padding_size, int fd);
@@ -226,8 +227,10 @@ void			create_bmp_image(t_scene *scene, char *file_name);
 
 void			init_mlx(t_scene *scene);
 void			init_window(t_scene *scene);
+void			check_window_size(t_scene *scene);
 void			listen_events(t_scene *scene);
 int				get_key(int key, t_scene *scene);
+int				get_expose(t_scene *scene);
 void			check_all_shapes(t_list *shapes, t_intersec *intersec);
 void			check_all_lights(t_scene *scene, t_intersec *intersec);
 int				close_and_quit(t_scene *scene);

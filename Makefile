@@ -44,6 +44,8 @@ FOLDER	= sources/
 
 INCS	= includes/
 
+MLX		= minilibx-linux/
+
 INC_LIB	= libft/includes/
 
 NAME	= miniRT
@@ -52,7 +54,7 @@ RM		= rm -f
 
 CC		= gcc
 
-CFLAGS	= -Wall -Wextra -Werror
+CFLAGS	= -Wall -Wextra -Werror -lm -lbsd -lX11 -lXext
 
 ifeq ($(DEBUG), true)
 	CFLAGS += -g -fsanitize=address
@@ -62,21 +64,19 @@ all:		$(NAME)
 
 $(NAME):	$(OBJS)
 			cd libft/ && make
-			cd minilibx/ && make
-			mv minilibx/libmlx.dylib .
-			$(CC) $(CFLAGS) libft/libft.a libmlx.dylib $(OBJS) -o $(NAME)
+			cd $(MLX) && make
+			$(CC) -o $(NAME) -I$(INCS) -I$(INC_LIB) -I$(MLX) $(OBJS) libft/libft.a $(MLX)libmlx.a $(MLX)libmlx_Linux.a $(CFLAGS)
 
 %.o:		%.c
-			$(CC) $(CFLAGS) -c $< -o $@ -I $(INCS) -I $(INC_LIB)
+			$(CC) $(CFLAGS) -c -I$(INCS) -I$(INC_LIB) -I$(MLX) $< -o $@
 
 clean:
 			make clean -C libft/
-			make clean -C minilibx/
+			make clean -C minilibx-linux/
 			$(RM) $(OBJS)
 
 fclean:		clean
 			make fclean -C libft/
-			$(RM) libmlx.dylib
 			$(RM) $(NAME)
 
 re:			fclean all

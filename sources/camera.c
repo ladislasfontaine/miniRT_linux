@@ -103,6 +103,6 @@ int			change_camera(t_scene *scene, int id)
 		i++;
 	}
 	mlx_put_image_to_window(w->mlx_ptr, w->mlx_win,
-			((t_img *)(img->content))->mlx_img, 0, 0);
+			((t_image *)(img->content))->mlx_img, 0, 0);
 	return (0);
 }

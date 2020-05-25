@@ -85,14 +85,14 @@ void	delete_images(t_list **lst, t_scene *scene)
 {
 	t_list	*element;
 	t_list	*delete;
-	t_img	*img;
+	t_image	*img;
 
 	element = *lst;
 	while (element)
 	{
 		delete = element;
 		element = element->next;
-		img = (t_img *)delete->content;
+		img = (t_image *)delete->content;
 		mlx_destroy_image(scene->win->mlx_ptr, img->mlx_img);
 		free(delete);
 	}

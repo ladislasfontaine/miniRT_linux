@@ -15,13 +15,10 @@
 static int	num_len(long n)
 {
 	int	len;
-	int	neg;
 
 	len = 1;
-	neg = 0;
 	if (n < 0)
 	{
-		neg = 1;
 		len++;
 		n = -n;
 	}

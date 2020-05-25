@@ -12,11 +12,11 @@
 
 #include "minirt.h"
 
-t_img	*init_image(t_scene *scene)
+t_image	*init_image(t_scene *scene)
 {
-	t_img	*image;
+	t_image	*image;
 
-	if (!(image = (t_img *)malloc(sizeof(t_img))))
+	if (!(image = (t_image *)malloc(sizeof(t_image))))
 		error_and_quit(scene, "Malloc failed");
 	image->bpp = 32;
 	image->endian = 1;

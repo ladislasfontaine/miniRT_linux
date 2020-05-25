@@ -19,6 +19,7 @@ void	init_mlx(t_scene *scene)
 	if (!(scene->win->mlx_ptr = mlx_init()))
 		error_and_quit(scene, "Cannot initialize the minilibX");
 	scene->win->img_id = 0;
+	check_window_size(scene);
 }
 
 void	init_window(t_scene *scene)
@@ -28,7 +29,7 @@ void	init_window(t_scene *scene)
 		error_and_quit(scene, "Failed to create a new window");
 }
 
-int		color_image(t_scene *scene, t_camera *camera, t_img *img)
+int		color_image(t_scene *scene, t_camera *camera, t_image *img)
 {
 	int			i;
 	int			j;
@@ -56,7 +57,7 @@ void	create_images(t_scene *sc)
 {
 	t_list			*cameras;
 	t_resolution	*r;
-	t_img			*img;
+	t_image			*img;
 
 	cameras = sc->cameras;
 	r = sc->res;
@@ -73,7 +74,7 @@ void	create_images(t_scene *sc)
 	}
 	if (!sc->save)
 		mlx_put_image_to_window(sc->win->mlx_ptr, sc->win->mlx_win,
-					((t_img *)(sc->imgs->content))->mlx_img, 0, 0);
+					((t_image *)(sc->imgs->content))->mlx_img, 0, 0);
 }
 
 void	check_all_shapes(t_list *shapes, t_intersec *intersec)
@@ -97,4 +98,19 @@ void	check_all_shapes(t_list *shapes, t_intersec *intersec)
 			cylinder_intersection(intersec, shape);
 		lst_cpy = lst_cpy->next;
 	}
+}
+
+void	check_window_size(t_scene *scene)
+{
+	int	x;
+	int	y;
+
+	if (!(mlx_get_screen_size(scene->win->mlx_ptr, &x, &y)))
+		error_and_quit(scene, "Cannot get screen size");
+	if (scene->res->w > x)
+		scene->res->w = x;
+	if (scene->res->h > y)
+		scene->res->h = y;
+	if (scene->res->w <= 0 || scene->res->h <= 0)
+		error_and_quit(scene, "Resolution size must be superior to zero");
 }

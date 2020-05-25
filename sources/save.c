@@ -66,9 +66,9 @@ void	create_bmp_image(t_scene *scene, char *file_name)
 	int				fd;
 	int				padding_size;
 	unsigned char	padding[3];
-	t_img			*img;
+	t_image			*img;
 
-	img = (t_img *)(scene->imgs->content);
+	img = (t_image *)(scene->imgs->content);
 	i = scene->res->h;
 	ft_bzero(padding, 3);
 	if (!(fd = open(file_name, O_CREAT | O_WRONLY | O_TRUNC, 0644)))

@@ -19,7 +19,7 @@ char	*flag_minus(t_arg *params, char *arg)
 	int		len;
 	char	*new;
 
-	len = params->length ? params->length : ft_strlen(arg);
+	len = params->length ? params->length : (int)ft_strlen(arg);
 	diff = params->flag_minus - len;
 	if (diff > 0)
 	{
@@ -48,7 +48,7 @@ char	*flag_width(t_arg *params, char *arg)
 	int		len;
 	char	*new;
 
-	len = params->length ? params->length : ft_strlen(arg);
+	len = params->length ? params->length : (int)ft_strlen(arg);
 	flag = (params->width > 0) ? params->width : params->mul;
 	if (flag - len > 0)
 	{
