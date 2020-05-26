@@ -12,15 +12,6 @@
 
 #include "minirt.h"
 
-t_shape	*init_sphere(t_shape *sphere)
-{
-	sphere->id = 2;
-	sphere->diameter = 1.0;
-	sphere->center = init_vector(0.0, 1.0, 0.0);
-	sphere->color = NULL;
-	return (sphere);
-}
-
 int		sphere_intersection(t_intersec *intersec, t_shape *sphere)
 {
 	float		discriminant;
@@ -28,13 +19,13 @@ int		sphere_intersection(t_intersec *intersec, t_shape *sphere)
 	t_ray		*local_ray;
 	t_vector	v;
 
-	local_ray = init_ray(vector_diff(intersec->ray->origin, sphere->center)
-				, intersec->ray->direction, intersec->ray->max_t);
+	local_ray = init_ray(malloc_vector(vector_diff(*intersec->ray->origin,
+		*sphere->center)), intersec->ray->direction, intersec->ray->max_t);
 	if (!local_ray)
 		return (0);
-	v.x = length_square(local_ray->direction);
-	v.y = 2 * dot_product(local_ray->direction, local_ray->origin);
-	v.z = length_square(local_ray->origin) - square(sphere->diameter / 2.0);
+	v.x = length_square(*local_ray->direction);
+	v.y = 2 * dot_product(*local_ray->direction, *local_ray->origin);
+	v.z = length_square(*local_ray->origin) - square(sphere->diameter / 2.0);
 	free(local_ray->origin);
 	free(local_ray);
 	discriminant = square(v.y) - (4 * v.x * v.z);
@@ -73,16 +64,16 @@ int		sphere_points(t_intersec *intersec, float a, float b, float d)
 
 int		sphere_normal_vector(t_intersec *intersec, int inside)
 {
-	t_vector	*point;
+	t_vector	point;
 
-	point = get_point(intersec->ray->origin
-			, intersec->ray->direction, intersec->t);
+	point = get_point(*intersec->ray->origin
+			, *intersec->ray->direction, intersec->t);
 	if (inside == 2)
-		intersec->normal = vector_mul(
-							vector_diff(point, intersec->shape->center), -1);
+		copy_vector(intersec->normal, vector_mul(
+			vector_diff(point, *intersec->shape->center), -1));
 	else
-		intersec->normal = vector_diff(point, intersec->shape->center);
+		copy_vector(intersec->normal, vector_diff(point,
+			*intersec->shape->center));
 	normalize(intersec->normal);
-	free(point);
 	return (0);
 }

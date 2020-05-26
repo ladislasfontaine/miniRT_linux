@@ -35,13 +35,18 @@ int		close_and_quit(t_scene *scene)
 void	error_and_quit(t_scene *scene, char *error)
 {
 	ft_printf("Error\n%s\n", error);
+	if (scene && !scene->save && scene->win &&
+		scene->win->mlx_win && scene->win->mlx_ptr)
+	{
+		mlx_clear_window(scene->win->mlx_ptr, scene->win->mlx_win);
+		mlx_destroy_window(scene->win->mlx_ptr, scene->win->mlx_win);
+	}
 	clear_scene(scene);
 	exit(1);
 }
 
 int		get_key(int key, t_scene *scene)
 {
-	ft_printf("==> %d <==\n", key);
 	if (key == 65307)
 		close_and_quit(scene);
 	if (key == 101 && ft_lstsize(scene->imgs) > 1)

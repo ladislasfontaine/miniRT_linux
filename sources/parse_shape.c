@@ -15,19 +15,23 @@
 int		parse_sphere(char *line, t_scene *scene)
 {
 	t_shape		*shape;
+	t_list		*element;
 	int			i;
 
-	shape = init_shape();
-	ft_lstadd_back(&scene->shapes, ft_lstnew((void *)shape));
+	if (!(shape = init_shape()))
+		error_and_quit(scene, "Malloc failed");
+	if (!(element = ft_lstnew((void *)shape)))
+		error_and_quit(scene, "Malloc failed");
+	ft_lstadd_back(&scene->shapes, element);
 	shape = (t_shape *)(ft_lstlast(scene->shapes)->content);
 	shape->id = SPHERE;
 	i = 0;
 	i += is_space(line + i);
-	i += parse_vector(line + i, shape->center);
+	i += parse_vector(scene, line + i, shape->center);
 	i += is_space(line + i);
-	i += parse_float(line + i, &shape->diameter);
+	i += parse_float(scene, line + i, &shape->diameter);
 	i += is_space(line + i);
-	i += parse_color(line + i, shape->color);
+	i += parse_color(scene, line + i, shape->color);
 	i += is_space(line + i);
 	check_color_range(scene, shape->color);
 	if (shape->diameter <= RAY_MIN)
@@ -40,19 +44,23 @@ int		parse_sphere(char *line, t_scene *scene)
 int		parse_plane(char *line, t_scene *scene)
 {
 	t_shape		*shape;
+	t_list		*element;
 	int			i;
 
-	shape = init_shape();
-	ft_lstadd_back(&scene->shapes, ft_lstnew((void *)shape));
+	if (!(shape = init_shape()))
+		error_and_quit(scene, "Malloc failed");
+	if (!(element = ft_lstnew((void *)shape)))
+		error_and_quit(scene, "Malloc failed");
+	ft_lstadd_back(&scene->shapes, element);
 	shape = (t_shape *)(ft_lstlast(scene->shapes)->content);
 	shape->id = PLANE;
 	i = 0;
 	i += is_space(line + i);
-	i += parse_vector(line + i, shape->position);
+	i += parse_vector(scene, line + i, shape->position);
 	i += is_space(line + i);
-	i += parse_vector(line + i, shape->normal);
+	i += parse_vector(scene, line + i, shape->normal);
 	i += is_space(line + i);
-	i += parse_color(line + i, shape->color);
+	i += parse_color(scene, line + i, shape->color);
 	i += is_space(line + i);
 	check_color_range(scene, shape->color);
 	check_normal_vector(scene, shape->normal);
@@ -65,22 +73,22 @@ int		parse_plane(char *line, t_scene *scene)
 int		parse_square(char *line, t_scene *scene)
 {
 	t_shape		*shape;
+	t_list		*element;
 	int			i;
 
-	shape = init_shape();
-	ft_lstadd_back(&scene->shapes, ft_lstnew((void *)shape));
+	if (!(shape = init_shape()))
+		error_and_quit(scene, "Malloc failed");
+	if (!(element = ft_lstnew((void *)shape)))
+		error_and_quit(scene, "Malloc failed");
+	ft_lstadd_back(&scene->shapes, element);
 	shape = (t_shape *)(ft_lstlast(scene->shapes)->content);
 	shape->id = SQUARE;
-	i = 0;
+	i = is_space(line);
+	i += parse_vector(scene, line + i, shape->center);
+	i += parse_vector(scene, line + i, shape->normal);
+	i += parse_float(scene, line + i, &shape->side);
 	i += is_space(line + i);
-	i += parse_vector(line + i, shape->center);
-	i += is_space(line + i);
-	i += parse_vector(line + i, shape->normal);
-	i += is_space(line + i);
-	i += parse_float(line + i, &shape->side);
-	i += is_space(line + i);
-	i += parse_color(line + i, shape->color);
-	i += is_space(line + i);
+	i += parse_color(scene, line + i, shape->color);
 	check_color_range(scene, shape->color);
 	check_normal_vector(scene, shape->normal);
 	normalize(shape->normal);
@@ -94,24 +102,24 @@ int		parse_square(char *line, t_scene *scene)
 void	parse_cylinder(char *line, t_scene *scene)
 {
 	t_shape		*shape;
+	t_list		*element;
 	int			i;
 
-	shape = init_shape();
-	ft_lstadd_back(&scene->shapes, ft_lstnew((void *)shape));
+	if (!(shape = init_shape()))
+		error_and_quit(scene, "Malloc failed");
+	if (!(element = ft_lstnew((void *)shape)))
+		error_and_quit(scene, "Malloc failed");
+	ft_lstadd_back(&scene->shapes, element);
 	shape = (t_shape *)(ft_lstlast(scene->shapes)->content);
 	shape->id = CYLINDER;
-	i = 0;
+	i = is_space(line);
+	i += parse_vector(scene, line + i, shape->center);
+	i += parse_vector(scene, line + i, shape->normal);
+	i += parse_float(scene, line + i, &shape->diameter);
 	i += is_space(line + i);
-	i += parse_vector(line + i, shape->center);
+	i += parse_float(scene, line + i, &shape->height);
 	i += is_space(line + i);
-	i += parse_vector(line + i, shape->normal);
-	i += is_space(line + i);
-	i += parse_float(line + i, &shape->diameter);
-	i += is_space(line + i);
-	i += parse_float(line + i, &shape->height);
-	i += is_space(line + i);
-	i += parse_color(line + i, shape->color);
-	i += is_space(line + i);
+	i += parse_color(scene, line + i, shape->color);
 	check_color_range(scene, shape->color);
 	check_normal_vector(scene, shape->normal);
 	if (shape->diameter <= RAY_MIN || shape->height <= RAY_MIN)
@@ -123,24 +131,28 @@ void	parse_cylinder(char *line, t_scene *scene)
 int		parse_triangle(char *line, t_scene *scene)
 {
 	t_shape		*shape;
+	t_list		*element;
 	int			i;
 
-	shape = init_shape();
-	ft_lstadd_back(&scene->shapes, ft_lstnew((void *)shape));
+	if (!(shape = init_shape()))
+		error_and_quit(scene, "Malloc failed");
+	if (!(element = ft_lstnew((void *)shape)))
+		error_and_quit(scene, "Malloc failed");
+	ft_lstadd_back(&scene->shapes, element);
 	shape = (t_shape *)(ft_lstlast(scene->shapes)->content);
 	shape->id = TRIANGLE;
 	i = 0;
 	i += is_space(line + i);
-	i += parse_vector(line + i, shape->p1);
+	i += parse_vector(scene, line + i, shape->p1);
 	i += is_space(line + i);
-	i += parse_vector(line + i, shape->p2);
+	i += parse_vector(scene, line + i, shape->p2);
 	i += is_space(line + i);
-	i += parse_vector(line + i, shape->p3);
+	i += parse_vector(scene, line + i, shape->p3);
 	i += is_space(line + i);
-	i += parse_color(line + i, shape->color);
+	i += parse_color(scene, line + i, shape->color);
 	i += is_space(line + i);
-	check_color_range(scene, shape->color);
 	if (line[i])
 		error_and_quit(scene, "Problem parsing the triangle line");
+	check_color_range(scene, shape->color);
 	return (0);
 }

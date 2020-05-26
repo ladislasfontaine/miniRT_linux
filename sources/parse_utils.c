@@ -12,7 +12,7 @@
 
 #include "minirt.h"
 
-int		parse_float(char *line, float *f)
+int		parse_float(t_scene *scene, char *line, float *f)
 {
 	int		i;
 	int		num;
@@ -26,7 +26,7 @@ int		parse_float(char *line, float *f)
 	neg = (line[i] == '-') ? 1 : 0;
 	num = (ft_isdigit(line[i]) || line[i] == '-') ? ft_atoi(line) : 0;
 	if (!(ft_isdigit(line[i]) || line[i] == '-'))
-		return (-1);
+		error_and_quit(scene, "Error in float format");
 	i += (num == 0 && neg) ? (ft_numlen(num) + 1) : (ft_numlen(num));
 	if (line[i] != '.')
 	{
@@ -36,7 +36,7 @@ int		parse_float(char *line, float *f)
 	else if (line[i] == '.' && ft_isdigit(line[i + 1]))
 		parse_float_two(line, &i, &len, &decimal);
 	else
-		return (-1);
+		error_and_quit(scene, "Error in float format");
 	parse_float_three(f, (t_vector){num, decimal, len}, neg);
 	return (i);
 }
@@ -67,58 +67,60 @@ void	parse_float_three(float *f, t_vector v, int neg)
 		*f = -*f;
 }
 
-int		parse_color(char *line, t_color *color)
+int		parse_color(t_scene *scene, char *line, t_color *color)
 {
 	int	i;
 
 	i = 0;
 	if (ft_isdigit(line[i]))
-		i += parse_int(line + i, &color->r);
+		i += parse_int(scene, line + i, &color->r);
 	else
-		return (-1);
+		error_and_quit(scene, "Error in color format");
 	if (line[i] == ',')
 		i++;
 	else
-		return (-1);
+		error_and_quit(scene, "Error in color format");
 	if (ft_isdigit(line[i]))
-		i += parse_int(line + i, &color->g);
+		i += parse_int(scene, line + i, &color->g);
 	else
-		return (-1);
+		error_and_quit(scene, "Error in color format");
 	if (line[i] == ',')
 		i++;
 	else
-		return (-1);
+		error_and_quit(scene, "Error in color format");
 	if (ft_isdigit(line[i]))
-		i += parse_int(line + i, &color->b);
+		i += parse_int(scene, line + i, &color->b);
 	else
-		return (-1);
+		error_and_quit(scene, "Error in color format");
+	i += is_space(line + i);
 	return (i);
 }
 
-int		parse_vector(char *line, t_vector *vector)
+int		parse_vector(t_scene *scene, char *line, t_vector *vector)
 {
 	int	i;
 
 	i = 0;
 	if (ft_isdigit(line[i]) || line[i] == '-')
-		i += parse_float(line + i, &vector->x);
+		i += parse_float(scene, line + i, &vector->x);
 	else
-		return (-1);
+		error_and_quit(scene, "Error in vector format");
 	if (line[i] == ',')
 		i++;
 	else
-		return (-1);
+		error_and_quit(scene, "Error in vector format");
 	if (ft_isdigit(line[i]) || line[i] == '-')
-		i += parse_float(line + i, &vector->y);
+		i += parse_float(scene, line + i, &vector->y);
 	else
-		return (-1);
+		error_and_quit(scene, "Error in vector format");
 	if (line[i] == ',')
 		i++;
 	else
-		return (-1);
+		error_and_quit(scene, "Error in vector format");
 	if (ft_isdigit(line[i]) || line[i] == '-')
-		i += parse_float(line + i, &vector->z);
+		i += parse_float(scene, line + i, &vector->z);
 	else
-		return (-1);
+		error_and_quit(scene, "Error in vector format");
+	i += is_space(line + i);
 	return (i);
 }

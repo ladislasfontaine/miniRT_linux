@@ -24,17 +24,32 @@ t_vector	*init_vector(float x, float y, float z)
 	return (new);
 }
 
-t_vector	*get_point(t_vector *origin, t_vector *dir, float t)
+t_vector	*malloc_vector(t_vector vec)
 {
-	t_vector	*point;
-	float		x;
-	float		y;
-	float		z;
+	t_vector	*new;
 
-	x = origin->x + t * dir->x;
-	y = origin->y + t * dir->y;
-	z = origin->z + t * dir->z;
-	point = init_vector(x, y, z);
+	if (!(new = (t_vector *)malloc(sizeof(t_vector))))
+		return (NULL);
+	new->x = vec.x;
+	new->y = vec.y;
+	new->z = vec.z;
+	return (new);
+}
+
+void		copy_vector(t_vector *dest, t_vector src)
+{
+	dest->x = src.x;
+	dest->y = src.y;
+	dest->z = src.z;
+}
+
+t_vector	get_point(t_vector origin, t_vector dir, float t)
+{
+	t_vector	point;
+
+	point.x = origin.x + t * dir.x;
+	point.y = origin.y + t * dir.y;
+	point.z = origin.z + t * dir.z;
 	return (point);
 }
 
@@ -44,12 +59,4 @@ void		check_normal_vector(t_scene *scene, t_vector *u)
 		u->z < -1.0 || u->z > 1.0)
 		error_and_quit(scene, "Problem with the normalized vector");
 	normalize(u);
-}
-
-float		get_angle(t_vector *u, t_vector *v)
-{
-	float	angle;
-
-	angle = acos((dot_product(u, v) / (length(u) * length(v))));
-	return (angle * 180 / PI);
 }

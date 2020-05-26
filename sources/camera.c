@@ -12,17 +12,17 @@
 
 #include "minirt.h"
 
-void		camera_vector_calculation(t_scene *scene, t_camera *camera)
+void		camera_vector_calculation(t_scene *scene, t_camera *cam)
 {
-	normalize(camera->direction);
-	if (camera->direction->x == 0 && camera->direction->z == 0
-		&& (camera->direction->y == 1 || camera->direction->y == -1))
-		camera->right = cross_product(camera->direction, &(t_vector){-1, 0, 0});
+	normalize(cam->direction);
+	if (cam->direction->x == 0 && cam->direction->z == 0
+		&& (cam->direction->y == 1 || cam->direction->y == -1))
+		*cam->right = cross_product(*cam->direction, (t_vector){-1, 0, 0});
 	else
-		camera->right = cross_product(camera->direction, &(t_vector){0, 1, 0});
-	normalize(camera->right);
-	camera->up = cross_product(camera->right, camera->direction);
-	if (camera->fov < 0.0 || camera->fov > 180.0)
+		*cam->right = cross_product(*cam->direction, (t_vector){0, 1, 0});
+	normalize(cam->right);
+	*cam->up = cross_product(*cam->right, *cam->direction);
+	if (cam->fov < 0.0 || cam->fov > 180.0)
 		error_and_quit(scene, "FOV not in range 0 to 180 degrees");
 }
 
@@ -33,10 +33,11 @@ t_camera	*init_camera_null(void)
 	camera = (t_camera *)malloc(sizeof(t_camera));
 	if (!camera)
 		return (NULL);
-	camera->origin = (t_vector *)malloc(sizeof(t_vector));
-	camera->direction = (t_vector *)malloc(sizeof(t_vector));
-	camera->up = (t_vector *)malloc(sizeof(t_vector));
-	camera->right = (t_vector *)malloc(sizeof(t_vector));
+	if (!((camera->origin = (t_vector *)malloc(sizeof(t_vector))) &&
+		(camera->direction = (t_vector *)malloc(sizeof(t_vector))) &&
+		(camera->up = (t_vector *)malloc(sizeof(t_vector))) &&
+		(camera->right = (t_vector *)malloc(sizeof(t_vector)))))
+		return (NULL);
 	camera->fov = 0;
 	return (camera);
 }
@@ -68,12 +69,11 @@ t_ray		*make_ray(t_scene *scene, t_camera *cam, float u, float v)
 	w = h * ((float)scene->res->w / (float)scene->res->h);
 	origin = init_vector(cam->origin->x, cam->origin->y, cam->origin->z);
 	if (!origin)
-		return (NULL);
-	dir = (t_vector *)malloc(sizeof(t_vector));
-	if (!dir)
+		error_and_quit(scene, "Malloc failed");
+	if (!(dir = (t_vector *)malloc(sizeof(t_vector))))
 	{
 		free(origin);
-		return (NULL);
+		error_and_quit(scene, "Malloc failed");
 	}
 	dir->x = cam->direction->x + u * w * cam->right->x + v * h * cam->up->x;
 	dir->y = cam->direction->y + u * w * cam->right->y + v * h * cam->up->y;

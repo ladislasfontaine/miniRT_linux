@@ -120,6 +120,12 @@ typedef struct	s_shape
 	t_color		*color;
 }				t_shape;
 
+typedef struct	s_plane
+{
+	t_vector	position;
+	t_vector	normal;
+}				t_plane;
+
 typedef struct	s_intersec
 {
 	t_ray		*ray;
@@ -127,7 +133,6 @@ typedef struct	s_intersec
 	t_shape		*shape;
 	t_vector	*normal;
 	t_color		*color;
-	t_color		*reflect;
 }				t_intersec;
 
 typedef struct	s_scene
@@ -139,16 +144,17 @@ typedef struct	s_scene
 	t_list			*lights;
 	t_list			*imgs;
 	t_data			*win;
+	char			*line;
 	int				save;
 }				t_scene;
 
 typedef struct	s_triangle
 {
-	t_vector	*v0v1;
-	t_vector	*v0v2;
-	t_vector	*pvec;
-	t_vector	*tvec;
-	t_vector	*normal;
+	t_vector	v0v1;
+	t_vector	v0v2;
+	t_vector	pvec;
+	t_vector	tvec;
+	t_vector	normal;
 	float		det;
 	float		invdet;
 	float		u;
@@ -158,12 +164,12 @@ typedef struct	s_triangle
 
 typedef struct	s_cyl
 {
-	t_vector	*cross;
-	t_vector	*cross2;
-	t_vector	*p0;
-	t_vector	*inter;
-	t_shape		*plane1;
-	t_shape		*plane2;
+	t_vector	cross;
+	t_vector	cross2;
+	t_vector	p0;
+	t_vector	inter;
+	t_plane		plane1;
+	t_plane		plane2;
 	float		a;
 	float		b;
 	float		c;
@@ -179,8 +185,8 @@ typedef struct	s_lights
 {
 	t_list		*lst_cpy;
 	t_light		*light;
-	t_vector	*light_dir;
-	t_vector	*point;
+	t_vector	light_dir;
+	t_vector	point;
 	t_intersec	*light_ray;
 	float		light_ratio;
 	float		distance;
@@ -192,12 +198,12 @@ void			error_and_quit(t_scene *scene, char *error);
 
 int				parse_file(char *file, t_scene *scene);
 void			parse_line(char *line, t_scene *scene);
-int				parse_int(char *line, int *n);
-int				parse_float(char *line, float *f);
+int				parse_int(t_scene *scene, char *line, int *n);
+int				parse_float(t_scene *scene, char *line, float *f);
 void			parse_float_two(char *line, int *i, int *len, int *dec);
 void			parse_float_three(float *f, t_vector v, int neg);
-int				parse_color(char *line, t_color *color);
-int				parse_vector(char *line, t_vector *vector);
+int				parse_color(t_scene *scene, char *line, t_color *color);
+int				parse_vector(t_scene *scene, char *line, t_vector *vector);
 int				parse_resolution(char *line, t_scene *scene);
 int				parse_ambient(char *line, t_scene *scene);
 int				parse_camera(char *line, t_scene *scene);
@@ -231,21 +237,23 @@ void			check_window_size(t_scene *scene);
 void			listen_events(t_scene *scene);
 int				get_key(int key, t_scene *scene);
 int				get_expose(t_scene *scene);
-void			check_all_shapes(t_list *shapes, t_intersec *intersec);
+int				check_all_shapes(t_list *shapes, t_intersec *intersec);
 void			check_all_lights(t_scene *scene, t_intersec *intersec);
 int				close_and_quit(t_scene *scene);
 
 t_vector		*init_vector(float x, float y, float z);
-t_vector		*get_point(t_vector *origin, t_vector *dir, float t);
+t_vector		*malloc_vector(t_vector vec);
+void			copy_vector(t_vector *dest, t_vector src);
+t_vector		get_point(t_vector origin, t_vector dir, float t);
 float			square(float x);
-float			length_square(t_vector *u);
-float			length(t_vector *u);
+float			length_square(t_vector u);
+float			length(t_vector u);
 float			normalize(t_vector *u);
-float			dot_product(t_vector *u, t_vector *v);
-t_vector		*cross_product(t_vector *u, t_vector *v);
-t_vector		*vector_diff(t_vector *u, t_vector *v);
-t_vector		*vector_add(t_vector *u, t_vector *v);
-t_vector		*vector_mul(t_vector *u, float n);
+float			dot_product(t_vector u, t_vector v);
+t_vector		cross_product(t_vector u, t_vector v);
+t_vector		vector_diff(t_vector u, t_vector v);
+t_vector		vector_add(t_vector u, t_vector v);
+t_vector		vector_mul(t_vector u, float n);
 void			check_normal_vector(t_scene *scene, t_vector *u);
 float			get_angle(t_vector *u, t_vector *v);
 
@@ -260,35 +268,34 @@ t_vector		*intersection(t_intersec *intersec);
 void			clear_intersection(t_intersec *intersec);
 
 t_shape			*init_shape(void);
-t_shape			*init_plane(t_vector *position, t_vector *normal);
+void			clear_shape(t_shape *shape);
+t_plane			init_plane(t_vector position, t_vector normal);
 int				plane_intersection(t_intersec *intersec, t_shape *plane);
-t_shape			*init_sphere(t_shape *sphere);
 int				sphere_intersection(t_intersec *intersec, t_shape *sphere);
 int				sphere_points(t_intersec *intersec, float a, float b,
 							float discriminant);
 int				sphere_normal_vector(t_intersec *intersec, int inside);
-t_shape			*init_square(t_vector *c, t_vector *n, float side,
-				t_color *color);
 int				square_intersection(t_intersec *intersec, t_shape *square);
 int				triangle_intersection(t_intersec *intersec, t_shape *tri);
 void			triangle_calculations(t_intersec *intersec, t_shape *tri,
 				t_triangle *t);
 int				cylinder_intersection(t_intersec *intersec, t_shape *cy);
 void			find_cylinder_base(t_intersec *intersec, t_shape *cy,
-				t_shape *plane);
-float			check_cylinder_base(t_shape *plane, t_vector *inter,
-				t_vector *n);
-t_vector		*cylinder_normal(t_vector *inter, t_shape *cy, float t3);
+				t_plane plane);
+float			check_cylinder_base(t_plane plane, t_vector *inter,
+				t_vector n);
+t_vector		cylinder_normal(t_vector *inter, t_shape *cy, float t3);
 
 t_camera		*init_camera(t_vector *origin, t_vector *orientation,
 							float fov);
 t_camera		*init_camera_null(void);
-void			camera_vector_calculation(t_scene *scene, t_camera *camera);
+void			camera_vector_calculation(t_scene *scene, t_camera *cam);
 void			clear_camera(t_camera *cam);
 t_ray			*make_ray(t_scene *scene, t_camera *camera, float u, float v);
 t_light			*init_light_null(void);
 void			add_light_to_pixel(t_intersec *intersec, t_light *light,
 				float ratio);
+void			clear_light(t_light *light);
 t_color			*init_color(int r, int g, int b);
 void			check_color_range(t_scene *scene, t_color *color);
 void			add_ambient_light(t_scene *scene, t_intersec *intersec);

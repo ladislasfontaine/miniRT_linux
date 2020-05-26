@@ -35,6 +35,7 @@ t_scene	*init_scene(void)
 	scene->shapes = NULL;
 	scene->imgs = NULL;
 	scene->win = NULL;
+	scene->line = NULL;
 	scene->save = 0;
 	return (scene);
 }
@@ -55,6 +56,14 @@ void	clear_scene(t_scene *scene)
 		ft_lstclear(&scene->cameras, &delete_camera);
 		ft_lstclear(&scene->lights, &delete_light);
 		delete_images(&scene->imgs, scene);
+		if (scene->win)
+		{
+			if (scene->win->mlx_ptr)
+				free(scene->win->mlx_ptr);
+			free(scene->win);
+		}
+		if (scene->line)
+			free(scene->line);
 		free(scene);
 	}
 }

@@ -16,18 +16,18 @@ int		parse_file(char *file, t_scene *scene)
 {
 	int		fd;
 	int		res;
-	char	*line;
 
 	res = 1;
 	if ((fd = open(file, O_RDONLY)) == -1)
 		error_and_quit(scene, "Cannot open the file");
 	while (res)
 	{
-		res = get_next_line(fd, &line);
+		res = get_next_line(fd, &scene->line);
 		if (res == -1)
 			error_and_quit(scene, "Cannot read the file");
-		parse_line(line, scene);
-		free(line);
+		parse_line(scene->line, scene);
+		free(scene->line);
+		scene->line = NULL;
 	}
 	if (close(fd) == -1)
 		error_and_quit(scene, "Cannot close the file");
@@ -73,12 +73,13 @@ int		is_space(char *line)
 	return (i);
 }
 
-int		parse_int(char *line, int *n)
+int		parse_int(t_scene *scene, char *line, int *n)
 {
 	if (ft_isdigit(line[0]) || line[0] == '-')
 	{
 		*n = ft_atoi(line);
 		return (ft_numlen(*n));
 	}
-	return (-1);
+	error_and_quit(scene, "Error in integer format");
+	return (0);
 }

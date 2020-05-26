@@ -21,8 +21,16 @@ t_intersec	*init_intersection(t_ray *ray)
 	new->ray = ray;
 	new->shape = NULL;
 	new->t = ray->max_t;
-	new->color = init_color(0, 0, 0);
-	new->reflect = NULL;
+	if (!(new->color = init_color(0, 0, 0)) ||
+		!(new->normal = (t_vector *)malloc(sizeof(t_vector))))
+	{
+		if (new->color)
+			free(new->color);
+		if (new->normal)
+			free(new->normal);
+		free(new);
+		return (NULL);
+	}
 	return (new);
 }
 
@@ -52,10 +60,7 @@ void		clear_intersection(t_intersec *intersec)
 		}
 		if (intersec->color)
 			free(intersec->color);
-		if (intersec->reflect)
-			free(intersec->reflect);
-		if (intersec->normal && intersec->shape && intersec->shape->id != PLANE
-			&& intersec->shape->id != SQUARE && intersec->shape->id != CYLINDER)
+		if (intersec->normal)
 			free(intersec->normal);
 		free(intersec);
 	}

@@ -52,7 +52,8 @@ void		check_rays(t_scene *scene, char *data, t_vector vec, t_camera *cam)
 		error_and_quit(scene, "Malloc failed");
 	if (!(intersec = init_intersection(ray)))
 		error_and_quit(scene, "Malloc failed");
-	check_all_shapes(scene->shapes, intersec);
+	if (check_all_shapes(scene->shapes, intersec) == -1)
+		error_and_quit(scene, "Malloc failed");
 	intersect = (intersected(intersec)) ? 1 : 0;
 	if (intersect)
 	{

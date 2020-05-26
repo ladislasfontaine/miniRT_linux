@@ -12,15 +12,13 @@
 
 #include "minirt.h"
 
-t_shape	*init_plane(t_vector *position, t_vector *normal)
+t_plane	init_plane(t_vector position, t_vector normal)
 {
-	t_shape	*plane;
+	t_plane	pl;
 
-	if (!(plane = (t_shape *)malloc(sizeof(t_shape))))
-		return (NULL);
-	plane->position = position;
-	plane->normal = normal;
-	return (plane);
+	pl.position = position;
+	pl.normal = normal;
+	return (pl);
 }
 
 int		plane_intersection(t_intersec *intersec, t_shape *plane)
@@ -28,18 +26,18 @@ int		plane_intersection(t_intersec *intersec, t_shape *plane)
 	float d_dot_n;
 	float t;
 
-	d_dot_n = dot_product(intersec->ray->direction, plane->normal);
+	d_dot_n = dot_product(*intersec->ray->direction, *plane->normal);
 	if (d_dot_n == 0.0f)
 		return (0);
-	t = dot_product(vector_diff(plane->position, intersec->ray->origin)
-		, plane->normal) / d_dot_n;
+	t = dot_product(vector_diff(*plane->position, *intersec->ray->origin)
+		, *plane->normal) / d_dot_n;
 	if (t <= RAY_MIN || t >= intersec->t)
 		return (0);
 	intersec->t = t;
 	intersec->shape = plane;
 	if (get_angle(intersec->ray->direction, plane->normal) < 90.0)
-		intersec->normal = vector_mul(plane->normal, -1);
+		copy_vector(intersec->normal, vector_mul(*plane->normal, -1));
 	else
-		intersec->normal = plane->normal;
+		copy_vector(intersec->normal, *plane->normal);
 	return (1);
 }

@@ -20,9 +20,9 @@ int		parse_resolution(char *line, t_scene *scene)
 	if (scene->res->w != 0 || scene->res->h != 0)
 		error_and_quit(scene, "Resolution can only be declared once");
 	i += is_space(line + i);
-	i += parse_int(line + i, &scene->res->w);
+	i += parse_int(scene, line + i, &scene->res->w);
 	i += is_space(line + i);
-	i += parse_int(line + i, &scene->res->h);
+	i += parse_int(scene, line + i, &scene->res->h);
 	i += is_space(line + i);
 	if (scene->res->w == -1 || scene->res->h == -1 || line[i])
 		error_and_quit(scene, "Problem parsing the resolution line");
@@ -39,11 +39,11 @@ int		parse_ambient(char *line, t_scene *scene)
 	if (scene->ambient->ratio != -1 || scene->ambient->color->r != -1)
 		error_and_quit(scene, "Ambient light declared more than once");
 	i += is_space(line + i);
-	i += parse_float(line + i, &scene->ambient->ratio);
+	i += parse_float(scene, line + i, &scene->ambient->ratio);
 	if (scene->ambient->ratio < 0.0 || scene->ambient->ratio > 1.0)
 		error_and_quit(scene, "Ambient ratio not in range 0.0 to 1.0");
 	i += is_space(line + i);
-	i += parse_color(line + i, scene->ambient->color);
+	i += parse_color(scene, line + i, scene->ambient->color);
 	i += is_space(line + i);
 	if (line[i])
 		error_and_quit(scene, "Problem in the ambient lightning line");
@@ -68,11 +68,11 @@ int		parse_camera(char *line, t_scene *scene)
 	camera = (t_camera *)(ft_lstlast(scene->cameras)->content);
 	i = 0;
 	i += is_space(line + i);
-	i += parse_vector(line + i, camera->origin);
+	i += parse_vector(scene, line + i, camera->origin);
 	i += is_space(line + i);
-	i += parse_vector(line + i, camera->direction);
+	i += parse_vector(scene, line + i, camera->direction);
 	i += is_space(line + i);
-	i += parse_float(line + i, &camera->fov);
+	i += parse_float(scene, line + i, &camera->fov);
 	i += is_space(line + i);
 	camera_vector_calculation(scene, camera);
 	if (line[i])
@@ -83,18 +83,22 @@ int		parse_camera(char *line, t_scene *scene)
 int		parse_light(char *line, t_scene *scene)
 {
 	t_light		*light;
+	t_list		*element;
 	int			i;
 
-	light = init_light_null();
-	ft_lstadd_back(&scene->lights, ft_lstnew((void *)light));
+	if (!(light = init_light_null()))
+		error_and_quit(scene, "Malloc failed");
+	if (!(element = ft_lstnew((void *)light)))
+		error_and_quit(scene, "Malloc failed");
+	ft_lstadd_back(&scene->lights, element);
 	light = (t_light *)(ft_lstlast(scene->lights)->content);
 	i = 0;
 	i += is_space(line + i);
-	i += parse_vector(line + i, light->origin);
+	i += parse_vector(scene, line + i, light->origin);
 	i += is_space(line + i);
-	i += parse_float(line + i, &light->brightness);
+	i += parse_float(scene, line + i, &light->brightness);
 	i += is_space(line + i);
-	i += parse_color(line + i, light->color);
+	i += parse_color(scene, line + i, light->color);
 	i += is_space(line + i);
 	if (light->brightness < 0.0 || light->brightness > 1.0)
 		error_and_quit(scene, "Brightness not in range 0.0 to 1.0");

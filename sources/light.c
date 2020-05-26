@@ -19,10 +19,26 @@ t_light	*init_light_null(void)
 	light = (t_light *)malloc(sizeof(t_light));
 	if (!light)
 		return (NULL);
-	light->origin = (t_vector *)malloc(sizeof(t_vector));
-	light->color = (t_color *)malloc(sizeof(t_color));
+	if (!((light->origin = (t_vector *)malloc(sizeof(t_vector))) &&
+		(light->color = (t_color *)malloc(sizeof(t_color)))))
+	{
+		clear_light(light);
+		return (NULL);
+	}
 	light->brightness = 0;
 	return (light);
+}
+
+void	clear_light(t_light *light)
+{
+	if (light)
+	{
+		if (light->origin)
+			free(light->origin);
+		if (light->color)
+			free(light->color);
+		free(light);
+	}
 }
 
 void	check_all_lights(t_scene *scene, t_intersec *intersec)
@@ -33,21 +49,23 @@ void	check_all_lights(t_scene *scene, t_intersec *intersec)
 	while (l.lst_cpy)
 	{
 		l.light = (t_light *)l.lst_cpy->content;
-		l.point = get_point(intersec->ray->origin, intersec->ray->direction,
+		l.point = get_point(*intersec->ray->origin, *intersec->ray->direction,
 							intersec->t);
-		l.light_dir = vector_diff(l.light->origin, l.point);
+		l.light_dir = vector_diff(*l.light->origin, l.point);
 		l.distance = length(l.light_dir);
-		normalize(l.light_dir);
-		l.light_ray = init_intersection(
-						init_ray(l.point, l.light_dir, RAY_MAX));
-		check_all_shapes(scene->shapes, l.light_ray);
+		normalize(&l.light_dir);
+		l.light_ray = init_intersection(init_ray(malloc_vector(l.point),
+						malloc_vector(l.light_dir), RAY_MAX));
+		if (check_all_shapes(scene->shapes, l.light_ray) == -1)
+			error_and_quit(scene, "Malloc failed");
 		if (!intersected(l.light_ray) || (intersected(l.light_ray) &&
 		(l.light_ray->t > l.distance - RAY_MIN || l.light_ray->t < RAY_MIN)))
 		{
-			l.light_ratio = dot_product(l.light_dir, intersec->normal);
+			l.light_ratio = dot_product(l.light_dir, *intersec->normal);
 			add_light_to_pixel(intersec, l.light, l.light_ratio);
 		}
 		l.lst_cpy = l.lst_cpy->next;
+		clear_intersection(l.light_ray);
 	}
 }
 

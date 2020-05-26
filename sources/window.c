@@ -29,75 +29,31 @@ void	init_window(t_scene *scene)
 		error_and_quit(scene, "Failed to create a new window");
 }
 
-int		color_image(t_scene *scene, t_camera *camera, t_image *img)
-{
-	int			i;
-	int			j;
-	int			k;
-
-	img->data = mlx_get_data_addr(img->mlx_img, &img->bpp,
-				&img->size_line, &img->endian);
-	k = 0;
-	j = 0;
-	while (j < scene->res->h)
-	{
-		i = 0;
-		while (i < scene->res->w)
-		{
-			check_rays(scene, img->data, (t_vector){i, j, k}, camera);
-			k += 4;
-			i++;
-		}
-		j++;
-	}
-	return (0);
-}
-
-void	create_images(t_scene *sc)
-{
-	t_list			*cameras;
-	t_resolution	*r;
-	t_image			*img;
-
-	cameras = sc->cameras;
-	r = sc->res;
-	while (cameras)
-	{
-		img = NULL;
-		if (!(img = init_image(sc)))
-			error_and_quit(sc, "Cannot initialize the minilibX image");
-		if (!(img->mlx_img = mlx_new_image(sc->win->mlx_ptr, r->w, r->h)))
-			error_and_quit(sc, "Malloc for new image failed");
-		color_image(sc, (t_camera *)cameras->content, img);
-		ft_lstadd_back(&sc->imgs, ft_lstnew((void *)img));
-		cameras = cameras->next;
-	}
-	if (!sc->save)
-		mlx_put_image_to_window(sc->win->mlx_ptr, sc->win->mlx_win,
-					((t_image *)(sc->imgs->content))->mlx_img, 0, 0);
-}
-
-void	check_all_shapes(t_list *shapes, t_intersec *intersec)
+int		check_all_shapes(t_list *shapes, t_intersec *intersec)
 {
 	t_shape	*shape;
 	t_list	*lst_cpy;
+	int		res;
 
 	lst_cpy = shapes;
 	while (lst_cpy)
 	{
 		shape = (t_shape *)(lst_cpy->content);
 		if (shape->id == PLANE)
-			plane_intersection(intersec, shape);
+			res = plane_intersection(intersec, shape);
 		else if (shape->id == SPHERE)
-			sphere_intersection(intersec, shape);
+			res = sphere_intersection(intersec, shape);
 		else if (shape->id == SQUARE)
-			square_intersection(intersec, shape);
+			res = square_intersection(intersec, shape);
 		else if (shape->id == TRIANGLE)
-			triangle_intersection(intersec, shape);
+			res = triangle_intersection(intersec, shape);
 		else if (shape->id == CYLINDER)
-			cylinder_intersection(intersec, shape);
+			res = cylinder_intersection(intersec, shape);
+		if (res == -1)
+			return (-1);
 		lst_cpy = lst_cpy->next;
 	}
+	return (0);
 }
 
 void	check_window_size(t_scene *scene)

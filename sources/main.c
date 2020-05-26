@@ -12,23 +12,6 @@
 
 #include "minirt.h"
 
-// OK cas d'erreur lorsqu'il n'y a pas de résolution ou que le fichier est vide ou pas de caméra (no camera to see the scene)
-// OK gestion de la lumière d'ambiance
-// OK mettre printf dans le dossier de la libft pour avoir le dossier libft à la racine du projet (comme dit dans sujet)
-// OK utiliser les images de la mlx
-// OK pouvoir changer de caméra lorsqu'il y en a plusieurs (et changer l'image dans la fenêtre)
-// OK option -save à gérer
-// OK faire une fonction error_message
-// OK gestion des couleurs, additions, ratio de luminosité
-// OK vérifier les translations et rotations des objets (principalement pour le cylindre)
-// OK gérer l'intérieur des objets (triangle + square + plane + sphere OK cylinder TO DO)
-// OK norm
-// OK checker le parsing taille des objets > 0
-// vérifier les touches (ESC + Q + E)
-// gérer la taille de l'écran pour resize si besoin
-// leaks
-// protéger chaque malloc
-
 int		main(int ac, char **av)
 {
 	t_scene		*scene;

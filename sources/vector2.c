@@ -17,12 +17,12 @@ float		square(float x)
 	return (x * x);
 }
 
-float		length_square(t_vector *u)
+float		length_square(t_vector u)
 {
-	return (square(u->x) + square(u->y) + square(u->z));
+	return (square(u.x) + square(u.y) + square(u.z));
 }
 
-float		length(t_vector *u)
+float		length(t_vector u)
 {
 	return (sqrt(length_square(u)));
 }
@@ -31,14 +31,14 @@ float		normalize(t_vector *u)
 {
 	double	len;
 
-	len = length(u);
+	len = length(*u);
 	u->x = u->x / len;
 	u->y = u->y / len;
 	u->z = u->z / len;
 	return (len);
 }
 
-float		dot_product(t_vector *u, t_vector *v)
+float		dot_product(t_vector u, t_vector v)
 {
-	return ((u->x * v->x) + (u->y * v->y) + (u->z * v->z));
+	return ((u.x * v.x) + (u.y * v.y) + (u.z * v.z));
 }
